@@ -14,8 +14,8 @@ namespace Scheduler.Domain.Entities
 
     public class Leave : Entity
     {
-        public DateTime Start { get; private set; }
-        public DateTime End { get; private set; }
+        public DateTime? Start { get; private set; }
+        public DateTime? End { get; private set; }
         public LeaveType LeaveType { get; private set; }
 
         public int WorkerId { get; set; }
@@ -29,7 +29,5 @@ namespace Scheduler.Domain.Entities
             End = end;
             LeaveType = leaveType;
         }
-
-        public override string ToString() => $"{LeaveType} leave {Start.Date}-{End.Date}";
     }
 }

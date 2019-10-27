@@ -1,5 +1,6 @@
 ﻿using Scheduler.Domain.Common;
 using System;
+using System.Collections.Generic;
 
 namespace Scheduler.Domain.Entities
 {
@@ -14,6 +15,13 @@ namespace Scheduler.Domain.Entities
         public int JobId { get; set; }
         public Job Job { get; set; }
 
+        public IEnumerable<ResourceShift> ResourceShifts { get; private set; }
+        public IEnumerable<WorkerShift> WorkerShifts { get; private set; }
 
+        public JobTask()
+        {
+            ResourceShifts = new HashSet<ResourceShift>();
+            WorkerShifts = new HashSet<WorkerShift>();
+        }
     }
 }

@@ -4,17 +4,15 @@ using Scheduler.Domain.Entities;
 
 namespace Scheduler.Persistence.Configurations
 {
-    public class CoordinatorConfiguration : IEntityTypeConfiguration<Coordinator>
+    public class WorkerConfiguration : IEntityTypeConfiguration<Worker>
     {
-        public void Configure(EntityTypeBuilder<Coordinator> builder)
+        public void Configure(EntityTypeBuilder<Worker> builder)
         {
-            builder.Property(c => c.Name)
+            builder.Property(w => w.Name)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.Property(c => c.Email).HasMaxLength(254);
-
-            builder.Property(c => c.IsActive)
+            builder.Property(w => w.IsActive)
                 .IsRequired()
                 .HasDefaultValue(true);
         }
