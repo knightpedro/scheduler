@@ -10,7 +10,8 @@ namespace Scheduler.Persistence.Configurations
         {
             builder.Property(r => r.RoleType)
                 .IsRequired()
-                .HasConversion<string>();
+                .HasConversion<string>()
+                .HasMaxLength(30);
         }
     }
 }

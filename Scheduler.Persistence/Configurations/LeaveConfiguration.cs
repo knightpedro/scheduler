@@ -13,7 +13,8 @@ namespace Scheduler.Persistence.Configurations
         {
             builder.Property(l => l.LeaveType)
                 .IsRequired()
-                .HasConversion<string>();
+                .HasConversion<string>()
+                .HasMaxLength(20);
         }
     }
 }
