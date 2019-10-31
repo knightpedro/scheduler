@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Scheduler.Application;
 using Scheduler.Persistence;
 
 namespace Scheduler.WebAPI
@@ -26,6 +27,7 @@ namespace Scheduler.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplication();
             services.AddControllers();
             services.AddPersistence(Configuration);
         }

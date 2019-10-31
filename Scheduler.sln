@@ -15,7 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduler.Domain.UnitTests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduler.Application", "Scheduler.Application\Scheduler.Application.csproj", "{0CD274C9-9403-449D-98CD-56DB323B731A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.WebAPI", "Scheduler.WebAPI\Scheduler.WebAPI.csproj", "{A51BA344-2A98-44C6-961B-4F9E373A15B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduler.WebAPI", "Scheduler.WebAPI\Scheduler.WebAPI.csproj", "{A51BA344-2A98-44C6-961B-4F9E373A15B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{89559025-BD89-484B-A6E7-C4774F1CC741}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

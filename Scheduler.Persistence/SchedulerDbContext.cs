@@ -2,22 +2,6 @@
 using Scheduler.Application.Interfaces;
 using Scheduler.Domain.Entities;
 
-/* TO CREATE DATABASE GENERATION SCRIPT
- * 
- * To create migrations, install Entity Framework Tools package on the Web API (set as startup project).
- * Confirm tools are installed by tying Get-Help about_EntityFrameworkCore in the Package Manager Console.
- * 
- * In the Package Manager Console, set the Default Project to Persistence.
- * 
- * >> Add-Migration Initial
- * 
- * >> Script-Migration
- * 
- * If the script is suitable . . .
- * 
- * >> Update-Database
- */
-
 namespace Scheduler.Persistence
 {
     public class SchedulerDbContext : DbContext, ISchedulerDbContext
