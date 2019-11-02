@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Scheduler.Application
 {
@@ -6,7 +8,7 @@ namespace Scheduler.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            //TODO
+            services.AddMediatR(Assembly.GetExecutingAssembly());
             return services;
         }
     }
