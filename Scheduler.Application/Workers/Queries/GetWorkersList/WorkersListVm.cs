@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Scheduler.Application.Workers.Queries.GetWorkersList
 {
     public class WorkersListVm
     {
+        public IList<WorkerDto> Workers { get; set;}
     }
 }

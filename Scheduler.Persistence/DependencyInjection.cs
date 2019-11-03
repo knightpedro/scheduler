@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Scheduler.Application.Interfaces;
+using Scheduler.Application.Common.Interfaces;
 
 namespace Scheduler.Persistence
 {

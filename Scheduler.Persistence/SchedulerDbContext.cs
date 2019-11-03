@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Scheduler.Application.Interfaces;
+using Scheduler.Application.Common.Interfaces;
 using Scheduler.Domain.Entities;
 
 namespace Scheduler.Persistence

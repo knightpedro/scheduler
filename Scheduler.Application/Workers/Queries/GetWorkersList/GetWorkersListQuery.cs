@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
 
 namespace Scheduler.Application.Workers.Queries.GetWorkersList
 {
-    class GetWorkersListQuery
+    public class GetWorkersListQuery : IRequest<WorkersListVm>
     {
     }
 }

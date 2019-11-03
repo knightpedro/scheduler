@@ -3,7 +3,7 @@ using Scheduler.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Scheduler.Application.Interfaces
+namespace Scheduler.Application.Common.Interfaces
 {
     public interface ISchedulerDbContext
     {
