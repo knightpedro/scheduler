@@ -34,7 +34,6 @@ namespace Scheduler.Application.Tests.Workers.Queries
         [Fact]
         public async Task QueryHandlerReturnsWorkers()
         {
-            var dto = new WorkerDto();
             var handler = new GetWorkersListQueryHandler(_context, _mapper);
             var result = await handler.Handle(new GetWorkersListQuery(), CancellationToken.None);
 
