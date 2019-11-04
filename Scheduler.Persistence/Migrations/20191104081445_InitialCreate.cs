@@ -111,7 +111,7 @@ namespace Scheduler.Persistence.Migrations
                     ActualStart = table.Column<DateTime>(nullable: true),
                     PlannedCompletion = table.Column<DateTime>(nullable: true),
                     ActualCompletion = table.Column<DateTime>(nullable: true),
-                    CoordinatorId = table.Column<int>(nullable: false)
+                    CoordinatorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,7 +121,7 @@ namespace Scheduler.Persistence.Migrations
                         column: x => x.CoordinatorId,
                         principalTable: "Coordinators",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

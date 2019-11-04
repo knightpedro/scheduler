@@ -16,3 +16,6 @@ In the Package Manager Console, set the Default Project to Persistence.
 If the script is suitable . . .
 
 > Update-Database
+
+## To start fresh
+>Drop-Database

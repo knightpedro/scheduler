@@ -9,7 +9,7 @@ namespace Scheduler.Domain.UnitTests.Common
     public class EntityTests
     {
         [Fact]
-        public void EntitiesOfSameTypeAndIdAreEqual()
+        public void EqualsOperator_SameTypeAndId_AreEqual()
         {
             var p1 = new Person(1, "Sam");
             var p2 = new Person(1, "Henry");
@@ -18,7 +18,7 @@ namespace Scheduler.Domain.UnitTests.Common
         }
 
         [Fact]
-        public void EntitiesWithSameIdButDifferentTypeAreNotEqual()
+        public void EqualsOperator_SameIdButDifferentType_AreNotEqual()
         {
             var p = new Person(1, "Sam");
             var b = new Book(1, "A True Story");
@@ -27,7 +27,7 @@ namespace Scheduler.Domain.UnitTests.Common
         }
 
         [Fact]
-        public void TwoNullEntitiesAreEqual()
+        public void EqualsOperator_BothNull_AreEqual()
         {
             Person p1 = null;
             Person p2 = null;

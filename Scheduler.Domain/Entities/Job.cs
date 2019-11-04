@@ -17,7 +17,7 @@ namespace Scheduler.Domain.Entities
         public DateTime? PlannedCompletion { get; set; }
         public DateTime? ActualCompletion { get; set; }
 
-        public int CoordinatorId { get; set; }
+        public int? CoordinatorId { get; set; }
         public Coordinator Coordinator { get; set; }
 
         public IEnumerable<JobTask> JobTasks { get; private set; }

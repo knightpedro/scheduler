@@ -7,7 +7,7 @@ namespace Scheduler.Domain.UnitTests.Common
     public class ValueObjectTests
     {
         [Fact]
-        public void EqualsGivenDifferentValuesReturnsFalse() 
+        public void Equals_DifferentValues_ReturnsFalse() 
         {
             var p1 = new Point(1, 1);
             var p2 = new Point(2, 2);
@@ -16,7 +16,7 @@ namespace Scheduler.Domain.UnitTests.Common
         }
 
         [Fact]
-        public void EqualsGivenMatchingValuesReturnsTrue()
+        public void Equals_MatchingValues_ReturnsTrue()
         {
             var p1 = new Point(2, 2);
             var p2 = new Point(2, 2);
@@ -25,7 +25,7 @@ namespace Scheduler.Domain.UnitTests.Common
         }
 
         [Fact]
-        public void EqualsOperatorGivenOneNullReturnsFalse()
+        public void EqualsOperator_OneNull_ReturnsFalse()
         {
             var p1 = new Point(1, 1);
             Point p2 = null;
@@ -34,7 +34,7 @@ namespace Scheduler.Domain.UnitTests.Common
         }
 
         [Fact]
-        public void EqualsOperatorGivenBothNullReturnsTrue()
+        public void EqualsOperator_BothNull_ReturnsTrue()
         {
             Point p1 = null;
             Point p2 = null;

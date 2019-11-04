@@ -74,7 +74,7 @@ namespace Scheduler.Persistence.Migrations
                     b.Property<DateTime?>("ActualStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CoordinatorId")
+                    b.Property<int?>("CoordinatorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateReceived")
@@ -404,9 +404,7 @@ namespace Scheduler.Persistence.Migrations
                 {
                     b.HasOne("Scheduler.Domain.Entities.Coordinator", "Coordinator")
                         .WithMany("Jobs")
-                        .HasForeignKey("CoordinatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CoordinatorId");
                 });
 
             modelBuilder.Entity("Scheduler.Domain.Entities.JobTask", b =>
