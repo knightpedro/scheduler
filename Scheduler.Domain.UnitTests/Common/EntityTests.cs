@@ -1,7 +1,4 @@
 ﻿using Scheduler.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Scheduler.Domain.UnitTests.Common

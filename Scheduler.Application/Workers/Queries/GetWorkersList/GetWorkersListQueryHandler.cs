@@ -13,7 +13,7 @@ namespace Scheduler.Application.Workers.Queries.GetWorkersList
         private readonly IMapper _mapper;
         private readonly ISchedulerDbContext _context;
 
-        public GetWorkersListQueryHandler(IMapper mapper, ISchedulerDbContext context)
+        public GetWorkersListQueryHandler(ISchedulerDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

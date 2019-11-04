@@ -10,14 +10,13 @@ namespace Scheduler.Application.Common.Mappings
         public MappingProfile()
         {
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
-            // Mappings can be created using CreateMap<From, To>() instead of using reflection.
+            // Mappings can be created using CreateMap<From, To>() here instead of using reflection.
         }
 
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {
             var types = assembly.GetExportedTypes()
-                .Where(t => t.GetInterfaces().Any(i =>
-                    i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
+                .Where(t => t.GetInterfaces().Any(i => i == typeof(IMap)))
                 .ToList();
 
             foreach (var type in types)
