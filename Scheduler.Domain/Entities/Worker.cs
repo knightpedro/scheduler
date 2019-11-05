@@ -25,5 +25,10 @@ namespace Scheduler.Domain.Entities
             WorkerShifts = new HashSet<WorkerShift>();
             WorkerTraining = new HashSet<WorkerTraining>();
         }
+
+        public bool IsAvailable()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
