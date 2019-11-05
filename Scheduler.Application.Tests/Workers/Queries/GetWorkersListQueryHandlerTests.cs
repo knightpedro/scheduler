@@ -4,6 +4,7 @@ using Scheduler.Application.Workers.Queries.GetWorkersList;
 using Scheduler.Domain.Entities;
 using Scheduler.Persistence;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -37,7 +38,9 @@ namespace Scheduler.Application.Tests.Workers.Queries
             var handler = new GetWorkersListQueryHandler(_context, _mapper);
             var result = await handler.Handle(new GetWorkersListQuery(), CancellationToken.None);
 
-            Assert.IsType<WorkersListVm>(result);
+            var fred = result.Workers.Where(w => w.Name == "Fred").SingleOrDefault();
+
+            Assert.NotNull(fred);
             Assert.Equal(3, result.Workers.Count);
         }
     }
