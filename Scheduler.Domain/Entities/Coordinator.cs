@@ -9,7 +9,7 @@ namespace Scheduler.Domain.Entities
         public string Email { get; set; }
         public bool IsActive { get; set; }
 
-        public IEnumerable<Job> Jobs { get; private set; }
+        public ICollection<Job> Jobs { get; private set; }
 
         public Coordinator()
         {

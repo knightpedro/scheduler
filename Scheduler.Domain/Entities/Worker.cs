@@ -1,4 +1,5 @@
 ﻿using Scheduler.Domain.Common;
+using Scheduler.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -8,14 +9,13 @@ namespace Scheduler.Domain.Entities
     {
         public string Name { get; set; }
         public bool IsActive { get; set; }
-        public DateTime? JoinedCompany { get; set; }
-        public DateTime? LeftCompany { get; set; }
+        public DateTimeRange WorkingPeriod { get; set; }
 
-        public IEnumerable<Leave> Leave { get; private set; }
-        public IEnumerable<WorkerCrew> WorkerCrews { get; private set; }
-        public IEnumerable<WorkerRole> WorkerRoles { get; private set; }
-        public IEnumerable<WorkerShift> WorkerShifts { get; private set; }
-        public IEnumerable<WorkerTraining> WorkerTraining { get; private set; }
+        public ICollection<Leave> Leave { get; private set; }
+        public ICollection<WorkerCrew> WorkerCrews { get; private set; }
+        public ICollection<WorkerRole> WorkerRoles { get; private set; }
+        public ICollection<WorkerShift> WorkerShifts { get; private set; }
+        public ICollection<WorkerTraining> WorkerTraining { get; private set; }
 
         public Worker()
         {

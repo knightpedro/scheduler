@@ -15,6 +15,14 @@ namespace Scheduler.Persistence.Configurations
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(20);
+
+            builder.OwnsOne(l => l.LeavePeriod)
+                .Property(lp => lp.Start)
+                .HasColumnName("Start");
+
+            builder.OwnsOne(l => l.LeavePeriod)
+                .Property(lp => lp.End)
+                .HasColumnName("End");
         }
     }
 }

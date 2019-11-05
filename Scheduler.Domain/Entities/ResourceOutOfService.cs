@@ -1,4 +1,5 @@
 ﻿using Scheduler.Domain.Common;
+using Scheduler.Domain.ValueObjects;
 using System;
 
 namespace Scheduler.Domain.Entities
@@ -12,8 +13,7 @@ namespace Scheduler.Domain.Entities
 
     public class ResourceOutOfService : Entity
     {
-        public DateTime? Start { get; set; }
-        public DateTime? End { get; set; }
+        public DateTimeRange Period { get; set; }
         public ResourceOutOfServiceReason Reason { get; set; }
 
         public int ResourceId { get; set; }

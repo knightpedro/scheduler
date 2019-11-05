@@ -11,6 +11,12 @@
     <Compile Remove="Migrations\20191029062818_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20191104075420_InitialCreate.cs" />
     <Compile Remove="Migrations\20191104075420_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20191104081445_InitialCreate.cs" />
+    <Compile Remove="Migrations\20191104081445_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20191105205109_InitialCreate.cs" />
+    <Compile Remove="Migrations\20191105205109_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20191105212755_InitialCreate.cs" />
+    <Compile Remove="Migrations\20191105212755_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +29,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scheduler.Application\Scheduler.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

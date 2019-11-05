@@ -9,8 +9,8 @@ namespace Scheduler.Domain.Entities
         public string Description { get; set; }
         public bool IsActive { get; set; }
 
-        public IEnumerable<ResourceOutOfService> OutOfServices { get; private set; }
-        public IEnumerable<ResourceShift> ResourceShifts { get; private set; }
+        public ICollection<ResourceOutOfService> OutOfServices { get; private set; }
+        public ICollection<ResourceShift> ResourceShifts { get; private set; }
 
         public Resource()
         {

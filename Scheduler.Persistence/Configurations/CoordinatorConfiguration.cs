@@ -13,9 +13,6 @@ namespace Scheduler.Persistence.Configurations
                 .HasMaxLength(50);
 
             builder.Property(c => c.Email).HasMaxLength(254);
-
-            builder.Property(c => c.IsActive)
-                .IsRequired();
         }
     }
 }

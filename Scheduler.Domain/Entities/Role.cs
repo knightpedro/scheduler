@@ -13,7 +13,7 @@ namespace Scheduler.Domain.Entities
     public class Role : Entity
     {
         public RoleType RoleType { get; set; }
-        public IEnumerable<WorkerRole> WorkerRoles { get; private set; }
+        public ICollection<WorkerRole> WorkerRoles { get; private set; }
 
         public Role()
         {

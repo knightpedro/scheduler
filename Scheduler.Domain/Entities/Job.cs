@@ -12,15 +12,12 @@ namespace Scheduler.Domain.Entities
         public string Location { get; set; }
         public DateTime? DateReceived { get; set; }
         public DateTime? DateScheduled { get; set; }
-        public DateTime? PlannedStart { get; set; }
-        public DateTime? ActualStart { get; set; }
-        public DateTime? PlannedCompletion { get; set; }
-        public DateTime? ActualCompletion { get; set; }
+        public bool IsComplete { get; set; }
 
         public int? CoordinatorId { get; set; }
         public Coordinator Coordinator { get; set; }
 
-        public IEnumerable<JobTask> JobTasks { get; private set; }
+        public ICollection<JobTask> JobTasks { get; private set; }
 
         public Job()
         {

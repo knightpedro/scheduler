@@ -12,8 +12,13 @@ namespace Scheduler.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.Property(w => w.IsActive)
-                .IsRequired();
+            builder.OwnsOne(w => w.WorkingPeriod)
+                .Property(wp => wp.Start)
+                .HasColumnName("JoinedCompany");
+
+            builder.OwnsOne(w => w.WorkingPeriod)
+                .Property(wp => wp.End)
+                .HasColumnName("LeftCompany");
         }
     }
 }

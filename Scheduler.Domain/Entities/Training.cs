@@ -1,4 +1,5 @@
 ﻿using Scheduler.Domain.Common;
+using Scheduler.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -8,10 +9,9 @@ namespace Scheduler.Domain.Entities
     {
         public string Description { get; set; }
         public string Location { get; set; }
-        public DateTime? Start { get; set; }
-        public DateTime? End { get; set; }
+        public DateTimeRange TrainingPeriod { get; set; }
 
-        public IEnumerable<WorkerTraining> WorkerTraining { get; private set; }
+        public ICollection<WorkerTraining> WorkerTraining { get; private set; }
 
         public Training()
         {

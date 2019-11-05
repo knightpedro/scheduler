@@ -6,18 +6,8 @@ using Xunit;
 
 namespace Scheduler.Persistence.UnitTests.Configurations
 {
-    public class JobConfigurationTests : IDisposable
+    public class JobConfigurationTests : ConfigurationTestBase
     {
-        private readonly SchedulerDbContext context;
-
-        public JobConfigurationTests()
-        {
-            var options = TestContextOptionsBuilder.CreateSqliteOptions<SchedulerDbContext>();
-            context = new SchedulerDbContext(options);
-            context.Database.OpenConnection();
-            context.Database.EnsureCreated();
-        }
-
         [Fact]
         public void Job_ProperlyInsantiated_CanWriteAndReadFromDatabase()
         {
@@ -44,12 +34,6 @@ namespace Scheduler.Persistence.UnitTests.Configurations
             };
             context.Jobs.Add(job);
             Assert.Throws<DbUpdateException>(() => context.SaveChanges());
-        }
-
-        public void Dispose()
-        {
-            context.Database.EnsureDeleted();
-            context.Dispose();
         }
     }
 }

@@ -15,9 +15,6 @@ namespace Scheduler.Persistence.Configurations
             builder.Property(r => r.Description)
                 .IsRequired()
                 .HasMaxLength(50);
-
-            builder.Property(r => r.IsActive)
-                .IsRequired();
         }
     }
 }

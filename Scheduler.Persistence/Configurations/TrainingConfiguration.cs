@@ -13,6 +13,14 @@ namespace Scheduler.Persistence.Configurations
                 .HasMaxLength(30);
 
             builder.Property(t => t.Location).HasMaxLength(30);
+
+            builder.OwnsOne(t => t.TrainingPeriod)
+                .Property(p => p.Start)
+                .HasColumnName("Start");
+
+            builder.OwnsOne(t => t.TrainingPeriod)
+                .Property(p => p.End)
+                .HasColumnName("End");
         }
     }
 }
