@@ -61,7 +61,7 @@ namespace Scheduler.Domain.UnitTests.ValueObjects
                     new DateTime(2019, 12, 31)),
                 new DateTimeRange(
                     new DateTime(2019, 2, 1),
-                    new DateTime(2019, 2, 28)),
+                    new DateTime(2019, 2, 28))
             };
 
             yield return new object[] {
@@ -70,7 +70,7 @@ namespace Scheduler.Domain.UnitTests.ValueObjects
                     DateTime.MaxValue),
                 new DateTimeRange(
                     new DateTime(2019, 2, 1),
-                    new DateTime(2019, 2, 28)),
+                    new DateTime(2019, 2, 28))
             };
         }
 
@@ -82,7 +82,7 @@ namespace Scheduler.Domain.UnitTests.ValueObjects
                     new DateTime(2019, 12, 31)),
                 new DateTimeRange(
                     new DateTime(2020, 2, 1),
-                    new DateTime(2020, 2, 28)),
+                    new DateTime(2020, 2, 28))
             };
 
             yield return new object[] {
@@ -91,7 +91,16 @@ namespace Scheduler.Domain.UnitTests.ValueObjects
                     new DateTime(2019, 1, 2)),
                 new DateTimeRange(
                     new DateTime(2019, 1, 2),
-                    new DateTime(2019, 1, 3)),
+                    new DateTime(2019, 1, 3))
+            };
+
+            yield return new object[] {
+                new DateTimeRange(
+                    new DateTime(2019, 1, 1),
+                    null),
+                new DateTimeRange(
+                    new DateTime(2019, 1, 2),
+                    null)
             };
         }
     }

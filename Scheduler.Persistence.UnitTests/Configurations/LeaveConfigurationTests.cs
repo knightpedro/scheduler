@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scheduler.Domain.Entities;
 using Scheduler.Domain.ValueObjects;
+using Scheduler.Persistence.UnitTests.Common;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Scheduler.Persistence.UnitTests.Configurations

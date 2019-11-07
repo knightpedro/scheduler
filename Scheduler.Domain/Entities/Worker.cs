@@ -9,7 +9,6 @@ namespace Scheduler.Domain.Entities
     {
         public string Name { get; set; }
         public bool IsActive { get; set; }
-        public DateTimeRange WorkingPeriod { get; set; }
 
         public ICollection<Leave> Leave { get; private set; }
         public ICollection<WorkerCrew> WorkerCrews { get; private set; }
@@ -24,11 +23,6 @@ namespace Scheduler.Domain.Entities
             WorkerRoles = new HashSet<WorkerRole>();
             WorkerShifts = new HashSet<WorkerShift>();
             WorkerTraining = new HashSet<WorkerTraining>();
-        }
-
-        public bool IsAvailable()
-        {
-            throw new NotImplementedException();
         }
     }
 }

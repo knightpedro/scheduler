@@ -15,10 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Workers\Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Scheduler.Application\Scheduler.Application.csproj" />
     <ProjectReference Include="..\Scheduler.Persistence\Scheduler.Persistence.csproj" />
   </ItemGroup>
 

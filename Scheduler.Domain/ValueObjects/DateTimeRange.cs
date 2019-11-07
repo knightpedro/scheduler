@@ -2,14 +2,16 @@
 using System;
 using System.Collections.Generic;
 
+// TODO: handle nulls in Overlaps
+
 namespace Scheduler.Domain.ValueObjects
 {
     public class DateTimeRange : ValueObject
     {
         public DateTime Start { get; }
-        public DateTime End { get; }
+        public DateTime? End { get; }
 
-        public DateTimeRange(DateTime start, DateTime end)
+        public DateTimeRange(DateTime start, DateTime? end)
         {
             if (end < start)
                 throw new ArgumentOutOfRangeException(nameof(end), "The end date cannot be before the start date.");

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scheduler.Domain.Entities;
-using System;
+using Scheduler.Persistence.UnitTests.Common;
 using System.Linq;
 using Xunit;
 

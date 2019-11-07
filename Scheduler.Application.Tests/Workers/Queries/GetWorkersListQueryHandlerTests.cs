@@ -20,21 +20,20 @@ namespace Scheduler.Application.Tests.Workers.Queries
         {
             _context = fixture.Context;
             _mapper = fixture.Mapper;
+        }
 
+        [Fact]
+        public async Task QueryHandlerReturnsWorkers()
+        {
             var workers = new List<Worker>
             {
                 new Worker { Name = "Fred", IsActive = true },
                 new Worker { Name = "Joe", IsActive = true },
                 new Worker { Name = "Morris", IsActive = true }
             };
-
             _context.Workers.AddRange(workers);
             _context.SaveChanges();
-        }
 
-        [Fact]
-        public async Task QueryHandlerReturnsWorkers()
-        {
             var handler = new GetWorkersListQueryHandler(_context, _mapper);
             var result = await handler.Handle(new GetWorkersListQuery(), CancellationToken.None);
 

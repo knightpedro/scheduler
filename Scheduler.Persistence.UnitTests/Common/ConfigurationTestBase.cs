@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Scheduler.Persistence.UnitTests.Configurations
+namespace Scheduler.Persistence.UnitTests.Common
 {
     public abstract class ConfigurationTestBase : IDisposable
     {
-        public SchedulerDbContext context { get; }
+        protected readonly SchedulerDbContext context;
 
         public ConfigurationTestBase()
         {
