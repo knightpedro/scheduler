@@ -5,22 +5,22 @@ using System;
 
 namespace Scheduler.Application.Tests.Common
 {
-    public class QueryTestFixture : IDisposable
+    public class QueryTestBase : IDisposable
     {
-        public SchedulerDbContext Context { get; }
-        public IMapper Mapper { get; }
+        public SchedulerDbContext context { get; }
+        public IMapper mapper { get; }
         
-        public QueryTestFixture()
+        public QueryTestBase()
         {
-            Context = SchedulerDbContextFactory.Create();
+            context = SchedulerDbContextFactory.Create();
 
             var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
-            Mapper = config.CreateMapper();
+            mapper = config.CreateMapper();
         }
 
         public void Dispose()
         {
-            SchedulerDbContextFactory.Destroy(Context);
+            SchedulerDbContextFactory.Destroy(context);
         }
     }
 }

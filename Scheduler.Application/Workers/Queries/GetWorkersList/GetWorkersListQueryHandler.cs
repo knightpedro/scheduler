@@ -21,12 +21,11 @@ namespace Scheduler.Application.Workers.Queries.GetWorkersList
 
         public async Task<WorkersListVm> Handle(GetWorkersListQuery request, CancellationToken cancellationToken)
         {
-            var workers = await _context.Workers
+            var workers = await _context.Workers.AsNoTracking()
                 .ProjectTo<WorkerDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-            var vm = new WorkersListVm { Workers = workers };
-            return vm;
+            return new WorkersListVm { Workers = workers };
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Scheduler.Application.Workers.Queries.GetWorkerDetail
         public async Task<WorkerDetailVm> Handle(GetWorkerDetailQuery request, CancellationToken cancellationToken)
         {
             var worker = await _context.Workers.FindAsync(request.Id);
-        
+
             if (worker is null)
                 throw new NotFoundException(nameof(Worker), request.Id);
 
