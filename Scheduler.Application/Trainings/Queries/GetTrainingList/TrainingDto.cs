@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Scheduler.Application.Common.Mappings;
+using Scheduler.Domain.Entities;
 using System;
 
-namespace Scheduler.Application.Training.Queries.GetTrainingList
+namespace Scheduler.Application.Trainings.Queries.GetTrainingList
 {
     public class TrainingDto : IMap
     {
@@ -14,7 +15,7 @@ namespace Scheduler.Application.Training.Queries.GetTrainingList
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Domain.Entities.Training, TrainingDto>()
+            profile.CreateMap<Training, TrainingDto>()
                 .ForMember(d => d.Start, opt => opt.MapFrom(t => t.TrainingPeriod.Start))
                 .ForMember(d => d.End, opt => opt.MapFrom(t => t.TrainingPeriod.End));
         }

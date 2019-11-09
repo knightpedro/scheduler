@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Scheduler.Application.Training.Queries.GetTrainingList
+namespace Scheduler.Application.Trainings.Queries.GetTrainingList
 {
     public class GetTrainingListQuery : IRequest<TrainingListVm>
     {

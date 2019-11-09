@@ -6,7 +6,7 @@ using Scheduler.Application.Common.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Scheduler.Application.Training.Queries.GetTrainingList
+namespace Scheduler.Application.Trainings.Queries.GetTrainingList
 {
     public class GetTrainingListQueryHandler : IRequestHandler<GetTrainingListQuery, TrainingListVm>
     {

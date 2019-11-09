@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Scheduler.Application.Training.Queries.GetTrainingList
+namespace Scheduler.Application.Trainings.Queries.GetTrainingList
 {
     public class TrainingListVm
     {
