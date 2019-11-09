@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Trainings\Commands\" />
     <Folder Include="Trainings\Queries\GetTrainingDetail\" />
   </ItemGroup>
 
