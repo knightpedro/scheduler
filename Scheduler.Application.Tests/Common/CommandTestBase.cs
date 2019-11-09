@@ -9,12 +9,12 @@ namespace Scheduler.Application.Tests.Common
 
         public CommandTestBase()
         {
-            context = SchedulerDbContextFactory.Create();
+            context = SchedulerDbContextFactory.CreateContext();
         }
 
         public void Dispose()
         {
-            SchedulerDbContextFactory.Destroy(context);
+            SchedulerDbContextFactory.DestroyContext(context);
         }
     }
 }

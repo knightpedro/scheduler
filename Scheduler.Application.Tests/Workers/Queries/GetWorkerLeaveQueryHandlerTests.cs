@@ -18,6 +18,8 @@ namespace Scheduler.Application.Tests.Workers.Queries
             var query = new GetWorkerLeaveQuery { WorkerId = 1 };
             var handler = new GetWorkerLeaveQueryHandler(context, mapper);
             var vm = await handler.Handle(query, CancellationToken.None);
+
+            Assert.NotNull(vm);
             Assert.Empty(vm.WorkerLeave);
         }
 

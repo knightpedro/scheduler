@@ -12,7 +12,7 @@ namespace Scheduler.Application.Tests.Common
         
         public QueryTestBase()
         {
-            context = SchedulerDbContextFactory.Create();
+            context = SchedulerDbContextFactory.CreateContext();
 
             var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
             mapper = config.CreateMapper();
@@ -20,7 +20,7 @@ namespace Scheduler.Application.Tests.Common
 
         public void Dispose()
         {
-            SchedulerDbContextFactory.Destroy(context);
+            SchedulerDbContextFactory.DestroyContext(context);
         }
     }
 }
