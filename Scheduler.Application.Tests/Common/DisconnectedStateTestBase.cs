@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Scheduler.Application.Tests.Common
 {
-    public class DisconnectedAppTestBase : IDisposable
+    public class DisconnectedStateTestBase : IDisposable
     {
         protected readonly DbContextOptions<SchedulerDbContext> options;
 
-        public DisconnectedAppTestBase()
+        public DisconnectedStateTestBase()
         {
             options = SchedulerDbContextFactory.CreateOptions();
             using (var context = new SchedulerDbContext(options))

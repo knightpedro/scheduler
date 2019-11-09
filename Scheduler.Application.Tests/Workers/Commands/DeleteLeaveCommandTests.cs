@@ -13,29 +13,35 @@ using Xunit;
 
 namespace Scheduler.Application.Tests.Workers.Commands
 {
-    public class DeleteLeaveCommandTests : DisconnectedAppTestBase
+    public class DeleteLeaveCommandTests : DisconnectedStateTestBase
     {
         [Fact]
         public async Task DeleteCommand_SuccessfullyHandled_WhenLeaveExists()
         {
             int leaveId;
 
-            SeedWorker();
+            SeedWorkerWithLeave();
 
+            // Verify database has been seeded and leave exists
             using (var context = new SchedulerDbContext(options))
             {
                 var worker = context.Workers.Include(w => w.Leave).First();
                 leaveId = worker.Leave.First().Id;
             }
 
+            // Delete the leave
             using (var context = new SchedulerDbContext(options))
             {
                 var command = new DeleteLeaveCommand { LeaveId = leaveId };
                 var handler = new DeleteLeaveCommandHandler(context);
 
                 await handler.Handle(command, CancellationToken.None);
+            }
 
-                var deletedLeave = context.Leave.Find(command.LeaveId);
+            // Verify leave is deleted
+            using (var context = new SchedulerDbContext(options))
+            {
+                var deletedLeave = context.Leave.Find(leaveId);
                 Assert.Null(deletedLeave);
             }
         }
@@ -52,7 +58,7 @@ namespace Scheduler.Application.Tests.Workers.Commands
             }
         }
 
-        private void SeedWorker()
+        private void SeedWorkerWithLeave()
         {
             using (var context = new SchedulerDbContext(options))
             {
