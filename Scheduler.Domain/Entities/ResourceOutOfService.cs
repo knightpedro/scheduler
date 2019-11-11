@@ -18,5 +18,10 @@ namespace Scheduler.Domain.Entities
 
         public int ResourceId { get; set; }
         public Resource Resource { get; set; }
+
+        public ResourceOutOfService()
+        {
+            Period = new DateTimeRange(new DateTime(), new DateTime());
+        }
     }
 }

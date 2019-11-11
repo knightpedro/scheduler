@@ -19,6 +19,7 @@ namespace Scheduler.Domain.Entities
         public JobTask()
         {
             ResourceShifts = new HashSet<ResourceShift>();
+            TaskPeriod = new DateTimeRange(new DateTime(), new DateTime());
             WorkerShifts = new HashSet<WorkerShift>();
         }
     }

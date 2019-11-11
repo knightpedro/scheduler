@@ -13,6 +13,7 @@ namespace Scheduler.Domain.Entities
 
         public Crew()
         {
+            ActivePeriod = new DateTimeRange(new DateTime(), new DateTime());
             WorkerCrews = new HashSet<WorkerCrew>();
         }
     }

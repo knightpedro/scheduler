@@ -1,5 +1,6 @@
 ﻿using Scheduler.Domain.Common;
 using Scheduler.Domain.ValueObjects;
+using System;
 
 namespace Scheduler.Domain.Entities
 {
@@ -19,5 +20,10 @@ namespace Scheduler.Domain.Entities
 
         public int WorkerId { get; set; }
         public Worker Worker { get; set; }
+
+        public Leave()
+        {
+            LeavePeriod = new DateTimeRange(new DateTime(), new DateTime());
+        }
     }
 }

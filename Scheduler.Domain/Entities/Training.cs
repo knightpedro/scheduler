@@ -15,6 +15,7 @@ namespace Scheduler.Domain.Entities
 
         public Training()
         {
+            TrainingPeriod = new DateTimeRange(new DateTime(), new DateTime());
             WorkerTraining = new HashSet<WorkerTraining>();
         }
     }

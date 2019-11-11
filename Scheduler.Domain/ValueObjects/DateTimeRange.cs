@@ -8,8 +8,8 @@ namespace Scheduler.Domain.ValueObjects
 {
     public class DateTimeRange : ValueObject
     {
-        public DateTime Start { get; }
-        public DateTime? End { get; }
+        public DateTime Start { get; private set; }
+        public DateTime? End { get; private set; }
 
         public DateTimeRange(DateTime start, DateTime? end)
         {
