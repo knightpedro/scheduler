@@ -93,15 +93,6 @@ namespace Scheduler.Domain.UnitTests.ValueObjects
                     new DateTime(2019, 1, 2),
                     new DateTime(2019, 1, 3))
             };
-
-            yield return new object[] {
-                new DateTimeRange(
-                    new DateTime(2019, 1, 1),
-                    null),
-                new DateTimeRange(
-                    new DateTime(2019, 1, 2),
-                    null)
-            };
         }
     }
 }

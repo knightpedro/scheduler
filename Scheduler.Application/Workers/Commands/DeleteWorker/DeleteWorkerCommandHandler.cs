@@ -21,8 +21,10 @@ namespace Scheduler.Application.Workers.Commands.DeleteWorker
             var worker = await _context.Workers.FindAsync(request.Id);
             if (worker is null)
                 throw new NotFoundException(nameof(Worker), request.Id);
+
             _context.Workers.Remove(worker);
             await _context.SaveChangesAsync(cancellationToken);
+
             return Unit.Value;
         }
     }

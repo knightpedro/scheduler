@@ -9,9 +9,9 @@ namespace Scheduler.Domain.ValueObjects
     public class DateTimeRange : ValueObject
     {
         public DateTime Start { get; private set; }
-        public DateTime? End { get; private set; }
+        public DateTime End { get; private set; }
 
-        public DateTimeRange(DateTime start, DateTime? end)
+        public DateTimeRange(DateTime start, DateTime end)
         {
             if (end < start)
                 throw new ArgumentOutOfRangeException(nameof(end), "The end date cannot be before the start date.");
