@@ -5,17 +5,17 @@ using System;
 
 namespace Scheduler.Application.Workers.Queries.GetWorkerLeave
 {
-    public class WorkerLeaveDto : IMap
+    public class WorkerLeaveDto
     {
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public string LeaveType { get; set; }
 
-        public void Mapping(Profile profile)
+        public WorkerLeaveDto(Leave leave)
         {
-            profile.CreateMap<Leave, WorkerLeaveDto>()
-                .ForMember(d => d.Start, opt => opt.MapFrom(l => l.LeavePeriod.Start))
-                .ForMember(d => d.End, opt => opt.MapFrom(l => l.LeavePeriod.End));
+            Start = leave.LeavePeriod.Start;
+            End = leave.LeavePeriod.End;
+            LeaveType = leave.LeaveType.ToString();
         }
     }
 }

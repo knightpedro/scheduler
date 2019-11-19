@@ -37,6 +37,9 @@ namespace Scheduler.Persistence.Repositories
 
         public async Task<IEnumerable<T>> GetAll(int page=1, int pageSize=20, params Expression<Func<T, object>>[] includes)
         {
+            if (page < 1)
+                throw new ArgumentOutOfRangeException("Page numbers start at 1.");
+
             var includeQuery = GetAllIncluding(includes);
             return await includeQuery
                 .Skip((page - 1) * pageSize)

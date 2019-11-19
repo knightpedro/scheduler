@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Scheduler.Application.Common.Exceptions;
 using Scheduler.Application.Common.Interfaces;
+using Scheduler.Domain.Entities;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,23 +10,22 @@ namespace Scheduler.Application.Workers.Queries.GetWorkerLeave
 {
     public class GetWorkerLeaveQueryHandler : IRequestHandler<GetWorkerLeaveQuery, WorkerLeaveVm>
     {
-        private readonly ISchedulerDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IRepositoryAsync<Worker> _repo;
 
-        public GetWorkerLeaveQueryHandler(ISchedulerDbContext context, IMapper mapper)
+        public GetWorkerLeaveQueryHandler(IRepositoryAsync<Worker> repo)
         {
-            _context = context;
-            _mapper = mapper;
+            _repo = repo;
         }
 
         public async Task<WorkerLeaveVm> Handle(GetWorkerLeaveQuery request, CancellationToken cancellationToken)
         {
-            var workerLeave = await _context.Leave.AsNoTracking()
-                .Where(l => l.WorkerId == request.WorkerId)
-                .ProjectTo<WorkerLeaveDto>(_mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
+            var worker = await _repo.FirstOrDefault(w => w.Id == request.WorkerId, w => w.Leave);
+            if (worker is null)
+                throw new NotFoundException(nameof(Worker), request.WorkerId);
 
-            return new WorkerLeaveVm { WorkerLeave = workerLeave };
+            return new WorkerLeaveVm {
+                WorkerLeave = worker.Leave.Select(l => new WorkerLeaveDto(l)).ToList()
+            };
         }
     }
 }

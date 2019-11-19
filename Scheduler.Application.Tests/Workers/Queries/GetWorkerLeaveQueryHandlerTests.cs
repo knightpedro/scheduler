@@ -2,6 +2,7 @@
 using Scheduler.Application.Workers.Queries.GetWorkerLeave;
 using Scheduler.Domain.Entities;
 using Scheduler.Domain.ValueObjects;
+using Scheduler.Persistence.Repositories;
 using System;
 using System.Linq;
 using System.Threading;
@@ -10,13 +11,23 @@ using Xunit;
 
 namespace Scheduler.Application.Tests.Workers.Queries
 {
-    public class GetWorkerLeaveQueryHandlerTests : QueryTestBase
+    public class GetWorkerLeaveQueryHandlerTests
     {
+        private readonly SchedulerRepository<Worker> repo;
+
+        public GetWorkerLeaveQueryHandlerTests()
+        {
+            repo = RepositoryFactory.CreateRepository<Worker>();
+        }
+
         [Fact]
         public async Task QueryHandler_ReturnsEmptyViewModel_WhenNoLeaveFound()
         {
+            var worker = new Worker { Name = "Test" };
+            await repo.Add(worker);
+
             var query = new GetWorkerLeaveQuery { WorkerId = 1 };
-            var handler = new GetWorkerLeaveQueryHandler(context, mapper);
+            var handler = new GetWorkerLeaveQueryHandler(repo);
             var vm = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(vm);
@@ -36,11 +47,10 @@ namespace Scheduler.Application.Tests.Workers.Queries
                 LeaveType = LeaveType.Annual
             };
             worker.Leave.Add(leave);
-            context.Workers.Add(worker);
-            await context.SaveChangesAsync(CancellationToken.None);
+            await repo.Add(worker);
 
             var query = new GetWorkerLeaveQuery { WorkerId = 1 };
-            var handler = new GetWorkerLeaveQueryHandler(context, mapper);
+            var handler = new GetWorkerLeaveQueryHandler(repo);
             var vm = await handler.Handle(query, CancellationToken.None);
             var leaveResult = vm.WorkerLeave.First();
 
