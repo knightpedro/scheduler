@@ -22,9 +22,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduler.Persistence.UnitTests", "Scheduler.Persistence.UnitTests\Scheduler.Persistence.UnitTests.csproj", "{EB392F99-27F3-446D-AFE5-E41D4BF9CE3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduler.Persistence.Tests", "Scheduler.Persistence.UnitTests\Scheduler.Persistence.Tests.csproj", "{EB392F99-27F3-446D-AFE5-E41D4BF9CE3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduler.Application.Tests", "Scheduler.Application.Tests\Scheduler.Application.Tests.csproj", "{E2B53405-4918-4F9B-836C-AEB6F55C90B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduler.Application.Tests", "Scheduler.Application.Tests\Scheduler.Application.Tests.csproj", "{E2B53405-4918-4F9B-836C-AEB6F55C90B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

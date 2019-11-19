@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Scheduler.Persistence.UnitTests.Common
+namespace Scheduler.Persistence.Tests.Common
 {
-    public abstract class ConfigurationTestBase : IDisposable
+    public abstract class ContextTestBase : IDisposable
     {
         protected readonly SchedulerDbContext context;
 
-        public ConfigurationTestBase()
+        public ContextTestBase()
         {
             var options = TestContextOptionsBuilder.CreateSqliteOptions<SchedulerDbContext>();
             context = new SchedulerDbContext(options);

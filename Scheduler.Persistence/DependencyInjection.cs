@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Scheduler.Application.Common.Interfaces;
+using Scheduler.Persistence.Repositories;
 
 namespace Scheduler.Persistence
 {
@@ -13,6 +14,9 @@ namespace Scheduler.Persistence
                 options.UseSqlServer(configuration.GetConnectionString("SchedulerDatabase")));
 
             services.AddScoped<ISchedulerDbContext>(provider => provider.GetService<SchedulerDbContext>());
+
+            services.AddScoped(typeof(IRepositoryAsync<>), typeof(SchedulerRepository<>));
+
             return services;
         }
     }

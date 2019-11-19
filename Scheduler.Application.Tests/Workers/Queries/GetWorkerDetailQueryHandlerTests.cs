@@ -2,15 +2,22 @@
 using Scheduler.Application.Tests.Common;
 using Scheduler.Application.Workers.Queries.GetWorkerDetail;
 using Scheduler.Domain.Entities;
-using System.Linq;
+using Scheduler.Persistence.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Scheduler.Application.Tests.Workers.Queries
 {
-    public class GetWorkersDetailQueryHandlerTests : QueryTestBase
+    public class GetWorkerDetailQueryHandlerTests
     {
+        private readonly SchedulerRepository<Worker> repo;
+
+        public GetWorkerDetailQueryHandlerTests()
+        {
+            repo = RepositoryFactory.CreateRepository<Worker>();
+        }
+
         [Fact]
         public async Task GetWorkerDetailQuery_ReturnsViewModel_WhenWorkerExists()
         {
@@ -19,10 +26,9 @@ namespace Scheduler.Application.Tests.Workers.Queries
                 Name = "Terry",
                 IsActive = true
             };
-            context.Workers.Add(worker);
-            context.SaveChanges();
+            await repo.Add(worker);
 
-            var handler = new GetWorkerDetailQueryHandler(context, mapper);
+            var handler = new GetWorkerDetailQueryHandler(repo);
             var result = await handler.Handle(new GetWorkerDetailQuery { Id = 1 }, CancellationToken.None);
 
             Assert.NotNull(result);
@@ -32,8 +38,7 @@ namespace Scheduler.Application.Tests.Workers.Queries
         [Fact]
         public async Task GetWorkerDetailQuery_ThrowsNotFoundException_WhenWorkerDoesNotExist()
         {
-            var handler = new GetWorkerDetailQueryHandler(context, mapper);
-            var workers = context.Workers.ToList();
+            var handler = new GetWorkerDetailQueryHandler(repo);
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new GetWorkerDetailQuery { Id = 10 }, CancellationToken.None));
         }
     }

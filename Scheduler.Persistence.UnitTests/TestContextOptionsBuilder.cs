@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Scheduler.Persistence.UnitTests
+namespace Scheduler.Persistence.Tests
 {
     public static class TestContextOptionsBuilder
     {

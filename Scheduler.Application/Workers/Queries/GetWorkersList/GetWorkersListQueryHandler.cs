@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
 using Scheduler.Application.Common.Interfaces;
+using Scheduler.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,22 +8,17 @@ namespace Scheduler.Application.Workers.Queries.GetWorkersList
 {
     public class GetWorkersListQueryHandler : IRequestHandler<GetWorkersListQuery, WorkersListVm>
     {
-        private readonly IMapper _mapper;
-        private readonly ISchedulerDbContext _context;
+        private readonly IRepositoryAsync<Worker> _repo;
 
-        public GetWorkersListQueryHandler(ISchedulerDbContext context, IMapper mapper)
+        public GetWorkersListQueryHandler(IRepositoryAsync<Worker> repo)
         {
-            _context = context;
-            _mapper = mapper;
+            _repo = repo;
         }
 
         public async Task<WorkersListVm> Handle(GetWorkersListQuery request, CancellationToken cancellationToken)
         {
-            var workers = await _context.Workers.AsNoTracking()
-                .ProjectTo<WorkerDto>(_mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
-
-            return new WorkersListVm { Workers = workers };
+            var workers = await _repo.GetAll(request.PageNumber, request.PageSize);
+            return new WorkersListVm(workers);
         }
     }
 }

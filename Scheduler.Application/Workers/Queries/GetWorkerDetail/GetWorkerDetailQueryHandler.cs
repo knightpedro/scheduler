@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Scheduler.Application.Common.Exceptions;
 using Scheduler.Application.Common.Interfaces;
 using Scheduler.Domain.Entities;
@@ -10,23 +9,21 @@ namespace Scheduler.Application.Workers.Queries.GetWorkerDetail
 {
     public class GetWorkerDetailQueryHandler : IRequestHandler<GetWorkerDetailQuery, WorkerDetailVm>
     {
-        private readonly ISchedulerDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IRepositoryAsync<Worker> _repo;
 
-        public GetWorkerDetailQueryHandler(ISchedulerDbContext context, IMapper mapper)
+        public GetWorkerDetailQueryHandler(IRepositoryAsync<Worker> repo)
         {
-            _context = context;
-            _mapper = mapper;
+            _repo = repo;
         }
 
         public async Task<WorkerDetailVm> Handle(GetWorkerDetailQuery request, CancellationToken cancellationToken)
         {
-            var worker = await _context.Workers.FindAsync(request.Id);
+            var worker = await _repo.GetById(request.Id);
 
             if (worker is null)
                 throw new NotFoundException(nameof(Worker), request.Id);
 
-            return _mapper.Map<WorkerDetailVm>(worker);
+            return new WorkerDetailVm(worker);
         }
     }
 }

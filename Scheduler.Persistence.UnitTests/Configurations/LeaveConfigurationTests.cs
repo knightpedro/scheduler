@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scheduler.Domain.Entities;
 using Scheduler.Domain.ValueObjects;
-using Scheduler.Persistence.UnitTests.Common;
+using Scheduler.Persistence.Tests.Common;
 using System;
 using Xunit;
 
-namespace Scheduler.Persistence.UnitTests.Configurations
+namespace Scheduler.Persistence.Tests.Configurations
 {
-    public class LeaveConfigurationTests : ConfigurationTestBase
+    public class LeaveConfigurationTests : ContextTestBase
     {
         [Fact]
         public void Cannot_save_leave_without_worker()

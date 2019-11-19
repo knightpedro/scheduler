@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scheduler.Domain.Entities;
-using Scheduler.Persistence.UnitTests.Common;
+using Scheduler.Persistence.Tests.Common;
 using System.Linq;
 using Xunit;
 
-namespace Scheduler.Persistence.UnitTests.Configurations
+namespace Scheduler.Persistence.Tests.Configurations
 {
-    public class JobConfigurationTests : ConfigurationTestBase
+    public class JobConfigurationTests : ContextTestBase
     {
         [Fact]
         public void Job_ProperlyInsantiated_CanWriteAndReadFromDatabase()

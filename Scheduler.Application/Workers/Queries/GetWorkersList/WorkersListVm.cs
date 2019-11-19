@@ -1,9 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using Scheduler.Domain.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Scheduler.Application.Workers.Queries.GetWorkersList
 {
     public class WorkersListVm
     {
-        public IList<WorkerDto> Workers { get; set;}
+        public IEnumerable<WorkerDto> Workers { get; set;}
+
+        public WorkersListVm(IEnumerable<Worker> workers)
+        {
+            Workers = workers.Select(w => new WorkerDto {
+                Id = w.Id,
+                Name = w.Name
+            });
+        }
     }
 }

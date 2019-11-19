@@ -1,18 +1,18 @@
-﻿using AutoMapper;
-using Scheduler.Application.Common.Mappings;
-using Scheduler.Domain.Entities;
+﻿using Scheduler.Domain.Entities;
 
 namespace Scheduler.Application.Workers.Queries.GetWorkerDetail
 {
-    public class WorkerDetailVm : IMap
+    public class WorkerDetailVm
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
 
-        public void Mapping(Profile profile)
+        public WorkerDetailVm(Worker worker)
         {
-            profile.CreateMap<Worker, WorkerDetailVm>();
+            Id = worker.Id;
+            Name = worker.Name;
+            IsActive = worker.IsActive;
         }
     }
 }
