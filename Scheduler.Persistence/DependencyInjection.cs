@@ -15,7 +15,7 @@ namespace Scheduler.Persistence
 
             services.AddScoped<ISchedulerDbContext>(provider => provider.GetService<SchedulerDbContext>());
 
-            services.AddScoped(typeof(IRepositoryAsync<>), typeof(SchedulerRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(SchedulerRepository<>));
 
             return services;
         }

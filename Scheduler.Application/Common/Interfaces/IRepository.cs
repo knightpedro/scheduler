@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.Application.Common.Interfaces
 {
-    public interface IRepositoryAsync<T> where T : class
+    public interface IRepository<T> where T : class
     {
         Task<T> GetById(int id);
         Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);

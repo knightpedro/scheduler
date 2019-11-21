@@ -10,11 +10,11 @@ namespace Scheduler.Application.Workers.Commands.CreateLeave
 {
     public class CreateLeaveCommandHandler : IRequestHandler<CreateLeaveCommand, int>
     {
-        private readonly ISchedulerDbContext _context;
+        private readonly IRepository<Leave> _repo;
 
-        public CreateLeaveCommandHandler(ISchedulerDbContext context)
+        public CreateLeaveCommandHandler(IRepository<Leave> repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public async Task<int> Handle(CreateLeaveCommand request, CancellationToken cancellationToken)
@@ -29,8 +29,7 @@ namespace Scheduler.Application.Workers.Commands.CreateLeave
                 LeaveType = leaveType
             };
 
-            _context.Leave.Add(leave);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _repo.Add(leave);
             return leave.Id;  
         }
     }

@@ -9,11 +9,11 @@ namespace Scheduler.Application.Trainings.Commands.CreateTraining
 {
     public class CreateTrainingCommandHandler : IRequestHandler<CreateTrainingCommand, int>
     {
-        private readonly ISchedulerDbContext _context;
+        private readonly ITrainingRepository _repo;
 
-        public CreateTrainingCommandHandler(ISchedulerDbContext context)
+        public CreateTrainingCommandHandler(ITrainingRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public async Task<int> Handle(CreateTrainingCommand request, CancellationToken cancellationToken)
@@ -25,8 +25,7 @@ namespace Scheduler.Application.Trainings.Commands.CreateTraining
                 TrainingPeriod = new DateTimeRange(request.Start, request.End),
             };
 
-            _context.Training.Add(training);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _repo.Add(training);
             return training.Id;
         }
     }

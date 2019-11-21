@@ -9,9 +9,9 @@ namespace Scheduler.Application.Workers.Queries.GetWorkerDetail
 {
     public class GetWorkerDetailQueryHandler : IRequestHandler<GetWorkerDetailQuery, WorkerDetailVm>
     {
-        private readonly IRepositoryAsync<Worker> _repo;
+        private readonly IRepository<Worker> _repo;
 
-        public GetWorkerDetailQueryHandler(IRepositoryAsync<Worker> repo)
+        public GetWorkerDetailQueryHandler(IRepository<Worker> repo)
         {
             _repo = repo;
         }

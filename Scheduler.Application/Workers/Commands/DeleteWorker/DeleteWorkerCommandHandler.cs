@@ -9,22 +9,20 @@ namespace Scheduler.Application.Workers.Commands.DeleteWorker
 {
     public class DeleteWorkerCommandHandler : IRequestHandler<DeleteWorkerCommand>
     {
-        private readonly ISchedulerDbContext _context;
+        private readonly IRepository<Worker> _repo;
 
-        public DeleteWorkerCommandHandler(ISchedulerDbContext context)
+        public DeleteWorkerCommandHandler(IRepository<Worker> repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public async Task<Unit> Handle(DeleteWorkerCommand request, CancellationToken cancellationToken)
         {
-            var worker = await _context.Workers.FindAsync(request.Id);
+            var worker = await _repo.GetById(request.Id);
             if (worker is null)
                 throw new NotFoundException(nameof(Worker), request.Id);
 
-            _context.Workers.Remove(worker);
-            await _context.SaveChangesAsync(cancellationToken);
-
+            await _repo.Remove(worker);
             return Unit.Value;
         }
     }

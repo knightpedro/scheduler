@@ -9,22 +9,20 @@ namespace Scheduler.Application.Trainings.Commands.DeleteTraining
 {
     public class DeleteTrainingCommandHandler : IRequestHandler<DeleteTrainingCommand>
     {
-        private readonly ISchedulerDbContext _context;
+        private readonly ITrainingRepository _repo;
 
-        public DeleteTrainingCommandHandler(ISchedulerDbContext context)
+        public DeleteTrainingCommandHandler(ITrainingRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public async Task<Unit> Handle(DeleteTrainingCommand request, CancellationToken cancellationToken)
         {
-            var training = await _context.Training.FindAsync(request.TrainingId);
+            var training = await _repo.GetById(request.TrainingId);
             if (training is null)
                 throw new NotFoundException(nameof(Training), request.TrainingId);
 
-            _context.Training.Remove(training);
-            await _context.SaveChangesAsync(cancellationToken);
-
+            await _repo.Remove(training);
             return Unit.Value;
         }
     }

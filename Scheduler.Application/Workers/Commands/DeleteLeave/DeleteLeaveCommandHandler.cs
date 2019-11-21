@@ -9,21 +9,20 @@ namespace Scheduler.Application.Workers.Commands.DeleteLeave
 {
     public class DeleteLeaveCommandHandler : IRequestHandler<DeleteLeaveCommand>
     {
-        private readonly ISchedulerDbContext _context;
+        private readonly IRepository<Leave> _repo;
 
-        public DeleteLeaveCommandHandler(ISchedulerDbContext context)
+        public DeleteLeaveCommandHandler(IRepository<Leave> repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public async Task<Unit> Handle(DeleteLeaveCommand request, CancellationToken cancellationToken)
         {
-            var leave = await _context.Leave.FindAsync(request.LeaveId);
+            var leave = await _repo.GetById(request.LeaveId);
             if (leave is null)
                 throw new NotFoundException(nameof(Leave), request.LeaveId);
 
-            _context.Leave.Remove(leave);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _repo.Remove(leave);
             return Unit.Value;
         }
     }

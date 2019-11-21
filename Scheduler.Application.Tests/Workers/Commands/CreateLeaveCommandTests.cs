@@ -3,17 +3,16 @@ using Scheduler.Application.Tests.Common;
 using Scheduler.Application.Workers.Commands.CreateLeave;
 using Scheduler.Domain.Entities;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Scheduler.Application.Tests.Workers.Commands
 {
-    public class CreateLeaveCommandTests : CommandTestBase
+    public class CreateLeaveCommandTests : CommandTestBase<Leave>
     {
         [Fact]
-        public async Task Handler_ThrowsDbUpdateException_WorkerIdDoesNotExist()
+        public async Task Handler_ThrowsDbUpdateException_WorkerDoesNotExist()
         {
             var command = new CreateLeaveCommand
             {
@@ -22,29 +21,8 @@ namespace Scheduler.Application.Tests.Workers.Commands
                 End = new DateTime(2019, 11, 2),
                 LeaveType = "Annual"
             };
-            var handler = new CreateLeaveCommandHandler(context);
+            var handler = new CreateLeaveCommandHandler(repo);
             await Assert.ThrowsAsync<DbUpdateException>(() => handler.Handle(command, CancellationToken.None));
-        }
-
-        [Fact]
-        public async Task Handler_SuccessfullyCreatesLeave()
-        {
-            var worker = new Worker { Name = "Test" };
-            context.Workers.Add(worker);
-            context.SaveChanges();
-
-            var command = new CreateLeaveCommand
-            {
-                WorkerId = worker.Id,
-                Start = new DateTime(2019, 11, 1),
-                End = new DateTime(2019, 11, 2),
-                LeaveType = "Annual"
-            };
-
-            var handler = new CreateLeaveCommandHandler(context);
-            var result = await handler.Handle(command, CancellationToken.None);
-            var leave = context.Leave.First();
-            Assert.Equal(leave.Id, result);
         }
     }
 }

@@ -8,9 +8,9 @@ namespace Scheduler.Application.Workers.Queries.GetWorkersList
 {
     public class GetWorkersListQueryHandler : IRequestHandler<GetWorkersListQuery, WorkersListVm>
     {
-        private readonly IRepositoryAsync<Worker> _repo;
+        private readonly IRepository<Worker> _repo;
 
-        public GetWorkersListQueryHandler(IRepositoryAsync<Worker> repo)
+        public GetWorkersListQueryHandler(IRepository<Worker> repo)
         {
             _repo = repo;
         }

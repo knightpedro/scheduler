@@ -10,26 +10,24 @@ namespace Scheduler.Application.Trainings.Commands.EditTraining
 {
     public class EditTrainingCommandHandler : IRequestHandler<EditTrainingCommand>
     {
-        private readonly ISchedulerDbContext _context;
+        private readonly ITrainingRepository _repo;
 
-        public EditTrainingCommandHandler(ISchedulerDbContext context)
+        public EditTrainingCommandHandler(ITrainingRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public async Task<Unit> Handle(EditTrainingCommand request, CancellationToken cancellationToken)
         {
-            var training = await _context.Training.FindAsync(request.TrainingId);
+            var training = await _repo.GetById(request.TrainingId);
             if (training is null)
                 throw new NotFoundException(nameof(Training), request.TrainingId);
 
-            
             training.Description = request.Description;
             training.Location = request.Location;
             training.TrainingPeriod = new DateTimeRange(request.Start, request.End);
 
-            await _context.SaveChangesAsync(cancellationToken);
-
+            await _repo.Update(training); // TODO: confirm this doesn't affect relationships.
             return Unit.Value;
         }
     }

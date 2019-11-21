@@ -1,18 +1,19 @@
 ﻿using Scheduler.Application.Tests.Common;
 using Scheduler.Application.Workers.Commands.CreateWorker;
+using Scheduler.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Scheduler.Application.Tests.Workers.Commands
 {
-    public class CreateWorkerCommandTests : CommandTestBase
+    public class CreateWorkerCommandTests : CommandTestBase<Worker>
     {
         [Fact]
         public async Task Handler_CreatesWorkerSuccessfully()
         {
             var command = new CreateWorkerCommand { Name = "Jane Doe" };
-            var handler = new CreateWorkerCommandHandler(context);
+            var handler = new CreateWorkerCommandHandler(repo);
 
             var result = await handler.Handle(command, CancellationToken.None);
 

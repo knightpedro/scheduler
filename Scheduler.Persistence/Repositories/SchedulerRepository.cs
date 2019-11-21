@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.Persistence.Repositories
 {
-    public class SchedulerRepository<T> : IRepositoryAsync<T> where T : class
+    public class SchedulerRepository<T> : IRepository<T> where T : class
     {
         protected readonly SchedulerDbContext context;
 

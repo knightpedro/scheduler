@@ -1,20 +1,17 @@
-﻿using Scheduler.Persistence;
+﻿using Scheduler.Application.Common.Interfaces;
+using Scheduler.Persistence.Repositories;
 using System;
 
 namespace Scheduler.Application.Tests.Common
 {
-    public class CommandTestBase : IDisposable
+    public class CommandTestBase<T> where T : class
     {
-        protected readonly SchedulerDbContext context;
+        protected readonly IRepository<T> repo;
 
         public CommandTestBase()
         {
-            context = SchedulerDbContextFactory.CreateContext();
-        }
-
-        public void Dispose()
-        {
-            SchedulerDbContextFactory.DestroyContext(context);
+            var context = SchedulerDbContextFactory.CreateContext();
+            repo = new SchedulerRepository<T>(context);
         }
     }
 }

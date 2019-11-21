@@ -10,11 +10,11 @@ namespace Scheduler.Application.Workers.Commands.CreateWorker
 {
     public class CreateWorkerCommandHandler : IRequestHandler<CreateWorkerCommand, int>
     {
-        private readonly ISchedulerDbContext _context;
+        private readonly IRepository<Worker> _repo;
 
-        public CreateWorkerCommandHandler(ISchedulerDbContext context)
+        public CreateWorkerCommandHandler(IRepository<Worker> repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         public async Task<int> Handle(CreateWorkerCommand request, CancellationToken cancellationToken)
@@ -24,9 +24,8 @@ namespace Scheduler.Application.Workers.Commands.CreateWorker
                 Name = request.Name,
                 IsActive = request.IsActive
             };
-
-            _context.Workers.Add(worker);
-            await _context.SaveChangesAsync(cancellationToken);
+            
+            await _repo.Add(worker);
             return worker.Id;
         }
     }
