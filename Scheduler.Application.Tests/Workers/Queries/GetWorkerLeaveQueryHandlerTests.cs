@@ -1,10 +1,11 @@
-﻿using Scheduler.Application.Tests.Common;
+﻿using Moq;
+using Scheduler.Application.Common.Interfaces;
 using Scheduler.Application.Workers.Queries.GetWorkerLeave;
 using Scheduler.Domain.Entities;
 using Scheduler.Domain.ValueObjects;
-using Scheduler.Persistence.Repositories;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -13,21 +14,25 @@ namespace Scheduler.Application.Tests.Workers.Queries
 {
     public class GetWorkerLeaveQueryHandlerTests
     {
-        private readonly SchedulerRepository<Worker> repo;
+        private readonly Mock<IRepository<Worker>> mockRepo;
 
         public GetWorkerLeaveQueryHandlerTests()
         {
-            repo = RepositoryFactory.CreateRepository<Worker>();
+            mockRepo = new Mock<IRepository<Worker>>();
         }
 
         [Fact]
         public async Task QueryHandler_ReturnsEmptyViewModel_WhenNoLeaveFound()
         {
-            var worker = new Worker { Name = "Test" };
-            await repo.Add(worker);
+            mockRepo.Setup(x => x.FirstOrDefault(
+                It.IsAny<Expression<Func<Worker, bool>>>(), 
+                It.IsAny<Expression<Func<Worker, object>>>())
+            ).ReturnsAsync(GetWorkerWithNoLeave());
 
-            var query = new GetWorkerLeaveQuery { WorkerId = 1 };
-            var handler = new GetWorkerLeaveQueryHandler(repo);
+            var workerId = 1;
+            var query = new GetWorkerLeaveQuery { WorkerId = workerId};
+            var handler = new GetWorkerLeaveQueryHandler(mockRepo.Object);
+
             var vm = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(vm);
@@ -36,6 +41,33 @@ namespace Scheduler.Application.Tests.Workers.Queries
 
         [Fact]
         public async Task QueryHandler_ReturnsCorrectLeaveViewModel()
+        {
+            mockRepo.Setup(x => x.FirstOrDefault(
+                It.IsAny<Expression<Func<Worker, bool>>>(),
+                It.IsAny<Expression<Func<Worker, object>>>())
+            ).ReturnsAsync(GetWorkerWithLeave());
+
+            var workerId = 1;
+            var query = new GetWorkerLeaveQuery { WorkerId = workerId };
+            var handler = new GetWorkerLeaveQueryHandler(mockRepo.Object);
+            var expectedWorker = GetWorkerWithLeave();
+            var expectedLeave = expectedWorker.Leave.First();
+
+            var vm = await handler.Handle(query, CancellationToken.None);
+            var leaveResult = vm.WorkerLeave.First();
+
+            Assert.Equal(1, vm.WorkerLeave.Count);
+            Assert.Equal(expectedLeave.LeavePeriod.Start, leaveResult.Start);
+            Assert.Equal(expectedLeave.LeavePeriod.End, leaveResult.End);
+            Assert.Equal(expectedLeave.LeaveType.ToString(), leaveResult.LeaveType);
+        }
+
+        private Worker GetWorkerWithNoLeave()
+        {
+            return new Worker { Name = "Test" };
+        }
+
+        private Worker GetWorkerWithLeave()
         {
             var worker = new Worker { Name = "Test" };
             var leaveStart = new DateTime(2019, 11, 1);
@@ -47,17 +79,7 @@ namespace Scheduler.Application.Tests.Workers.Queries
                 LeaveType = LeaveType.Annual
             };
             worker.Leave.Add(leave);
-            await repo.Add(worker);
-
-            var query = new GetWorkerLeaveQuery { WorkerId = 1 };
-            var handler = new GetWorkerLeaveQueryHandler(repo);
-            var vm = await handler.Handle(query, CancellationToken.None);
-            var leaveResult = vm.WorkerLeave.First();
-
-            Assert.Equal(1, vm.WorkerLeave.Count);
-            Assert.Equal(leaveStart, leaveResult.Start);
-            Assert.Equal(leaveEnd, leaveResult.End);
-            Assert.Equal(LeaveType.Annual.ToString(), leaveResult.LeaveType);
+            return worker;
         }
     }
 }

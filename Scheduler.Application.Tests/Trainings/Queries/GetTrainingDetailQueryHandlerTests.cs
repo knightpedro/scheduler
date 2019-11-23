@@ -1,9 +1,9 @@
-﻿using Scheduler.Application.Tests.Common;
+﻿using Moq;
+using Scheduler.Application.Common.Exceptions;
+using Scheduler.Application.Common.Interfaces;
 using Scheduler.Application.Trainings.Queries.GetTrainingDetail;
 using Scheduler.Domain.Entities;
-using Scheduler.Domain.ValueObjects;
-using Scheduler.Persistence;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,78 +11,99 @@ using Xunit;
 
 namespace Scheduler.Application.Tests.Trainings.Queries
 {
-    public class GetTrainingDetailQueryHandlerTests : DisconnectedStateTestBase
+    public class GetTrainingDetailQueryHandlerTests
     {
+        private readonly Mock<ITrainingRepository> mockRepo;
+
+        public GetTrainingDetailQueryHandlerTests()
+        {
+            mockRepo = new Mock<ITrainingRepository>();
+        }
+
         [Fact]
         public async Task Handler_ReturnsCorrectViewModel()
         {
-            SeedTrainingSessionWithWorkers();
             var trainingId = 1;
+            var expectedTraining = GetTrainingWithWorkers();
+            mockRepo.Setup(x => x.GetTrainingWithWorkers(trainingId)).ReturnsAsync(expectedTraining);
             var query = new GetTrainingDetailQuery { Id = trainingId };
-            TrainingDetailVm vm = null;
-            using (var context = new SchedulerDbContext(options))
-            {
-                var handler = new GetTrainingDetailQueryHandler(context);
-                vm = await handler.Handle(query, CancellationToken.None);
-            }
-            Assert.Equal(trainingId, vm.Id);
-            Assert.NotNull(vm.Workers);
+            var handler = new GetTrainingDetailQueryHandler(mockRepo.Object);
+
+            var viewModel = await handler.Handle(query, CancellationToken.None);
+
+            Assert.Equal(expectedTraining.Description, viewModel.Description);
+            Assert.Equal(expectedTraining.Location, viewModel.Location);
+            Assert.Equal(expectedTraining.WorkerTraining.Count, viewModel.Workers.Count());
+            mockRepo.Verify(x => x.GetTrainingWithWorkers(query.Id), Times.Once());
         }
 
         [Fact]
-        public async Task Handler_HandlesTrainingSessionWithNoWorkers()
+        public async Task Handler_ReturnsEmptyCollection_WhenNoWorkersAssigned()
         {
-            SeedEmptyTrainingSession();
+            var expectedTraining = GetTrainingWithoutWokrkers();
             var trainingId = 1;
+            mockRepo.Setup(x => x.GetTrainingWithWorkers(trainingId)).ReturnsAsync(expectedTraining);
             var query = new GetTrainingDetailQuery { Id = trainingId };
-            TrainingDetailVm vm = null;
-            using (var context = new SchedulerDbContext(options))
-            {
-                var handler = new GetTrainingDetailQueryHandler(context);
-                vm = await handler.Handle(query, CancellationToken.None);
-            }
-            Assert.Equal(trainingId, vm.Id);
-            Assert.NotNull(vm.Workers);
-            Assert.Empty(vm.Workers);
+            var handler = new GetTrainingDetailQueryHandler(mockRepo.Object);
+
+            var viewModel = await handler.Handle(query, CancellationToken.None);
+
+            Assert.NotNull(viewModel.Workers);
+            Assert.Empty(viewModel.Workers);
+            mockRepo.Verify(x => x.GetTrainingWithWorkers(query.Id), Times.Once());
         }
 
-        private void SeedTrainingSessionWithWorkers()
+        [Fact]
+        public async Task Handler_ThrowsNotFoundException_WhenTrainingDoesNotExist()
         {
-            var workers = Enumerable.Range(1, 10).Select(i => new Worker { Name = $"Worker {i}" });
-            var training = new Training
-            {
-                Description = "Test Training",
-                Location = "Training Room",
-                TrainingPeriod = new DateTimeRange(DateTime.Today, DateTime.Today.AddDays(1))
-            };
+            var trainingId = 1;
+            Training nullTraining = null;
+            mockRepo.Setup(x => x.GetTrainingWithWorkers(trainingId)).ReturnsAsync(nullTraining);
+            var query = new GetTrainingDetailQuery { Id = trainingId };
+            var handler = new GetTrainingDetailQueryHandler(mockRepo.Object);
 
-            using (var context = new SchedulerDbContext(options))
-            {
-                var workerTraining = workers.Select(w => new WorkerTraining
-                {
-                    Training = training,
-                    Worker = w
-                });
-
-                context.WorkerTraining.AddRange(workerTraining);
-                context.SaveChanges();
-            }
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(query, CancellationToken.None));
         }
 
-        private void SeedEmptyTrainingSession()
+        private Training GetTrainingWithoutWokrkers()
+        {
+            return new Training
+            {
+                Description = "Test training",
+                Location = "Training Room",
+            };
+        }
+
+        private Training GetTrainingWithWorkers()
         {
             var training = new Training
             {
-                Description = "Test Training",
+                Description = "Test training",
                 Location = "Training Room",
-                TrainingPeriod = new DateTimeRange(DateTime.Today, DateTime.Today.AddDays(1))
             };
-
-            using (var context = new SchedulerDbContext(options))
+            var workerTraining = GetWorkerTraining(training);
+            foreach(var wt in workerTraining)
             {
-                context.Training.Add(training);
-                context.SaveChanges();
+                training.WorkerTraining.Add(wt);
             }
+            return training;
+        }
+
+        private ICollection<WorkerTraining> GetWorkerTraining(Training training)
+        {
+            var workers = GetWorkers();
+            return workers.Select(w => new WorkerTraining
+            {
+                TrainingId = training.Id,
+                Training = training,
+                WorkerId = w.Id,
+                Worker = w
+            }).ToList();
+        }
+
+        private IEnumerable<Worker> GetWorkers()
+        {
+            return Enumerable.Range(1, 3).Select(i => new Worker { Name = $"Worker {i}" });
         }
     }
 }

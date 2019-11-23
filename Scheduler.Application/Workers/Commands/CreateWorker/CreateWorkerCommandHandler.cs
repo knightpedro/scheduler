@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Scheduler.Application.Common.Interfaces;
 using Scheduler.Domain.Entities;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 

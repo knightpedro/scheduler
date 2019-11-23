@@ -1,7 +1,8 @@
-﻿using Scheduler.Application.Tests.Common;
+﻿using Moq;
+using Scheduler.Application.Common.Exceptions;
+using Scheduler.Application.Common.Interfaces;
 using Scheduler.Application.Trainings.Commands.EditTraining;
 using Scheduler.Domain.Entities;
-using Scheduler.Persistence;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,12 +10,19 @@ using Xunit;
 
 namespace Scheduler.Application.Tests.Trainings.Commands
 {
-    public class EditTrainingCommandHandlerTests : DisconnectedStateTestBase
+    public class EditTrainingCommandHandlerTests
     {
+        private readonly Mock<ITrainingRepository> mockRepo;
+
+        public EditTrainingCommandHandlerTests()
+        {
+            mockRepo = new Mock<ITrainingRepository>();
+        }
+
         [Fact]
         public async Task Handler_SuccessfullyUpdatesExistingTraining()
         {
-            var trainingId = SeedTraining();
+            var trainingId = 1;
             var command = new EditTrainingCommand
             {
                 TrainingId = trainingId,
@@ -23,38 +31,34 @@ namespace Scheduler.Application.Tests.Trainings.Commands
                 Start = DateTime.Now,
                 End = DateTime.Now,
             };
+            mockRepo.Setup(x => x.GetById(trainingId)).ReturnsAsync(new Training());
+            var handler = new EditTrainingCommandHandler(mockRepo.Object);
 
-            using (var context = new SchedulerDbContext(options))
-            {
-                var handler = new EditTrainingCommandHandler(context);
-                await handler.Handle(command, CancellationToken.None);
-            }
+            await handler.Handle(command, CancellationToken.None);
 
-            Training updatedTraining;
-            using (var context = new SchedulerDbContext(options))
-            {
-                updatedTraining = context.Training.Find(trainingId);
-            }
-
-            Assert.Equal(command.Description, updatedTraining.Description);
-            Assert.Equal(command.Location, updatedTraining.Location);
-            Assert.Equal(command.Start, updatedTraining.TrainingPeriod.Start);
-            Assert.Equal(command.End, updatedTraining.TrainingPeriod.End);
+            mockRepo.Verify(x => x.Update(It.Is<Training>(
+                t => t.Description == command.Description &&
+                     t.Location == command.Location &&
+                     t.TrainingPeriod.Start == command.Start &&
+                     t.TrainingPeriod.End == command.End
+                )), Times.Once());
         }
 
-        private int SeedTraining()
+        [Fact]
+        public async Task Handler_ThrowsNotFoundException_WhenTrainingDoesNotExist()
         {
-            var training = new Training
+            var trainingId = 1;
+            var command = new EditTrainingCommand
             {
-                Description = "Training Test",
-                Location = "Test Room"
+                TrainingId = trainingId,
+                Description = "Updated Training",
+                Location = "Board Room",
+                Start = DateTime.Now,
+                End = DateTime.Now,
             };
-            using (var context = new SchedulerDbContext(options))
-            {
-                context.Training.Add(training);
-                context.SaveChanges();
-            }
-            return training.Id;
+            var handler = new EditTrainingCommandHandler(mockRepo.Object);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
         }
     }
 }

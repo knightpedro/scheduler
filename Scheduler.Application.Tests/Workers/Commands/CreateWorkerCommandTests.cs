@@ -1,4 +1,5 @@
-﻿using Scheduler.Application.Tests.Common;
+﻿using Moq;
+using Scheduler.Application.Common.Interfaces;
 using Scheduler.Application.Workers.Commands.CreateWorker;
 using Scheduler.Domain.Entities;
 using System.Threading;
@@ -7,17 +8,24 @@ using Xunit;
 
 namespace Scheduler.Application.Tests.Workers.Commands
 {
-    public class CreateWorkerCommandTests : CommandTestBase<Worker>
+    public class CreateWorkerCommandTests
     {
+        private readonly Mock<IRepository<Worker>> mockRepo;
+
+        public CreateWorkerCommandTests()
+        {
+            mockRepo = new Mock<IRepository<Worker>>();
+        }
+
         [Fact]
         public async Task Handler_CreatesWorkerSuccessfully()
         {
             var command = new CreateWorkerCommand { Name = "Jane Doe" };
-            var handler = new CreateWorkerCommandHandler(repo);
+            var handler = new CreateWorkerCommandHandler(mockRepo.Object);
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            Assert.Equal(1, result);
+            mockRepo.Verify(x => x.Add(It.IsAny<Worker>()), Times.Once());
         }
 
         [Fact]

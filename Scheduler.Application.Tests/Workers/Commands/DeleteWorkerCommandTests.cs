@@ -1,5 +1,6 @@
-﻿using Scheduler.Application.Common.Exceptions;
-using Scheduler.Application.Tests.Common;
+﻿using Moq;
+using Scheduler.Application.Common.Exceptions;
+using Scheduler.Application.Common.Interfaces;
 using Scheduler.Application.Workers.Commands.DeleteWorker;
 using Scheduler.Domain.Entities;
 using System.Threading;
@@ -8,29 +9,48 @@ using Xunit;
 
 namespace Scheduler.Application.Tests.Workers.Commands
 {
-    public class DeleteWorkerCommandTests : CommandTestBase<Worker>
+    public class DeleteWorkerCommandTests
     {
+        private readonly Mock<IRepository<Worker>> mockRepo;
 
-        [Fact]
-        public async Task DeleteCommandHandler_ThrowsNotFoundException_WhenWorkerDoesNotExist()
+        public DeleteWorkerCommandTests()
         {
-            var command = new DeleteWorkerCommand { Id = 1 };
-            var handler = new DeleteWorkerCommandHandler(repo);
-            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
+            mockRepo = new Mock<IRepository<Worker>>();
         }
 
         [Fact]
         public async Task DeleteCommandHandler_SuccessfullyDeletesWorker_WhenWorkerExists()
         {
-            var worker = new Worker { Name = "Mary" };
-            await repo.Add(worker);
+            var worker = GetWorkerToDelete();
+            var command = new DeleteWorkerCommand { Id = worker.Id};
+            var handler = new DeleteWorkerCommandHandler(mockRepo.Object);
+            mockRepo.Setup(x => x.GetById(worker.Id)).ReturnsAsync(GetWorkerToDelete());
 
-            var command = new DeleteWorkerCommand { Id = worker.Id };
-            var handler = new DeleteWorkerCommandHandler(repo);
             await handler.Handle(command, CancellationToken.None);
 
-            var deletedWorker = await repo.GetById(worker.Id);
-            Assert.Null(deletedWorker);
+            mockRepo.Verify(x => x.GetById(worker.Id), Times.Once());
+            mockRepo.Verify(x => x.Remove(It.Is<Worker>(w => w.Id == worker.Id)), Times.Once());
+        }
+
+        [Fact]
+        public async Task DeleteCommandHandler_ThrowsException_WhenWorkerDoesNotExit ()
+        {
+            var workerId = 1;
+            var command = new DeleteWorkerCommand { Id = workerId };
+            var handler = new DeleteWorkerCommandHandler(mockRepo.Object);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
+
+            mockRepo.Verify(x => x.GetById(workerId), Times.Once());
+            mockRepo.Verify(x => x.Remove(It.IsAny<Worker>()), Times.Never());
+        }
+
+        private Worker GetWorkerToDelete()
+        {
+            return new Worker
+            {
+                Name = "Test Worker"
+            };
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using Scheduler.Application.Common.Exceptions;
-using Scheduler.Application.Tests.Common;
+﻿using Moq;
+using Scheduler.Application.Common.Exceptions;
+using Scheduler.Application.Common.Interfaces;
 using Scheduler.Application.Workers.Queries.GetWorkerDetail;
 using Scheduler.Domain.Entities;
-using Scheduler.Persistence.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -11,35 +11,36 @@ namespace Scheduler.Application.Tests.Workers.Queries
 {
     public class GetWorkerDetailQueryHandlerTests
     {
-        private readonly SchedulerRepository<Worker> repo;
+        protected readonly Mock<IRepository<Worker>> mockRepo;
 
         public GetWorkerDetailQueryHandlerTests()
         {
-            repo = RepositoryFactory.CreateRepository<Worker>();
+            Worker worker = new Worker { Name = "Test Worker", IsActive = true };
+            Worker nullWorker = null;
+
+            mockRepo = new Mock<IRepository<Worker>>();
+            mockRepo.Setup(x => x.GetById(1)).ReturnsAsync(worker);
+            mockRepo.Setup(x => x.GetById(It.Is<int>(i => i != 1))).ReturnsAsync(nullWorker);
         }
 
         [Fact]
         public async Task GetWorkerDetailQuery_ReturnsViewModel_WhenWorkerExists()
         {
-            var worker = new Worker
-            {
-                Name = "Terry",
-                IsActive = true
-            };
-            await repo.Add(worker);
+            var workerId = 1;
+            var handler = new GetWorkerDetailQueryHandler(mockRepo.Object);
 
-            var handler = new GetWorkerDetailQueryHandler(repo);
-            var result = await handler.Handle(new GetWorkerDetailQuery { Id = 1 }, CancellationToken.None);
+            var result = await handler.Handle(new GetWorkerDetailQuery { Id = workerId }, CancellationToken.None);
 
+            mockRepo.Verify(x => x.GetById(workerId), Times.Once());
             Assert.NotNull(result);
-            Assert.Equal(1, result.Id);
         }
 
         [Fact]
         public async Task GetWorkerDetailQuery_ThrowsNotFoundException_WhenWorkerDoesNotExist()
         {
-            var handler = new GetWorkerDetailQueryHandler(repo);
-            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new GetWorkerDetailQuery { Id = 10 }, CancellationToken.None));
+            var workerId = 5;
+            var handler = new GetWorkerDetailQueryHandler(mockRepo.Object);
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new GetWorkerDetailQuery { Id = workerId }, CancellationToken.None));
         }
     }
 }
