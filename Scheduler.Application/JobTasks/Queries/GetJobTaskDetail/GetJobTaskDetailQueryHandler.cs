@@ -1,5 +1,7 @@
 ﻿using MediatR;
-using System;
+using Scheduler.Application.Common.Exceptions;
+using Scheduler.Application.Common.Interfaces;
+using Scheduler.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,9 +9,19 @@ namespace Scheduler.Application.JobTasks.Queries.GetJobTaskDetail
 {
     public class GetJobTaskDetailQueryHandler : IRequestHandler<GetJobTaskDetailQuery, JobTaskVm>
     {
-        public Task<JobTaskVm> Handle(GetJobTaskDetailQuery request, CancellationToken cancellationToken)
+        private readonly IJobTaskRepository _repo;
+
+        public GetJobTaskDetailQueryHandler(IJobTaskRepository repo)
         {
-            throw new NotImplementedException();
+            _repo = repo;
+        }
+
+        public async Task<JobTaskVm> Handle(GetJobTaskDetailQuery request, CancellationToken cancellationToken)
+        {
+            var jobTask = await _repo.GetByIdWithShifts(request.Id);
+            if (jobTask is null)
+                throw new NotFoundException(nameof(JobTask), request.Id);
+            return new JobTaskVm(jobTask);
         }
     }
 }

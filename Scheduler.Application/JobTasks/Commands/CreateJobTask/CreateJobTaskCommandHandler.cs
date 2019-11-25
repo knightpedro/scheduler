@@ -9,9 +9,9 @@ namespace Scheduler.Application.JobTasks.Commands.CreateJobTask
 {
     public class CreateJobTaskCommandHandler : IRequestHandler<CreateJobTaskCommand, int>
     {
-        private readonly IRepository<JobTask> _repo;
+        private readonly IJobTaskRepository _repo;
 
-        public CreateJobTaskCommandHandler(IRepository<JobTask> repo)
+        public CreateJobTaskCommandHandler(IJobTaskRepository repo)
         {
             _repo = repo;
         }
