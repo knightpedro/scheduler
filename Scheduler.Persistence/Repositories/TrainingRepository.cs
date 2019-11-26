@@ -50,8 +50,6 @@ namespace Scheduler.Persistence.Repositories
         public async Task RemoveWorker(int trainingId, int workerId)
         {
             var workerTraining = await context.WorkerTraining.SingleOrDefaultAsync(wt => wt.TrainingId == trainingId && wt.WorkerId == workerId);
-            if (workerTraining is null)
-                throw new NotFoundException(nameof(WorkerTraining), new { trainingId, workerId });
             context.Remove(workerTraining);
             await context.SaveChangesAsync();
         }
@@ -59,10 +57,11 @@ namespace Scheduler.Persistence.Repositories
         public async Task RemoveWorkers(int trainingId, IEnumerable<int> workerIds)
         {
             var workerTraining = await context.WorkerTraining
-                .Where(wt => wt.TrainingId == trainingId && workerIds.Contains(wt.WorkerId))
+                .Where(wt => wt.TrainingId == trainingId)
                 .ToListAsync();
 
-            context.WorkerTraining.RemoveRange(workerTraining);
+            var workerTrainingToRemove = workerTraining.Where(wt => workerIds.Contains(wt.WorkerId));
+            context.WorkerTraining.RemoveRange(workerTrainingToRemove);
             await context.SaveChangesAsync();
         }
     }
