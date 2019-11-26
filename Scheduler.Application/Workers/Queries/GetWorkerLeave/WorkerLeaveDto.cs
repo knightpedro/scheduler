@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Scheduler.Application.Common.Mappings;
-using Scheduler.Domain.Entities;
+﻿using Scheduler.Domain.Entities;
 using System;
 
 namespace Scheduler.Application.Workers.Queries.GetWorkerLeave

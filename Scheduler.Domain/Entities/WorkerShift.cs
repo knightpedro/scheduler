@@ -12,6 +12,7 @@ namespace Scheduler.Domain.Entities
         public int WorkerId { get; set; }
         public Worker Worker { get; set; }
 
+        // Duplicate of shift time period.
         public DateTime? Start { get; set; }
         public DateTime? End { get; set; }
     }

@@ -20,7 +20,7 @@ namespace Scheduler.Application.Workers.Commands.CreateWorker
             var worker = new Worker
             {
                 Name = request.Name,
-                IsActive = request.IsActive
+                IsActive = true
             };
             
             await _repo.Add(worker);

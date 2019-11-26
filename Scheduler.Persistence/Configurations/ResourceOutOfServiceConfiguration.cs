@@ -13,6 +13,8 @@ namespace Scheduler.Persistence.Configurations
                 .HasConversion<string>()
                 .HasMaxLength(30);
 
+            builder.Property(r => r.Description).HasMaxLength(120);
+
             builder.OwnsOne(r => r.Period)
                 .Property(p => p.Start)
                 .HasColumnName("Start");
