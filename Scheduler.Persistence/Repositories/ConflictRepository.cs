@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scheduler.Application.Common.Interfaces;
-using Scheduler.Domain.Dtos;
 using Scheduler.Domain.Entities;
 using Scheduler.Domain.ValueObjects;
 using System.Collections.Generic;
@@ -18,48 +17,42 @@ namespace Scheduler.Persistence.Repositories
             this.context = context;
         }
 
-        public async Task<IEnumerable<ConflictDto>> GetResourceConflicts(int resourceId, DateTimeRange period)
+        public async Task<IEnumerable<JobTask>> GetJobTaskConflictsForResource(int resourceId, DateTimeRange period)
         {
-            var conflicts = new List<ConflictDto>();
-
-            var outOfServiceConflicts = await context.ResourceOutOfService
-                .Where(o => o.ResourceId == resourceId && o.Period.OverlapsWith(period))
-                .Select(o => new ConflictDto(resourceId, nameof(ResourceOutOfService), o.Period))
-                .ToListAsync();
-
-            var jobTaskConflicts = await context.ResourceShifts
+            return await context.ResourceShifts
                 .Where(rs => rs.ResourceId == resourceId && rs.JobTask.TaskPeriod.OverlapsWith(period))
-                .Select(rs => new ConflictDto(resourceId, nameof(JobTask), rs.JobTask.TaskPeriod))
+                .Select(rs => rs.JobTask)
                 .ToListAsync();
-
-            conflicts.AddRange(outOfServiceConflicts);
-            conflicts.AddRange(jobTaskConflicts);
-            return conflicts;
         }
 
-        public async Task<IEnumerable<ConflictDto>> GetWorkerConflicts(int workerId, DateTimeRange period)
+        public async Task<IEnumerable<JobTask>> GetJobTaskConflictsForWorker(int workerId, DateTimeRange period)
         {
-            var conflicts = new List<ConflictDto>();
-
-            var leaveConflicts = await context.Leave
-                .Where(l => l.WorkerId == workerId && l.LeavePeriod.OverlapsWith(period))
-                .Select(l => new ConflictDto(workerId, nameof(Leave), l.LeavePeriod))
-                .ToListAsync();
-
-            var jobTaskConflicts = await context.WorkerShifts
+            return await context.WorkerShifts
                 .Where(ws => ws.WorkerId == workerId && ws.JobTask.TaskPeriod.OverlapsWith(period))
-                .Select(ws => new ConflictDto(workerId, nameof(JobTask), ws.JobTask.TaskPeriod))
+                .Select(ws => ws.JobTask)
                 .ToListAsync();
+        }
 
-            var trainingConflicts = await context.WorkerTraining
+        public async Task<IEnumerable<Leave>> GetLeaveConflicts(int workerId, DateTimeRange period)
+        {
+            return await context.Leave
+                .Where(l => l.WorkerId == workerId && l.LeavePeriod.OverlapsWith(period))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ResourceOutOfService>> GetResourceOutOfServiceConflicts(int resourceId, DateTimeRange period)
+        {
+            return await context.ResourceOutOfService
+                .Where(o => o.ResourceId == resourceId && o.Period.OverlapsWith(period))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Training>> GetTrainingConflicts(int workerId, DateTimeRange period)
+        {
+            return await context.WorkerTraining
                 .Where(wt => wt.WorkerId == workerId && wt.Training.TrainingPeriod.OverlapsWith(period))
-                .Select(wt => new ConflictDto(workerId, nameof(Training), wt.Training.TrainingPeriod))
+                .Select(wt => wt.Training)
                 .ToListAsync();
-
-            conflicts.AddRange(leaveConflicts);
-            conflicts.AddRange(jobTaskConflicts);
-            conflicts.AddRange(trainingConflicts);
-            return conflicts;
         }
     }
 }

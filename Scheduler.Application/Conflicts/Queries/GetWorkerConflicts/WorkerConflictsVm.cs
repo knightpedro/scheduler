@@ -1,15 +1,12 @@
-﻿using Scheduler.Domain.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Scheduler.Application.Conflicts.Queries.GetWorkerConflicts
 {
     public class WorkerConflictsVm
     {
-        public IEnumerable<ConflictDto> Conflicts { get; set; }
+        public IEnumerable<WorkerConflictDto> Conflicts { get; set; }
 
-        public WorkerConflictsVm(IEnumerable<ConflictDto> conflicts)
+        public WorkerConflictsVm(IEnumerable<WorkerConflictDto> conflicts)
         {
             Conflicts = conflicts;
         }
