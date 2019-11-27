@@ -24,12 +24,12 @@ namespace Scheduler.Persistence.Repositories
 
             var outOfServiceConflicts = await context.ResourceOutOfService
                 .Where(o => o.ResourceId == resourceId && o.Period.OverlapsWith(period))
-                .Select(o => new ConflictDto { ConflictsWithId = resourceId, Period = o.Period, ConflictType = nameof(ResourceOutOfService) })
+                .Select(o => new ConflictDto(resourceId, nameof(ResourceOutOfService), o.Period))
                 .ToListAsync();
 
             var jobTaskConflicts = await context.ResourceShifts
                 .Where(rs => rs.ResourceId == resourceId && rs.JobTask.TaskPeriod.OverlapsWith(period))
-                .Select(rs => new ConflictDto { ConflictsWithId = resourceId, Period = rs.JobTask.TaskPeriod, ConflictType = nameof(JobTask) })
+                .Select(rs => new ConflictDto(resourceId, nameof(JobTask), rs.JobTask.TaskPeriod))
                 .ToListAsync();
 
             conflicts.AddRange(outOfServiceConflicts);
@@ -43,17 +43,17 @@ namespace Scheduler.Persistence.Repositories
 
             var leaveConflicts = await context.Leave
                 .Where(l => l.WorkerId == workerId && l.LeavePeriod.OverlapsWith(period))
-                .Select(l => new ConflictDto {ConflictsWithId = workerId, Period = l.LeavePeriod, ConflictType = nameof(Leave) })
+                .Select(l => new ConflictDto(workerId, nameof(Leave), l.LeavePeriod))
                 .ToListAsync();
 
             var jobTaskConflicts = await context.WorkerShifts
                 .Where(ws => ws.WorkerId == workerId && ws.JobTask.TaskPeriod.OverlapsWith(period))
-                .Select(ws => new ConflictDto { ConflictsWithId = workerId, Period = ws.JobTask.TaskPeriod, ConflictType = nameof(JobTask) })
+                .Select(ws => new ConflictDto(workerId, nameof(JobTask), ws.JobTask.TaskPeriod))
                 .ToListAsync();
 
             var trainingConflicts = await context.WorkerTraining
                 .Where(wt => wt.WorkerId == workerId && wt.Training.TrainingPeriod.OverlapsWith(period))
-                .Select(wt => new ConflictDto { ConflictsWithId = workerId, Period = wt.Training.TrainingPeriod, ConflictType = nameof(Training) })
+                .Select(wt => new ConflictDto(workerId, nameof(Training), wt.Training.TrainingPeriod))
                 .ToListAsync();
 
             conflicts.AddRange(leaveConflicts);
