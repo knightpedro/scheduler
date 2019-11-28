@@ -11,7 +11,7 @@ namespace Scheduler.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Leave> builder)
         {
-            builder.Property(l => l.LeaveType)
+            builder.Property(l => l.LeaveCategory)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(20);

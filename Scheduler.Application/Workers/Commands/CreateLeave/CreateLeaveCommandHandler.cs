@@ -26,7 +26,7 @@ namespace Scheduler.Application.Workers.Commands.CreateLeave
             {
                 WorkerId = request.WorkerId,
                 LeavePeriod = new DateTimeRange(request.Start, request.End),
-                LeaveType = leaveType
+                LeaveCategory = leaveType
             };
 
             await _repo.Add(leave);

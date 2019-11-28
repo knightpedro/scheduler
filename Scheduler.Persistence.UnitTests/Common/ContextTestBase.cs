@@ -9,7 +9,7 @@ namespace Scheduler.Persistence.Tests.Common
 
         public ContextTestBase()
         {
-            var options = TestContextOptionsBuilder.CreateSqliteOptions<SchedulerDbContext>();
+            var options = ContextOptionsFactory.CreateSqliteOptions<SchedulerDbContext>();
             context = new SchedulerDbContext(options);
             context.Database.OpenConnection();
             context.Database.EnsureCreated();

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Scheduler.Persistence.Tests
+namespace Scheduler.Persistence.Tests.Common
 {
-    public static class TestContextOptionsBuilder
+    public static class ContextOptionsFactory
     {
         public static DbContextOptions<T> CreateInMemoryOptions<T>() 
             where T : DbContext

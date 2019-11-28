@@ -16,8 +16,8 @@ namespace Scheduler.Domain.Entities
     public class Leave : Entity
     {
         public DateTimeRange LeavePeriod { get; set; }
-        public LeaveType LeaveType { get; set; }
-
+        public LeaveType LeaveCategory { get; set; }
+   
         public int WorkerId { get; set; }
         public Worker Worker { get; set; }
 

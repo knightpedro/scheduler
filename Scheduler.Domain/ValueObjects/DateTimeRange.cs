@@ -20,6 +20,11 @@ namespace Scheduler.Domain.ValueObjects
             End = end;
         }
 
+        public DateTimeRange(DateTime start, TimeSpan duration)
+            : this(start, start.Add(duration))
+        {
+        }
+
         public bool OverlapsWith(DateTimeRange other)
         {
             return Overlaps(this, other);

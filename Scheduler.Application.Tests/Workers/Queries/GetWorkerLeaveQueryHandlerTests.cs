@@ -59,7 +59,7 @@ namespace Scheduler.Application.Tests.Workers.Queries
             Assert.Equal(1, vm.WorkerLeave.Count);
             Assert.Equal(expectedLeave.LeavePeriod.Start, leaveResult.Start);
             Assert.Equal(expectedLeave.LeavePeriod.End, leaveResult.End);
-            Assert.Equal(expectedLeave.LeaveType.ToString(), leaveResult.LeaveType);
+            Assert.Equal(expectedLeave.LeaveCategory.ToString(), leaveResult.LeaveType);
         }
 
         private Worker GetWorkerWithNoLeave()
@@ -76,7 +76,7 @@ namespace Scheduler.Application.Tests.Workers.Queries
             var leave = new Leave
             {
                 LeavePeriod = leavePeriod,
-                LeaveType = LeaveType.Annual
+                LeaveCategory = LeaveType.Annual
             };
             worker.Leave.Add(leave);
             return worker;

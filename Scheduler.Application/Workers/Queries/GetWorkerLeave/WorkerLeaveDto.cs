@@ -13,7 +13,7 @@ namespace Scheduler.Application.Workers.Queries.GetWorkerLeave
         {
             Start = leave.LeavePeriod.Start;
             End = leave.LeavePeriod.End;
-            LeaveType = leave.LeaveType.ToString();
+            LeaveType = leave.LeaveCategory.ToString();
         }
     }
 }

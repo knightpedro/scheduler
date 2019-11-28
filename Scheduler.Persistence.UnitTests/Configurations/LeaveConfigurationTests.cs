@@ -17,7 +17,7 @@ namespace Scheduler.Persistence.Tests.Configurations
 
             var leave = new Leave
             {
-                LeaveType = LeaveType.Annual,
+                LeaveCategory = LeaveType.Annual,
                 LeavePeriod = new DateTimeRange(start, end)
             };
 
@@ -33,7 +33,7 @@ namespace Scheduler.Persistence.Tests.Configurations
 
             var big_holiday = new Leave
             {
-                LeaveType = LeaveType.Annual,
+                LeaveCategory = LeaveType.Annual,
                 LeavePeriod = new DateTimeRange(start, end)
             };
 
