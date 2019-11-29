@@ -17,7 +17,7 @@ namespace Scheduler.Application.Workers.Queries.GetWorkersList
 
         public async Task<WorkersListVm> Handle(GetWorkersListQuery request, CancellationToken cancellationToken)
         {
-            var workers = await _repo.GetAll(request.PageNumber, request.PageSize);
+            var workers = await _repo.GetAll();
             return new WorkersListVm(workers);
         }
     }

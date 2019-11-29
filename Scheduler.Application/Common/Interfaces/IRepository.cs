@@ -10,7 +10,8 @@ namespace Scheduler.Application.Common.Interfaces
         Task<T> GetById(int id);
         Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
-        Task<IEnumerable<T>> GetAll(int page, int pageSize, params Expression<Func<T, object>>[] includes);
+        Task<IEnumerable<T>> GetAll(params Expression<Func<T, object>>[] includes);
+        Task<IEnumerable<T>> GetAll(int pageNumber, int pageSize, params Expression<Func<T, object>>[] includes);
         Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
         Task Add(T entity);

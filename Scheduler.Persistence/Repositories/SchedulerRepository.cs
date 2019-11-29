@@ -35,7 +35,13 @@ namespace Scheduler.Persistence.Repositories
             return await includeQuery.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task<IEnumerable<T>> GetAll(int page=1, int pageSize=20, params Expression<Func<T, object>>[] includes)
+        public async Task<IEnumerable<T>> GetAll(params Expression<Func<T, object>>[] includes)
+        {
+            var includeQuery = GetAllIncluding(includes);
+            return await includeQuery.ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAll(int page, int pageSize, params Expression<Func<T, object>>[] includes)
         {
             if (page < 1)
                 throw new ArgumentOutOfRangeException("Page numbers start at 1.");

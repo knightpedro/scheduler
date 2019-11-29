@@ -23,13 +23,13 @@ namespace Scheduler.Application.Tests.Jobs.Queries
         public async Task Handler_ReturnsCorrectViewModel()
         {
             var expectedJobs = GetJobs();
-            var query = new GetJobsListQuery { PageNumber = 1, PageSize = 20 };
-            mockRepo.Setup(x => x.GetAll(query.PageNumber, query.PageSize)).ReturnsAsync(expectedJobs);
+            var query = new GetJobsListQuery();
+            mockRepo.Setup(x => x.GetAll()).ReturnsAsync(expectedJobs);
             var handler = new GetJobsListQueryHandler(mockRepo.Object);
 
             var vm = await handler.Handle(query, CancellationToken.None);
 
-            mockRepo.Verify(x => x.GetAll(query.PageNumber, query.PageSize), Times.Once());
+            mockRepo.Verify(x => x.GetAll(), Times.Once());
             Assert.Equal(expectedJobs.Count(), vm.Jobs.Count());
         }
 

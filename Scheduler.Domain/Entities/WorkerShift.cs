@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Scheduler.Domain.Entities
+﻿namespace Scheduler.Domain.Entities
 {
     public class WorkerShift
     {
@@ -11,9 +7,5 @@ namespace Scheduler.Domain.Entities
 
         public int WorkerId { get; set; }
         public Worker Worker { get; set; }
-
-        // Duplicate of shift time period.
-        public DateTime? Start { get; set; }
-        public DateTime? End { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace Scheduler.Application.Jobs.Queries.GetJobsList
 
         public async Task<JobsListVm> Handle(GetJobsListQuery request, CancellationToken cancellationToken)
         {
-            var jobs = await _repo.GetAll(request.PageNumber, request.PageSize);
+            var jobs = await _repo.GetAll();
             return new JobsListVm(jobs);
         }
     }

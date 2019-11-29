@@ -16,7 +16,7 @@ namespace Scheduler.Application.Trainings.Queries.GetTrainingList
 
         public async Task<TrainingListVm> Handle(GetTrainingListQuery request, CancellationToken cancellationToken)
         {
-            var training = await _repo.GetAll(request.PageNumber, request.PageSize);
+            var training = await _repo.GetAll();
             return new TrainingListVm(training);
         }
     }

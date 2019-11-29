@@ -17,19 +17,19 @@ namespace Scheduler.Application.Tests.Workers.Queries
         public GetWorkersListQueryHandlerTests()
         {
             mockRepo = new Mock<IRepository<Worker>>();
-            mockRepo.Setup(x => x.GetAll(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(GetWorkersList());
+            mockRepo.Setup(x => x.GetAll()).ReturnsAsync(GetWorkersList());
         }
 
         [Fact]
         public async Task QueryHandlerReturnsWorkers()
         {
             var handler = new GetWorkersListQueryHandler(mockRepo.Object);
-            var query = new GetWorkersListQuery { PageNumber = 1, PageSize = 20 };
+            var query = new GetWorkersListQuery();
 
             var result = await handler.Handle(query, CancellationToken.None);
             var fred = result.Workers.Where(w => w.Name == "Fred").SingleOrDefault();
 
-            mockRepo.Verify(x => x.GetAll(query.PageNumber, query.PageSize), Times.Once());
+            mockRepo.Verify(x => x.GetAll(), Times.Once());
             Assert.NotNull(fred);
             Assert.Equal(3, result.Workers.Count());
         }

@@ -16,6 +16,10 @@ namespace Scheduler.Persistence
             services.AddScoped<ISchedulerDbContext>(provider => provider.GetService<SchedulerDbContext>());
 
             services.AddScoped(typeof(IRepository<>), typeof(SchedulerRepository<>));
+            services.AddScoped<IConflictRepository>(provider => provider.GetService<ConflictRepository>());
+            services.AddScoped<IJobRepository>(provider => provider.GetService<JobRepository>());
+            services.AddScoped<IJobTaskRepository>(provider => provider.GetService<JobTaskRepository>());
+            services.AddScoped<ITrainingRepository>(provider => provider.GetService<TrainingRepository>());
 
             return services;
         }

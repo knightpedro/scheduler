@@ -17,7 +17,7 @@ namespace Scheduler.Application.Resources.Queries.GetResourcesList
 
         public async Task<ResourcesListVm> Handle(GetResourcesListQuery request, CancellationToken cancellationToken)
         {
-            var resources = await _repo.GetAll(request.PageNumber, request.PageSize);
+            var resources = await _repo.GetAll();
             return new ResourcesListVm(resources);
         }
     }

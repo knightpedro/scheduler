@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Scheduler.Domain.Entities
+﻿namespace Scheduler.Domain.Entities
 {
     public class ResourceShift
     {
@@ -9,8 +7,5 @@ namespace Scheduler.Domain.Entities
 
         public int JobTaskId { get; set; }
         public JobTask JobTask { get; set; }
-
-        public DateTime? Start { get; set; }
-        public DateTime? End { get; set; }
     }
 }

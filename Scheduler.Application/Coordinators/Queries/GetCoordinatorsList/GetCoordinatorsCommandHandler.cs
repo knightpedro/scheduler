@@ -17,7 +17,7 @@ namespace Scheduler.Application.Coordinators.Queries.GetCoordinatorsList
 
         public async Task<CoordinatorsListVm> Handle(GetCoordinatorsCommand request, CancellationToken cancellationToken)
         {
-            var coordinators = await _repo.GetAll(request.PageNumber, request.PageSize);
+            var coordinators = await _repo.GetAll();
             return new CoordinatorsListVm(coordinators);
         }
     }
