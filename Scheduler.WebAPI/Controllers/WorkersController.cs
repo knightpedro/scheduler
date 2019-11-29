@@ -24,7 +24,7 @@ namespace Scheduler.WebAPI.Controllers
             return Ok(vm);
         }
 
-        [HttpPost("{id}")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody]CreateWorkerCommand command)
         {
             await Mediator.Send(command);
