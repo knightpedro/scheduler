@@ -6,6 +6,8 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 
+// See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write?view=aspnetcore-3.0
+
 namespace Scheduler.WebAPI.Middleware
 {
     public class CustomExceptionHandler

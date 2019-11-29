@@ -1,9 +1,11 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Scheduler.Application;
+using Scheduler.Application.Common.Interfaces;
 using Scheduler.Persistence;
 using Scheduler.WebAPI.Middleware;
 
@@ -23,7 +25,8 @@ namespace Scheduler.WebAPI
         {
             services.AddPersistence(Configuration);
             services.AddApplication();
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ISchedulerDbContext>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
