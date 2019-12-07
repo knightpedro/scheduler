@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Scheduler.Application.Workers.Commands.CreateLeave;
 using Scheduler.Application.Workers.Commands.CreateWorker;
 using Scheduler.Application.Workers.Commands.DeleteWorker;
 using Scheduler.Application.Workers.Commands.EditWorker;
@@ -69,7 +68,6 @@ namespace Scheduler.WebAPI.Controllers
         }
 
         [HttpGet("calendar/{start}/{end}")]
-        // TODO: handle incorrect dates etc
         public async Task<ActionResult<WorkersCalendarVm>> GetCalendar(DateTime start, DateTime end)
         {
             var vm = await Mediator.Send(new GetWorkersCalendarQuery { Start = start, End = end });

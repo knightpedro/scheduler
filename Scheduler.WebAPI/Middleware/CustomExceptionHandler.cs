@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Scheduler.Application.Common.Exceptions;
 using System;
@@ -48,6 +49,10 @@ namespace Scheduler.WebAPI.Middleware
                     break;
                 case NotFoundException _:
                     code = HttpStatusCode.NotFound;
+                    break;
+                case DbUpdateException ex:
+                    code = HttpStatusCode.BadRequest;
+                    result = "An error occurred while updating the database.";
                     break;
             }
 
