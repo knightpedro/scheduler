@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Application.Workers.Commands.CreateLeave;
@@ -7,6 +8,7 @@ using Scheduler.Application.Workers.Commands.DeleteWorker;
 using Scheduler.Application.Workers.Commands.EditWorker;
 using Scheduler.Application.Workers.Queries.GetWorkerDetail;
 using Scheduler.Application.Workers.Queries.GetWorkerLeave;
+using Scheduler.Application.Workers.Queries.GetWorkersCalendar;
 using Scheduler.Application.Workers.Queries.GetWorkersList;
 
 namespace Scheduler.WebAPI.Controllers
@@ -63,6 +65,14 @@ namespace Scheduler.WebAPI.Controllers
         public async Task<ActionResult<WorkerLeaveVm>> GetLeave(int id)
         {
             var vm = await Mediator.Send(new GetWorkerLeaveQuery { WorkerId = id });
+            return Ok(vm);
+        }
+
+        [HttpGet("calendar/{start}/{end}")]
+        // TODO: handle incorrect dates etc
+        public async Task<ActionResult<WorkersCalendarVm>> GetCalendar(DateTime start, DateTime end)
+        {
+            var vm = await Mediator.Send(new GetWorkersCalendarQuery { Start = start, End = end });
             return Ok(vm);
         }
     }

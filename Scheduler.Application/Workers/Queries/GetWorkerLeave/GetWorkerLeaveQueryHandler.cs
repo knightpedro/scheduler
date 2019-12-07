@@ -24,7 +24,7 @@ namespace Scheduler.Application.Workers.Queries.GetWorkerLeave
                 throw new NotFoundException(nameof(Worker), request.WorkerId);
 
             return new WorkerLeaveVm {
-                WorkerLeave = worker.Leave.Select(l => new WorkerLeaveDto(l)).ToList()
+                Leave = worker.Leave.Select(l => new WorkerLeaveDto(l)).ToList()
             };
         }
     }

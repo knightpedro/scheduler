@@ -36,7 +36,7 @@ namespace Scheduler.Application.Tests.Workers.Queries
             var vm = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(vm);
-            Assert.Empty(vm.WorkerLeave);
+            Assert.Empty(vm.Leave);
         }
 
         [Fact]
@@ -54,9 +54,9 @@ namespace Scheduler.Application.Tests.Workers.Queries
             var expectedLeave = expectedWorker.Leave.First();
 
             var vm = await handler.Handle(query, CancellationToken.None);
-            var leaveResult = vm.WorkerLeave.First();
+            var leaveResult = vm.Leave.First();
 
-            Assert.Equal(1, vm.WorkerLeave.Count);
+            Assert.Equal(1, vm.Leave.Count);
             Assert.Equal(expectedLeave.LeavePeriod.Start, leaveResult.Start);
             Assert.Equal(expectedLeave.LeavePeriod.End, leaveResult.End);
             Assert.Equal(expectedLeave.LeaveCategory.ToString(), leaveResult.LeaveType);

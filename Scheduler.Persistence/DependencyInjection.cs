@@ -13,13 +13,14 @@ namespace Scheduler.Persistence
             services.AddDbContext<SchedulerDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("SchedulerDatabase")));
 
-            services.AddScoped<ISchedulerDbContext>(provider => provider.GetService<SchedulerDbContext>());
+            services.AddScoped<ISchedulerDbContext, SchedulerDbContext>();
 
             services.AddScoped(typeof(IRepository<>), typeof(SchedulerRepository<>));
-            services.AddScoped<IConflictRepository>(provider => provider.GetService<ConflictRepository>());
-            services.AddScoped<IJobRepository>(provider => provider.GetService<JobRepository>());
-            services.AddScoped<IJobTaskRepository>(provider => provider.GetService<JobTaskRepository>());
-            services.AddScoped<ITrainingRepository>(provider => provider.GetService<TrainingRepository>());
+            services.AddScoped<ICalendarRepository, CalendarRepository>();
+            services.AddScoped<IConflictRepository, ConflictRepository>();
+            services.AddScoped<IJobRepository, JobRepository>();
+            services.AddScoped<IJobTaskRepository, JobTaskRepository>();
+            services.AddScoped<ITrainingRepository, TrainingRepository>();
 
             return services;
         }
