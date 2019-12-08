@@ -28,7 +28,7 @@ namespace Scheduler.Application.Jobs.Queries.GetJobDetail
             IsComplete = job.IsComplete;
             DateReceived = job.DateReceived;
             DateScheduled = job.DateScheduled;
-            Coordinator = job.Coordinator.Name;
+            Coordinator = job.Coordinator is null ? string.Empty : job.Coordinator.Name; 
             JobTasks = job.JobTasks.Select(t => new JobTaskDto(t));
         }
     }

@@ -36,6 +36,20 @@ namespace Scheduler.Application.Tests.Jobs.Queries
         }
 
         [Fact]
+        public async Task Handler_ReturnsEmptyCoordinatorName_WhenCoordinatorIsNull()
+        {
+            var expectedJob = new Job();
+            var query = new GetJobDetailQuery { Id = 1 };
+            mockRepo.Setup(x => x.GetJobDetail(query.Id)).ReturnsAsync(expectedJob);
+            var handler = new GetJobDetailQueryHandler(mockRepo.Object);
+
+            var vm = await handler.Handle(query, CancellationToken.None);
+
+            mockRepo.Verify(x => x.GetJobDetail(query.Id), Times.Once());
+            Assert.Equal(string.Empty, vm.Coordinator);
+        }
+
+        [Fact]
         public async Task Handler_ThrowsNotFoundException_JobDoesNotExist()
         {
             var query = new GetJobDetailQuery { Id = 1 };

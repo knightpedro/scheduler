@@ -2,7 +2,7 @@
 
 namespace Scheduler.Application.Coordinators.Queries.GetCoordinatorsList
 {
-    public class GetCoordinatorsCommand : IRequest<CoordinatorsListVm>
+    public class GetCoordinatorsQuery : IRequest<CoordinatorsListVm>
     {
     }
 }

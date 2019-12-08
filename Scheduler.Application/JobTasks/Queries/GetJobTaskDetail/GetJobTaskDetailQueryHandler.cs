@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.Application.JobTasks.Queries.GetJobTaskDetail
 {
-    public class GetJobTaskDetailQueryHandler : IRequestHandler<GetJobTaskDetailQuery, JobTaskVm>
+    public class GetJobTaskDetailQueryHandler : IRequestHandler<GetJobTaskDetailQuery, JobTaskDetailVm>
     {
         private readonly IJobTaskRepository _repo;
 
@@ -16,12 +16,12 @@ namespace Scheduler.Application.JobTasks.Queries.GetJobTaskDetail
             _repo = repo;
         }
 
-        public async Task<JobTaskVm> Handle(GetJobTaskDetailQuery request, CancellationToken cancellationToken)
+        public async Task<JobTaskDetailVm> Handle(GetJobTaskDetailQuery request, CancellationToken cancellationToken)
         {
             var jobTask = await _repo.GetByIdWithShifts(request.Id);
             if (jobTask is null)
                 throw new NotFoundException(nameof(JobTask), request.Id);
-            return new JobTaskVm(jobTask);
+            return new JobTaskDetailVm(jobTask);
         }
     }
 }

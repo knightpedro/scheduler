@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Scheduler.Application.JobTasks.Queries.GetJobTaskDetail
 {
-    public class JobTaskVm
+    public class JobTaskDetailVm
     {
         public int Id { get; set; }
         public string Description { get; set; }
@@ -14,7 +14,7 @@ namespace Scheduler.Application.JobTasks.Queries.GetJobTaskDetail
         public IEnumerable<WorkerDto> Workers { get; set; }
         public IEnumerable<ResourceDto> Resources { get; set; }
 
-        public JobTaskVm(JobTask task)
+        public JobTaskDetailVm(JobTask task)
         {
             Id = task.Id;
             Description = task.Description;
