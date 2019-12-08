@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Scheduler.Application.Calendar.Queries.GetWorkersCalendar;
 using Scheduler.Application.Workers.Commands.CreateWorker;
 using Scheduler.Application.Workers.Commands.DeleteWorker;
 using Scheduler.Application.Workers.Commands.EditWorker;
 using Scheduler.Application.Workers.Queries.GetWorkerDetail;
 using Scheduler.Application.Workers.Queries.GetWorkerLeave;
-using Scheduler.Application.Workers.Queries.GetWorkersCalendar;
 using Scheduler.Application.Workers.Queries.GetWorkersList;
 
 namespace Scheduler.WebAPI.Controllers

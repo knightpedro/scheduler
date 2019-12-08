@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Scheduler.Application.Calendar.Queries.GetResourcesCalendar;
 using Scheduler.Application.Resources.Commands.CreateResource;
 using Scheduler.Application.Resources.Commands.DeleteResource;
 using Scheduler.Application.Resources.Commands.EditResource;
@@ -62,6 +64,13 @@ namespace Scheduler.WebAPI.Controllers
         public async Task<ActionResult<ResourceOutOfServicesListVm>> GetOutOfServices(int id)
         {
             var vm = await Mediator.Send(new GetResourceOutOfServicesQuery { ResourceId = id });
+            return Ok(vm);
+        }
+
+        [HttpGet("calendar/{start}/{end}")]
+        public async Task<ActionResult<ResourcesCalendarVm>> GetCalendar(DateTime start, DateTime end)
+        {
+            var vm = await Mediator.Send(new GetResourcesCalendarQuery { Start = start, End = end });
             return Ok(vm);
         }
     }

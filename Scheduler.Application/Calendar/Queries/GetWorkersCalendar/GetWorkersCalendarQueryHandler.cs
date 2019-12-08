@@ -4,7 +4,7 @@ using Scheduler.Domain.ValueObjects;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Scheduler.Application.Workers.Queries.GetWorkersCalendar
+namespace Scheduler.Application.Calendar.Queries.GetWorkersCalendar
 {
     public class GetWorkersCalendarQueryHandler : IRequestHandler<GetWorkersCalendarQuery, WorkersCalendarVm>
     {
@@ -18,8 +18,8 @@ namespace Scheduler.Application.Workers.Queries.GetWorkersCalendar
         public async Task<WorkersCalendarVm> Handle(GetWorkersCalendarQuery request, CancellationToken cancellationToken)
         {
             var period = new DateTimeRange(request.Start, request.End);
-            var calendar =  await _repo.GetWorkersCalendar(period);
-            return new WorkersCalendarVm { Workers = calendar };
+            var workers =  await _repo.GetWorkersCalendar(period);
+            return new WorkersCalendarVm { Workers = workers };
         }
     }
 }

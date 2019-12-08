@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Application.Workers.Commands.CreateLeave;
 using Scheduler.Application.Workers.Commands.DeleteLeave;
+using Scheduler.Domain.Entities;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Scheduler.WebAPI.Controllers
@@ -24,6 +27,13 @@ namespace Scheduler.WebAPI.Controllers
         {
             await Mediator.Send(new DeleteLeaveCommand { LeaveId = id });
             return NoContent();
+        }
+
+        [HttpGet("leave-types")]
+        public IActionResult GetLeaveTypes()
+        {
+            var leaveTypes = Enum.GetNames(typeof(LeaveType));
+            return Ok(leaveTypes);
         }
     }
 }

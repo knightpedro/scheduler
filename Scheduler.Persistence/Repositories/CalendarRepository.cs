@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scheduler.Application.Common.Interfaces;
-using Scheduler.Application.Workers.Queries.GetWorkersCalendar;
+using Scheduler.Application.Calendar.Queries.GetWorkersCalendar;
 using Scheduler.Domain.ValueObjects;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Scheduler.Application.Calendar.Queries.GetResourcesCalendar;
+using Scheduler.Application.Calendar.Queries;
 
 namespace Scheduler.Persistence.Repositories
 {
@@ -15,6 +17,48 @@ namespace Scheduler.Persistence.Repositories
         public CalendarRepository(SchedulerDbContext context)
         {
             this.context = context;
+        }
+
+        public async Task<IEnumerable<ResourceCalendarDto>> GetResourcesCalendar(DateTimeRange period)
+        {
+            var outOfServices = await context.ResourceOutOfService
+                .AsNoTracking()
+                .Where(o => o.Period.Start < period.End && period.Start < o.Period.End)
+                .ToListAsync();
+
+            var resourceShifts = await context.ResourceShifts
+                .AsNoTracking()
+                .Include(rs => rs.JobTask)
+                .Where(rs => rs.JobTask.TaskPeriod.Start < period.End && period.Start < rs.JobTask.TaskPeriod.End)
+                .ToListAsync();
+
+            var resources = await context.Resources
+                .AsNoTracking()
+                .Where(r => r.IsActive)
+                .ToListAsync();
+
+            var calendar = new List<ResourceCalendarDto>();
+
+            foreach(var resource in resources)
+            {
+                var resourceDto = new ResourceCalendarDto
+                {
+                    Id = resource.Id,
+                    Description = resource.Description,
+                    Name = resource.Name
+                };
+
+                resourceDto.OutOfServices = outOfServices
+                    .Where(o => o.ResourceId == resource.Id)
+                    .Select(o => new OutOfServiceDto(o));
+
+                resourceDto.JobTasks = resourceShifts.Where(rs => rs.ResourceId == resource.Id)
+                    .Select(rs => new JobTaskDto(rs.JobTask));
+
+                calendar.Add(resourceDto);
+            }
+
+            return calendar;
         }
 
         public async Task<IEnumerable<WorkerCalendarDto>> GetWorkersCalendar(DateTimeRange period)

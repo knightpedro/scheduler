@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System;
 
-namespace Scheduler.Application.Workers.Queries.GetWorkersCalendar
+namespace Scheduler.Application.Calendar.Queries.GetWorkersCalendar
 {
     public class GetWorkersCalendarQuery : IRequest<WorkersCalendarVm>
     {

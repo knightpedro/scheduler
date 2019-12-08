@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Application.Resources.Commands.CreateOutOfService;
 using Scheduler.Application.Resources.Commands.DeleteOutOfService;
+using Scheduler.Domain.Entities;
 
 namespace Scheduler.WebAPI.Controllers
 {
@@ -27,6 +26,13 @@ namespace Scheduler.WebAPI.Controllers
         {
             await Mediator.Send(new DeleteOutOfServiceCommand { Id = id });
             return NoContent();
+        }
+
+        [HttpGet("reasons")]
+        public IActionResult GetReasons()
+        {
+            var reasons = Enum.GetNames(typeof(ResourceOutOfServiceReason));
+            return Ok(reasons);
         }
     }
 }
