@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Application.Calendar.Queries.GetWorkersCalendar;
@@ -12,6 +13,7 @@ using Scheduler.Application.Workers.Queries.GetWorkersList;
 
 namespace Scheduler.WebAPI.Controllers
 {
+    [Authorize]
     public class WorkersController : BaseController
     {
         [HttpGet]
