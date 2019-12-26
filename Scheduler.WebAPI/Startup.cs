@@ -22,13 +22,26 @@ namespace Scheduler.WebAPI
 
         public IConfiguration Configuration { get; }
 
+        private readonly string CorsPolicy = "_apiCorsPolicy";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration);
             services.AddPersistence(Configuration);
             services.AddApplication();
-            
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CorsPolicy,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             services.AddHttpContextAccessor();
 
             services.AddControllersWithViews()
@@ -69,6 +82,7 @@ namespace Scheduler.WebAPI
             });
 
             app.UseRouting();
+            app.UseCors(CorsPolicy);
 
             app.UseAuthentication();
             app.UseIdentityServer();
