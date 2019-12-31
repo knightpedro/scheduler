@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scheduler.Persistence;
 
 namespace Scheduler.Persistence.Migrations
 {
     [DbContext(typeof(SchedulerDbContext))]
-    partial class SchedulerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191231082938_Config")]
+    partial class Config
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,13 +477,11 @@ namespace Scheduler.Persistence.Migrations
                     b.HasOne("Scheduler.Domain.Entities.JobTask", "JobTask")
                         .WithMany("ResourceShifts")
                         .HasForeignKey("JobTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Scheduler.Domain.Entities.Resource", "Resource")
                         .WithMany("ResourceShifts")
                         .HasForeignKey("ResourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -516,13 +516,11 @@ namespace Scheduler.Persistence.Migrations
                     b.HasOne("Scheduler.Domain.Entities.Crew", "Crew")
                         .WithMany("WorkerCrews")
                         .HasForeignKey("CrewId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Scheduler.Domain.Entities.Worker", "Worker")
                         .WithMany("WorkerCrews")
                         .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -531,13 +529,11 @@ namespace Scheduler.Persistence.Migrations
                     b.HasOne("Scheduler.Domain.Entities.Role", "Role")
                         .WithMany("WorkerRoles")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Scheduler.Domain.Entities.Worker", "Worker")
                         .WithMany("WorkerRoles")
                         .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -546,13 +542,11 @@ namespace Scheduler.Persistence.Migrations
                     b.HasOne("Scheduler.Domain.Entities.JobTask", "JobTask")
                         .WithMany("WorkerShifts")
                         .HasForeignKey("JobTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Scheduler.Domain.Entities.Worker", "Worker")
                         .WithMany("WorkerShifts")
                         .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -561,7 +555,6 @@ namespace Scheduler.Persistence.Migrations
                     b.HasOne("Scheduler.Domain.Entities.Training", "Training")
                         .WithMany("WorkerTraining")
                         .HasForeignKey("TrainingId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Scheduler.Domain.Entities.Worker", "Worker")

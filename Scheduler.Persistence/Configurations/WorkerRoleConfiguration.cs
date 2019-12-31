@@ -13,13 +13,11 @@ namespace Scheduler.Persistence.Configurations
 
             builder.HasOne(wr => wr.Role)
                 .WithMany(r => r.WorkerRoles)
-                .HasForeignKey(wr => wr.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .HasForeignKey(wr => wr.RoleId);
 
             builder.HasOne(wr => wr.Worker)
                 .WithMany(w => w.WorkerRoles)
-                .HasForeignKey(wr => wr.WorkerId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .HasForeignKey(wr => wr.WorkerId);
         }
     }
 }
