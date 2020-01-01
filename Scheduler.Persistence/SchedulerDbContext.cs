@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scheduler.Application.Common.Interfaces;
 using Scheduler.Domain.Entities;
+using Scheduler.Persistence.Seed;
 
 namespace Scheduler.Persistence
 {

@@ -15,7 +15,7 @@ namespace Scheduler.Application.Jobs.Queries.GetJobDetail
         public DateTime? DateReceived { get; set; }
         public DateTime? DateScheduled { get; set; }
 
-        public string Coordinator { get; set; }
+        public CoordinatorDto Coordinator { get; set; }
 
         public IEnumerable<JobTaskDto> JobTasks { get; set; }
 
@@ -28,7 +28,7 @@ namespace Scheduler.Application.Jobs.Queries.GetJobDetail
             IsComplete = job.IsComplete;
             DateReceived = job.DateReceived;
             DateScheduled = job.DateScheduled;
-            Coordinator = job.Coordinator is null ? string.Empty : job.Coordinator.Name; 
+            Coordinator = job.Coordinator is null ? null : new CoordinatorDto(job.Coordinator);
             JobTasks = job.JobTasks.Select(t => new JobTaskDto(t));
         }
     }

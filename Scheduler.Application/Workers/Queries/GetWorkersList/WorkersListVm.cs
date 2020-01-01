@@ -10,10 +10,7 @@ namespace Scheduler.Application.Workers.Queries.GetWorkersList
 
         public WorkersListVm(IEnumerable<Worker> workers)
         {
-            Workers = workers.Select(w => new WorkerDto {
-                Id = w.Id,
-                Name = w.Name
-            });
+            Workers = workers.Select(w => new WorkerDto(w));
         }
     }
 }

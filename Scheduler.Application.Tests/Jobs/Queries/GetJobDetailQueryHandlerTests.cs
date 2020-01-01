@@ -31,12 +31,12 @@ namespace Scheduler.Application.Tests.Jobs.Queries
             var vm = await handler.Handle(query, CancellationToken.None);
 
             mockRepo.Verify(x => x.GetJobDetail(query.Id), Times.Once());
-            Assert.Equal(expectedJob.Coordinator.Name, vm.Coordinator);
+            Assert.Equal(expectedJob.Coordinator.Name, vm.Coordinator.Name);
             Assert.Equal(expectedJob.JobTasks.Count(), vm.JobTasks.Count());
         }
 
         [Fact]
-        public async Task Handler_ReturnsEmptyCoordinatorName_WhenCoordinatorIsNull()
+        public async Task Handler_ReturnsNullCoordinator_WhenCoordinatorIsNull()
         {
             var expectedJob = new Job();
             var query = new GetJobDetailQuery { Id = 1 };
@@ -46,7 +46,7 @@ namespace Scheduler.Application.Tests.Jobs.Queries
             var vm = await handler.Handle(query, CancellationToken.None);
 
             mockRepo.Verify(x => x.GetJobDetail(query.Id), Times.Once());
-            Assert.Equal(string.Empty, vm.Coordinator);
+            Assert.Null(vm.Coordinator);
         }
 
         [Fact]

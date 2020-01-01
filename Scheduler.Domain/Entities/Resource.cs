@@ -14,6 +14,7 @@ namespace Scheduler.Domain.Entities
 
         public Resource()
         {
+            IsActive = true;
             OutOfServices = new HashSet<ResourceOutOfService>();
             ResourceShifts = new HashSet<ResourceShift>();
         }

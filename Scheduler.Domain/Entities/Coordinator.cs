@@ -13,6 +13,7 @@ namespace Scheduler.Domain.Entities
 
         public Coordinator()
         {
+            IsActive = true;
             Jobs = new HashSet<Job>();
         }
     }

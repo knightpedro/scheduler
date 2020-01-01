@@ -1,0 +1,122 @@
+{
+  "coordinators": [
+    {
+      "id": 1,
+      "name": "Ashwin Simmonds",
+      "email": "ashwins@scheduler.test"
+    },
+    {
+      "id": 2,
+      "name": "Yusra Sharp",
+      "email": "yusras@scheduler.test"
+    },
+    {
+      "id": 3,
+      "name": "Helena Bowen",
+      "email": "helenab@scheduler.test"
+    },
+    {
+      "id": 4,
+      "name": "Codie Kelly",
+      "email": "codiek@scheduler.test"
+    }
+  ],
+  "jobs": [
+    {
+      "id": 1,
+      "jobNumber": "J001",
+      "description": "Test Job 1",
+      "location": "4640 Filbert Street",
+      "dateReceived": "2019-11-07",
+      "dateScheduled": "2019-11-08",
+      "coordinatorId": 1
+    },
+    {
+      "id": 2,
+      "jobNumber": "J002",
+      "description": "Test Job 2",
+      "location": "546 Lochmere Lane",
+      "dateReceived": "2019-11-07",
+      "dateScheduled": "2019-11-08",
+      "coordinatorId": 1
+    },
+    {
+      "id": 3,
+      "jobNumber": "J003",
+      "description": "Test Job 3",
+      "location": "2041 Hall Place",
+      "dateReceived": "2019-11-11",
+      "dateScheduled": "2019-11-11",
+      "coordinatorId": 2
+    },
+    {
+      "id": 4,
+      "jobNumber": "J004",
+      "description": "Test Job 4",
+      "location": "3283 Frank Avenue",
+      "dateReceived": "2019-11-12",
+      "dateScheduled": "2019-11-13",
+      "coordinatorId": 3
+    },
+    {
+      "id": 5,
+      "jobNumber": "J005",
+      "description": "Test Job 5",
+      "location": "4538 Carter Street",
+      "dateReceived": "2019-11-13",
+      "dateScheduled": "2019-11-15",
+      "coordinatorId": 4
+    }
+  ],
+  "jobTasks": [
+    {
+      "id": 1,
+      "start": "2019-11-14T08:00:00",
+      "end": "2019-11-14T16:00:00",
+      "description": "Test",
+      "jobId": 1
+    }
+  ],
+  "workers": [
+    {
+      "id": 1,
+      "name": "Ronnie Feeney"
+    },
+    {
+      "id": 2,
+      "name": "Jayden Poole"
+    },
+    {
+      "id": 3,
+      "name": "Lilly Gibson"
+    },
+    {
+      "id": 4,
+      "name": "Genevieve Bernard"
+    },
+    {
+      "id": 5,
+      "name": "Abida Sparrow"
+    },
+    {
+      "id": 6,
+      "name": "Mildred Riggs"
+    },
+    {
+      "id": 7,
+      "name": "Misbah Ashton"
+    },
+    {
+      "id": 8,
+      "name": "Mariana Yoder"
+    },
+    {
+      "id": 9,
+      "name": "Alena Cunningham"
+    },
+    {
+      "id": 10,
+      "name": "Montel Velez"
+    }
+  ]
+}

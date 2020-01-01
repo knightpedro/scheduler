@@ -18,6 +18,7 @@ namespace Scheduler.Domain.Entities
 
         public Worker()
         {
+            IsActive = true;
             Leave = new HashSet<Leave>();
             WorkerCrews = new HashSet<WorkerCrew>();
             WorkerRoles = new HashSet<WorkerRole>();
