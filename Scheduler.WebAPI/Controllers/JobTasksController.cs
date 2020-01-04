@@ -57,8 +57,10 @@ namespace Scheduler.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateWorkers(int id, [FromBody] Patch workersPatch)
         {
-            await Mediator.Send(new AssignWorkersCommand { JobTaskId = id, WorkerIds = workersPatch.Add });
-            await Mediator.Send(new RemoveWorkersCommand { JobTaskId = id, WorkerIds = workersPatch.Remove });
+            if (!(workersPatch.Add is null))
+                await Mediator.Send(new AssignWorkersCommand { JobTaskId = id, WorkerIds = workersPatch.Add });
+            if (!(workersPatch.Remove is null))
+                await Mediator.Send(new RemoveWorkersCommand { JobTaskId = id, WorkerIds = workersPatch.Remove });
             return NoContent();
         }
 
@@ -67,8 +69,10 @@ namespace Scheduler.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateResources(int id, [FromBody] Patch resourcesPatch)
         {
-            await Mediator.Send(new AssignResourcesCommand { JobTaskId = id, ResourceIds = resourcesPatch.Add });
-            await Mediator.Send(new RemoveResourcesCommand { JobTaskId = id, ResourceIds = resourcesPatch.Remove });
+            if (!(resourcesPatch.Add is null))
+                await Mediator.Send(new AssignResourcesCommand { JobTaskId = id, ResourceIds = resourcesPatch.Add });
+            if (!(resourcesPatch.Remove is null))
+                await Mediator.Send(new RemoveResourcesCommand { JobTaskId = id, ResourceIds = resourcesPatch.Remove });
             return NoContent();
         }
 

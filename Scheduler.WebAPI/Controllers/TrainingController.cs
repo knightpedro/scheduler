@@ -63,8 +63,10 @@ namespace Scheduler.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateWorkers(int id, [FromBody] WorkersPatch workersPatch)
         {
-            await Mediator.Send(new AddWorkersCommand { TrainingId = id, WorkerIds = workersPatch.Add });
-            await Mediator.Send(new RemoveWorkersCommand { TrainingId = id, WorkerIds = workersPatch.Remove });
+            if (!(workersPatch.Add is null))
+                await Mediator.Send(new AddWorkersCommand { TrainingId = id, WorkerIds = workersPatch.Add });
+            if (!(workersPatch.Remove is null))
+                await Mediator.Send(new RemoveWorkersCommand { TrainingId = id, WorkerIds = workersPatch.Remove });
             return NoContent();
         }
     }
