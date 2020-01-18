@@ -61,9 +61,10 @@ namespace Scheduler.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AssignCoordinator(int id, [FromBody] int coordinatorId)
+        public async Task<IActionResult> AssignCoordinator(int id, [FromBody] AssignCoordinatorCommand command)
         {
-            await Mediator.Send(new AssignCoordinatorCommand { JobId = id, CoordinatorId = coordinatorId });
+            command.JobId = id;
+            await Mediator.Send(command);
             return NoContent();
         }
     }
