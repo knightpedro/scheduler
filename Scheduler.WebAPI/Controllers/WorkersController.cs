@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Scheduler.Application.Calendar.Queries;
+using Scheduler.Application.Calendar.Queries.GetWorkerCalendar;
 using Scheduler.Application.Calendar.Queries.GetWorkersCalendar;
 using Scheduler.Application.Workers.Commands.CreateWorker;
 using Scheduler.Application.Workers.Commands.DeleteWorker;
@@ -71,6 +73,13 @@ namespace Scheduler.WebAPI.Controllers
         public async Task<ActionResult<WorkersCalendarVm>> GetCalendar(DateTime start, DateTime end)
         {
             var vm = await Mediator.Send(new GetWorkersCalendarQuery { Start = start, End = end });
+            return Ok(vm);
+        }
+
+        [HttpGet("{id}/calendar")]
+        public async Task<ActionResult<WorkerCalendarDto>> GetCalendar(int id, DateTime? start, DateTime? end)
+        {
+            var vm = await Mediator.Send(new GetWorkerCalendarQuery { Id = id, Start = start, End = end });
             return Ok(vm);
         }
     }

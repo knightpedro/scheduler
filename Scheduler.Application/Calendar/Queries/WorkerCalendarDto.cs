@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Scheduler.Application.Calendar.Queries.GetWorkersCalendar
+namespace Scheduler.Application.Calendar.Queries
 {
     public class WorkerCalendarDto
     {

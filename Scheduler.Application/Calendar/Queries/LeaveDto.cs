@@ -1,7 +1,7 @@
 ﻿using Scheduler.Domain.Entities;
 using System;
 
-namespace Scheduler.Application.Calendar.Queries.GetWorkersCalendar
+namespace Scheduler.Application.Calendar.Queries
 {
     public class LeaveDto
     {

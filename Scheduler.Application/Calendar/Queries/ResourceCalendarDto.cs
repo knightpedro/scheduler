@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Scheduler.Application.Calendar.Queries.GetResourcesCalendar
+namespace Scheduler.Application.Calendar.Queries
 {
     public class ResourceCalendarDto
     {

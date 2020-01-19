@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Scheduler.Application.Calendar.Queries;
+using Scheduler.Application.Calendar.Queries.GetResourceCalendar;
 using Scheduler.Application.Calendar.Queries.GetResourcesCalendar;
 using Scheduler.Application.Resources.Commands.CreateResource;
 using Scheduler.Application.Resources.Commands.DeleteResource;
@@ -71,6 +73,13 @@ namespace Scheduler.WebAPI.Controllers
         public async Task<ActionResult<ResourcesCalendarVm>> GetCalendar(DateTime start, DateTime end)
         {
             var vm = await Mediator.Send(new GetResourcesCalendarQuery { Start = start, End = end });
+            return Ok(vm);
+        }
+
+        [HttpGet("{id}/calendar")]
+        public async Task<ActionResult<ResourceCalendarDto>> GetCalendar(int id, DateTime? start, DateTime? end)
+        {
+            var vm = await Mediator.Send(new GetResourceCalendarQuery { Id = id, Start = start, End = end });
             return Ok(vm);
         }
     }
