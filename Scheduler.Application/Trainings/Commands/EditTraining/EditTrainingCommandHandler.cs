@@ -19,9 +19,9 @@ namespace Scheduler.Application.Trainings.Commands.EditTraining
 
         public async Task<Unit> Handle(EditTrainingCommand request, CancellationToken cancellationToken)
         {
-            var training = await _repo.GetById(request.TrainingId);
+            var training = await _repo.GetById(request.Id);
             if (training is null)
-                throw new NotFoundException(nameof(Training), request.TrainingId);
+                throw new NotFoundException(nameof(Training), request.Id);
 
             training.Description = request.Description;
             training.Location = request.Location;

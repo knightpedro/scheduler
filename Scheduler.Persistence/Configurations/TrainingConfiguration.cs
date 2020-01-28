@@ -10,9 +10,9 @@ namespace Scheduler.Persistence.Configurations
         {
             builder.Property(t => t.Description)
                 .IsRequired()
-                .HasMaxLength(30);
+                .HasMaxLength(100);
 
-            builder.Property(t => t.Location).HasMaxLength(30);
+            builder.Property(t => t.Location).HasMaxLength(50);
 
             builder.OwnsOne(t => t.TrainingPeriod)
                 .Property(p => p.Start)
