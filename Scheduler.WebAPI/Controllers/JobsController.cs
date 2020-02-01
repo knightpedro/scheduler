@@ -5,17 +5,27 @@ using Scheduler.Application.Jobs.Commands.AssignCoordinator;
 using Scheduler.Application.Jobs.Commands.CreateJob;
 using Scheduler.Application.Jobs.Commands.DeleteJob;
 using Scheduler.Application.Jobs.Commands.EditJob;
+using Scheduler.Application.Jobs.Queries;
 using Scheduler.Application.Jobs.Queries.GetJobDetail;
 using Scheduler.Application.Jobs.Queries.GetJobsList;
+using Scheduler.Application.Jobs.Queries.GetJobsWhere;
 
 namespace Scheduler.WebAPI.Controllers
 {
     public class JobsController : BaseController
     {
         [HttpGet]
-        public async Task<ActionResult<JobsListVm>> GetAll()
+        public async Task<ActionResult<JobsListVm>> GetAll(int coordinatorId)
         {
-            var vm = await Mediator.Send(new GetJobsListQuery());
+            JobsListVm vm;
+            if (coordinatorId != 0)
+            {
+                vm = await Mediator.Send(new GetJobsWhereQuery { CoordinatorId = coordinatorId });
+            }
+            else
+            {
+                vm = await Mediator.Send(new GetJobsListQuery());
+            }
             return Ok(vm);
         }
 

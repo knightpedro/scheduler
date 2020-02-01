@@ -13,6 +13,8 @@ namespace Scheduler.Persistence.Configurations
                 .HasMaxLength(50);
 
             builder.Property(c => c.Email).HasMaxLength(254);
+
+            builder.HasMany(c => c.Jobs).WithOne(j => j.Coordinator).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

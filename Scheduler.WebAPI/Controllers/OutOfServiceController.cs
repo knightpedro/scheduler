@@ -4,16 +4,36 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Application.Resources.Commands.CreateOutOfService;
 using Scheduler.Application.Resources.Commands.DeleteOutOfService;
+using Scheduler.Application.Resources.Commands.EditOutOfService;
+using Scheduler.Application.Resources.Queries.GetOutOfService;
 using Scheduler.Domain.Entities;
 
 namespace Scheduler.WebAPI.Controllers
 {
     public class OutOfServiceController : BaseController
     {
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<OutOfServiceVm>> Get(int id)
+        {
+            var vm = await Mediator.Send(new GetOutOfServiceQuery { Id = id });
+            return Ok(vm);
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] CreateOutOfServiceCommand command)
+        {
+            await Mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> Update([FromBody] EditOutOfServiceCommand command)
         {
             await Mediator.Send(command);
             return NoContent();

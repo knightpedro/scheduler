@@ -30,6 +30,7 @@ namespace Scheduler.Persistence.Repositories
             {
                 Id = resource.Id,
                 Name = resource.Name,
+                IsActive = resource.IsActive,
                 Description = resource.Description,
                 OutOfServices = resource.OutOfServices.Select(o => new OutOfServiceDto(o)),
                 JobTasks = resource.ResourceShifts.Select(rs => new JobTaskDto(rs.JobTask))
@@ -63,6 +64,7 @@ namespace Scheduler.Persistence.Repositories
             {
                 Id = resource.Id,
                 Name = resource.Name,
+                IsActive = resource.IsActive,
                 Description = resource.Description,
                 OutOfServices = outOfServices,
                 JobTasks = jobTasks
@@ -95,7 +97,8 @@ namespace Scheduler.Persistence.Repositories
                 {
                     Id = resource.Id,
                     Description = resource.Description,
-                    Name = resource.Name
+                    Name = resource.Name,
+                    IsActive = resource.IsActive
                 };
 
                 resourceDto.OutOfServices = outOfServices
@@ -126,6 +129,7 @@ namespace Scheduler.Persistence.Repositories
             {
                 Id = worker.Id,
                 Name = worker.Name,
+                IsActive = worker.IsActive,
                 Leave = worker.Leave.Select(l => new LeaveDto(l)),
                 Training = worker.WorkerTraining.Select(wt => new TrainingDto(wt.Training)),
                 JobTasks = worker.WorkerShifts.Select(ws => new JobTaskDto(ws.JobTask))
@@ -165,6 +169,7 @@ namespace Scheduler.Persistence.Repositories
             {
                 Id = worker.Id,
                 Name = worker.Name,
+                IsActive = worker.IsActive,
                 Leave = leave,
                 Training = training,
                 JobTasks = jobTasks
@@ -202,7 +207,8 @@ namespace Scheduler.Persistence.Repositories
                 var workerDto = new WorkerCalendarDto 
                 { 
                     Id = worker.Id,
-                    Name = worker.Name
+                    Name = worker.Name,
+                    IsActive = worker.IsActive
                 };
 
                 workerDto.Leave = leave

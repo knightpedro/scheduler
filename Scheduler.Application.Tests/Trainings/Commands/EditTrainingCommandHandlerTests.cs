@@ -25,7 +25,7 @@ namespace Scheduler.Application.Tests.Trainings.Commands
             var trainingId = 1;
             var command = new EditTrainingCommand
             {
-                TrainingId = trainingId,
+                Id = trainingId,
                 Description = "Updated Training",
                 Location = "Board Room",
                 Start = DateTime.Now,
@@ -50,7 +50,7 @@ namespace Scheduler.Application.Tests.Trainings.Commands
             var trainingId = 1;
             var command = new EditTrainingCommand
             {
-                TrainingId = trainingId,
+                Id = trainingId,
                 Description = "Updated Training",
                 Location = "Board Room",
                 Start = DateTime.Now,

@@ -1,7 +1,7 @@
 ﻿using Scheduler.Domain.Entities;
 using System;
 
-namespace Scheduler.Application.Jobs.Queries.GetJobsList
+namespace Scheduler.Application.Jobs.Queries
 {
     public class JobDto
     {

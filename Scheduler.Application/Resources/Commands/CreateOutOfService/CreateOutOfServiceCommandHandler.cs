@@ -25,6 +25,7 @@ namespace Scheduler.Application.Resources.Commands.CreateOutOfService
             var oos = new ResourceOutOfService
             {
                 ResourceId = request.ResourceId,
+                Description = request.Description,
                 Reason = reason,
                 Period = new DateTimeRange(request.Start, request.End)
             };

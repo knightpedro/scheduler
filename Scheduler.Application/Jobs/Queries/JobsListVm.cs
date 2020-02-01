@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Scheduler.Application.Jobs.Queries.GetJobsList
+namespace Scheduler.Application.Jobs.Queries
 {
     public class JobsListVm
     {
