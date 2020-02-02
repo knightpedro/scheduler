@@ -1,4 +1,4 @@
-﻿using Scheduler.Domain.Entities;
+﻿using Scheduler.Application.Conflicts.Queries;
 using Scheduler.Domain.ValueObjects;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,11 +7,11 @@ namespace Scheduler.Application.Common.Interfaces
 {
     public interface IConflictRepository
     {
-        Task<IEnumerable<JobTask>> GetJobTaskConflictsForWorker(int workerId, DateTimeRange period);
-        Task<IEnumerable<Training>> GetTrainingConflicts(int workerId, DateTimeRange period);
-        Task<IEnumerable<Leave>> GetLeaveConflicts(int workerId, DateTimeRange period);
-
-        Task<IEnumerable<JobTask>> GetJobTaskConflictsForResource(int resourceId, DateTimeRange period);
-        Task<IEnumerable<ResourceOutOfService>> GetResourceOutOfServiceConflicts(int resourceId, DateTimeRange period);
+        Task<IEnumerable<ResourceConflictsVm>> GetResourceConflicts();
+        Task<IEnumerable<ResourceConflictDto>> GetResourceConflicts(int resourceId);
+        Task<IEnumerable<ResourceConflictDto>> GetResourceConflicts(int resourceId, DateTimeRange period);
+        Task<IEnumerable<WorkerConflictsVm>> GetWorkerConflicts();
+        Task<IEnumerable<WorkerConflictDto>> GetWorkerConflicts(int workerId);
+        Task<IEnumerable<WorkerConflictDto>> GetWorkerConflicts(int workerId, DateTimeRange period);
     }
 }

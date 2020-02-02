@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Application.Calendar.Queries;
 using Scheduler.Application.Calendar.Queries.GetResourceCalendar;
 using Scheduler.Application.Calendar.Queries.GetResourcesCalendar;
+using Scheduler.Application.Conflicts.Queries;
+using Scheduler.Application.Conflicts.Queries.GetAllResourceConflicts;
+using Scheduler.Application.Conflicts.Queries.GetResourceConflicts;
 using Scheduler.Application.Resources.Commands.CreateResource;
 using Scheduler.Application.Resources.Commands.DeleteResource;
 using Scheduler.Application.Resources.Commands.EditResource;
@@ -80,6 +84,20 @@ namespace Scheduler.WebAPI.Controllers
         public async Task<ActionResult<ResourceCalendarDto>> GetCalendar(int id, DateTime? start, DateTime? end)
         {
             var vm = await Mediator.Send(new GetResourceCalendarQuery { Id = id, Start = start, End = end });
+            return Ok(vm);
+        }
+
+        [HttpGet("conflicts")]
+        public async Task<ActionResult<IEnumerable<ResourceConflictsVm>>> GetAllConflicts()
+        {
+            var vm = await Mediator.Send(new GetAllResourceConflictsQuery());
+            return Ok(vm);
+        }
+
+        [HttpGet("{id}/conflicts")]
+        public async Task<ActionResult<ResourceConflictsVm>> GetConflicts(int id, DateTime? start, DateTime? end)
+        {
+            var vm = await Mediator.Send(new GetResourceConflictsQuery { Id = id, Start = start, End = end });
             return Ok(vm);
         }
     }
