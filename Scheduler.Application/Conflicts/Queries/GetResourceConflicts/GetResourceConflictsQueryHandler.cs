@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Scheduler.Application.Common.Interfaces;
+using Scheduler.Application.Common.Models;
 using Scheduler.Domain.ValueObjects;
 using System.Collections.Generic;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace Scheduler.Application.Conflicts.Queries.GetResourceConflicts
 
         public async Task<ResourceConflictsVm> Handle(GetResourceConflictsQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<ResourceConflictDto> conflicts;
+            IEnumerable<Appointment> conflicts;
             if (request.Start.HasValue && request.End.HasValue)
                 conflicts = await _repo.GetResourceConflicts(request.Id, new DateTimeRange(request.Start.Value, request.End.Value));
             else

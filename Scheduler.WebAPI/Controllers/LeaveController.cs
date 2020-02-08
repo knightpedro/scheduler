@@ -4,6 +4,7 @@ using Scheduler.Application.Workers.Commands.CreateLeave;
 using Scheduler.Application.Workers.Commands.DeleteLeave;
 using Scheduler.Application.Workers.Commands.EditLeave;
 using Scheduler.Application.Workers.Queries.GetLeave;
+using Scheduler.Application.Workers.Queries.GetLeaveList;
 using Scheduler.Domain.Entities;
 using System;
 using System.Threading.Tasks;
@@ -12,6 +13,13 @@ namespace Scheduler.WebAPI.Controllers
 {
     public class LeaveController : BaseController
     {
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<LeaveListVm>> GetAll() {
+            var vm = await Mediator.Send(new GetLeaveListQuery());
+            return Ok(vm);
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

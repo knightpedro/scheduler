@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Scheduler.Application.Common.Interfaces;
+using Scheduler.Application.Common.Models;
 using Scheduler.Domain.ValueObjects;
 using System.Collections.Generic;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace Scheduler.Application.Conflicts.Queries.GetWorkerConflicts
 
         public async Task<WorkerConflictsVm> Handle(GetWorkerConflictsQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<WorkerConflictDto> conflicts;
+            IEnumerable<Appointment> conflicts;
             if (request.Start.HasValue && request.End.HasValue)
             {
                 var conflictPeriod = new DateTimeRange(request.Start.Value, request.End.Value);

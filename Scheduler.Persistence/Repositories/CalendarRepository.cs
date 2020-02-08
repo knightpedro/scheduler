@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Scheduler.Application.Calendar.Queries;
+using Scheduler.Application.Common.Models;
+using Scheduler.Persistence.Common;
 
 namespace Scheduler.Persistence.Repositories
 {
@@ -26,14 +28,18 @@ namespace Scheduler.Persistence.Repositories
                 .ThenInclude(rs => rs.JobTask)
                 .SingleOrDefaultAsync(r => r.Id == resourceId);
 
+            var appointments = new List<Appointment>();
+            appointments.AddRange(resource.OutOfServices.Select(o => new Appointment(o)));
+            appointments.AddRange(resource.ResourceShifts.Select(rs => new Appointment(rs.JobTask)));
+            Conflicts.GetConflicts(appointments);
+
             var resourceDto = new ResourceCalendarDto
             {
                 Id = resource.Id,
                 Name = resource.Name,
                 IsActive = resource.IsActive,
                 Description = resource.Description,
-                OutOfServices = resource.OutOfServices.Select(o => new OutOfServiceDto(o)),
-                JobTasks = resource.ResourceShifts.Select(rs => new JobTaskDto(rs.JobTask))
+                Appointments = appointments
             };
 
             return resourceDto;
@@ -45,7 +51,7 @@ namespace Scheduler.Persistence.Repositories
                 .AsNoTracking()
                 .Where(o => o.ResourceId == resourceId)
                 .Where(o => o.Period.Start < period.End && period.Start < o.Period.End)
-                .Select(o => new OutOfServiceDto(o))
+                .Select(o => new Appointment(o))
                 .ToListAsync();
 
             var jobTasks = await context.ResourceShifts
@@ -53,8 +59,13 @@ namespace Scheduler.Persistence.Repositories
                 .Include(rs => rs.JobTask)
                 .Where(rs => rs.ResourceId == resourceId)
                 .Where(rs => rs.JobTask.TaskPeriod.Start < period.End && period.Start < rs.JobTask.TaskPeriod.End)
-                .Select(rs => new JobTaskDto(rs.JobTask))
+                .Select(rs => new Appointment(rs.JobTask))
                 .ToListAsync();
+
+            var appointments = new List<Appointment>();
+            appointments.AddRange(outOfServices);
+            appointments.AddRange(jobTasks);
+            Conflicts.GetConflicts(appointments);
 
             var resource = await context.Resources
                 .AsNoTracking()
@@ -66,8 +77,7 @@ namespace Scheduler.Persistence.Repositories
                 Name = resource.Name,
                 IsActive = resource.IsActive,
                 Description = resource.Description,
-                OutOfServices = outOfServices,
-                JobTasks = jobTasks
+                Appointments = appointments
             };
         }
 
@@ -93,20 +103,27 @@ namespace Scheduler.Persistence.Repositories
 
             foreach(var resource in resources)
             {
+                var appointments = new List<Appointment>();
+
+                var resourceOutOfServices = outOfServices
+                    .Where(o => o.ResourceId == resource.Id)
+                    .Select(o => new Appointment(o));
+
+                var resourceJobTasks = resourceShifts.Where(rs => rs.ResourceId == resource.Id)
+                    .Select(rs => new Appointment(rs.JobTask));
+
+                appointments.AddRange(resourceOutOfServices);
+                appointments.AddRange(resourceJobTasks);
+                Conflicts.GetConflicts(appointments);
+
                 var resourceDto = new ResourceCalendarDto
                 {
                     Id = resource.Id,
                     Description = resource.Description,
                     Name = resource.Name,
-                    IsActive = resource.IsActive
+                    IsActive = resource.IsActive,
+                    Appointments = appointments
                 };
-
-                resourceDto.OutOfServices = outOfServices
-                    .Where(o => o.ResourceId == resource.Id)
-                    .Select(o => new OutOfServiceDto(o));
-
-                resourceDto.JobTasks = resourceShifts.Where(rs => rs.ResourceId == resource.Id)
-                    .Select(rs => new JobTaskDto(rs.JobTask));
 
                 calendar.Add(resourceDto);
             }
@@ -125,14 +142,18 @@ namespace Scheduler.Persistence.Repositories
                 .ThenInclude(ws => ws.JobTask)
                 .SingleOrDefaultAsync(w => w.Id == workerId);
 
+            var appointments = new List<Appointment>();
+            appointments.AddRange(worker.Leave.Select(l => new Appointment(l)));
+            appointments.AddRange(worker.WorkerShifts.Select(ws => new Appointment(ws.JobTask)));
+            appointments.AddRange(worker.WorkerTraining.Select(wt => new Appointment(wt.Training)));
+            Conflicts.GetConflicts(appointments);
+
             return new WorkerCalendarDto
             {
                 Id = worker.Id,
                 Name = worker.Name,
                 IsActive = worker.IsActive,
-                Leave = worker.Leave.Select(l => new LeaveDto(l)),
-                Training = worker.WorkerTraining.Select(wt => new TrainingDto(wt.Training)),
-                JobTasks = worker.WorkerShifts.Select(ws => new JobTaskDto(ws.JobTask))
+                Appointments = appointments
             };
         }
 
@@ -142,7 +163,7 @@ namespace Scheduler.Persistence.Repositories
                 .AsNoTracking()
                 .Where(l => l.WorkerId == workerId)
                 .Where(l => l.LeavePeriod.Start < period.End && period.Start < l.LeavePeriod.End)
-                .Select(l => new LeaveDto(l))
+                .Select(l => new Appointment(l))
                 .ToListAsync();
 
             var training = await context.WorkerTraining
@@ -150,7 +171,7 @@ namespace Scheduler.Persistence.Repositories
                 .Include(wt => wt.Training)
                 .Where(wt => wt.WorkerId == workerId)
                 .Where(wt => wt.Training.TrainingPeriod.Start < period.End && period.Start < wt.Training.TrainingPeriod.End)
-                .Select(wt => new TrainingDto(wt.Training))
+                .Select(wt => new Appointment(wt.Training))
                 .ToListAsync();
 
             var jobTasks = await context.WorkerShifts
@@ -158,21 +179,25 @@ namespace Scheduler.Persistence.Repositories
                 .Include(ws => ws.JobTask)
                 .Where(ws => ws.WorkerId == workerId)
                 .Where(ws => ws.JobTask.TaskPeriod.Start < period.End && period.Start < ws.JobTask.TaskPeriod.End)
-                .Select(ws => new JobTaskDto(ws.JobTask))
+                .Select(ws => new Appointment(ws.JobTask))
                 .ToListAsync();
 
             var worker = await context.Workers
                 .AsNoTracking()
                 .SingleOrDefaultAsync(w => w.Id == workerId);
 
+            var appointments = new List<Appointment>();
+            appointments.AddRange(leave);
+            appointments.AddRange(jobTasks);
+            appointments.AddRange(training);
+            Conflicts.GetConflicts(appointments);
+
             return new WorkerCalendarDto
             {
                 Id = worker.Id,
                 Name = worker.Name,
                 IsActive = worker.IsActive,
-                Leave = leave,
-                Training = training,
-                JobTasks = jobTasks
+                Appointments = appointments
             };
         }
 
@@ -204,24 +229,31 @@ namespace Scheduler.Persistence.Repositories
 
             foreach (var worker in workers)
             {
+                var workerLeave = leave
+                    .Where(l => l.WorkerId == worker.Id)
+                    .Select(l => new Appointment(l));
+
+                var workerJobTasks = workerShifts
+                    .Where(ws => ws.WorkerId == worker.Id)
+                    .Select(ws => new Appointment(ws.JobTask));
+
+                var training = workerTraining
+                    .Where(wt => wt.WorkerId == worker.Id)
+                    .Select(wt => new Appointment(wt.Training));
+
+                var appointments = new List<Appointment>();
+                appointments.AddRange(workerLeave);
+                appointments.AddRange(workerJobTasks);
+                appointments.AddRange(training);
+                Conflicts.GetConflicts(appointments);
+
                 var workerDto = new WorkerCalendarDto 
                 { 
                     Id = worker.Id,
                     Name = worker.Name,
-                    IsActive = worker.IsActive
+                    IsActive = worker.IsActive,
+                    Appointments = appointments
                 };
-
-                workerDto.Leave = leave
-                    .Where(l => l.WorkerId == worker.Id)
-                    .Select(l => new LeaveDto(l));
-
-                workerDto.Training = workerTraining
-                    .Where(wt => wt.WorkerId == worker.Id)
-                    .Select(wt => new TrainingDto(wt.Training));
-
-                workerDto.JobTasks = workerShifts
-                    .Where(ws => ws.WorkerId == worker.Id)
-                    .Select(ws => new JobTaskDto(ws.JobTask));
 
                 calendar.Add(workerDto);
             }

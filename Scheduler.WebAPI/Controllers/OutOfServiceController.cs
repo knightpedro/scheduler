@@ -6,12 +6,21 @@ using Scheduler.Application.Resources.Commands.CreateOutOfService;
 using Scheduler.Application.Resources.Commands.DeleteOutOfService;
 using Scheduler.Application.Resources.Commands.EditOutOfService;
 using Scheduler.Application.Resources.Queries.GetOutOfService;
+using Scheduler.Application.Resources.Queries.GetOutOfServicesList;
 using Scheduler.Domain.Entities;
 
 namespace Scheduler.WebAPI.Controllers
 {
     public class OutOfServiceController : BaseController
     {
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<OutOfServicesListVm>> GetAll()
+        {
+            var vm = await Mediator.Send(new GetOutOfServicesListQuery());
+            return Ok(vm);
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
