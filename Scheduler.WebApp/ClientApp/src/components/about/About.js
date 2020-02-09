@@ -17,31 +17,21 @@ const About = () => {
       <Jumbotron className="shadow">
         <h1 className="display-4">About</h1>
         <p className="lead">
-          Scheduler is a demonstration app built using React and ASP.NET Core.
+          Scheduler is a simple planning application built using React and ASP.NET Core.
         </p>
         <p className="lead">
           It's designed to help small contracting companies keep track of their
-          work load.
+          workload.
         </p>
         <hr className="my-4"></hr>
-        <p>
-          View the frontend{" "}
-          <a
-            href="https://bitbucket.org/prk26/scheduler-client"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            source.
-          </a>
-        </p>
-        <p>
-          View the backend{" "}
+              <p>
+                  View the source on{" "}
           <a
             href="https://bitbucket.org/prk26/scheduler"
             target="_blank"
             rel="noopener noreferrer"
           >
-            source.
+            Bitbucket.
           </a>
         </p>
       </Jumbotron>
