@@ -3,7 +3,6 @@ import { EditDeleteGroup } from "../../common/actions";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
 import { CentredModal } from "../../common/modals";
-import Title from "../../common/title";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
@@ -29,13 +28,17 @@ const TrainingDetail = ({ training, handleDelete }) => {
 
   return (
     <>
-      <Title>
-        <h2>{training.description}</h2>
-        <EditDeleteGroup
-          editPath={editPath}
-          handleDeleteClick={() => setShowModal(true)}
-        />
-      </Title>
+      <div className="row align-items-center">
+        <div className="col ml-auto">
+          <h2>{training.description}</h2>
+        </div>
+        <div className="col-auto">
+          <EditDeleteGroup
+            editPath={editPath}
+            handleDeleteClick={() => setShowModal(true)}
+          />
+        </div>
+      </div>
 
       <p>
         <FontAwesomeIcon icon={faMapMarkerAlt} fixedWidth />

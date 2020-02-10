@@ -6,7 +6,6 @@ import axios from "axios";
 import { COORDINATORS_URL } from "../../../api";
 import Routes from "../../../routes";
 import Breadcrumb from "../../common/breadcrumb";
-import Title from "../../common/title";
 
 class CreateCoordinatorFormContainer extends React.Component {
   state = {
@@ -42,9 +41,7 @@ class CreateCoordinatorFormContainer extends React.Component {
     return (
       <Container>
         {this.renderBreadcrumb()}
-        <Title>
-          <h2>Add Coordinator</h2>
-        </Title>
+        <h2>Add Coordinator</h2>
         {error && <Alert variant="danger">{error.message}</Alert>}
         <CreateCoordinatorForm
           handleSubmit={this.handleSubmit}

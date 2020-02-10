@@ -2,7 +2,6 @@ import styled from "styled-components";
 import Table from "react-bootstrap/Table";
 
 const StyledTable = styled(Table)`
-  table-layout: fixed;
   border-collapse: collapse;
   border-style: hidden;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);

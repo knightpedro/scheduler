@@ -14,7 +14,6 @@ import { ActiveStatus } from "../../common/status";
 import { createWorkerSchedule } from "../workersSchedule/workersCalendar";
 import { appointmentTypes } from "../../../utils";
 import moment from "moment";
-import Title from "../../common/title";
 import NoContent from "../../common/noContent";
 
 const DELETE_MESSAGE = "Are you sure you want to delete this staff member?";
@@ -53,16 +52,27 @@ const WorkerDetail = ({ worker, handleDelete }) => {
 
   return (
     <>
-      <Title>
-        <h2>{worker.name}</h2>
-        <ActiveStatus isActive={worker.isActive} />
-        <EditDeleteGroup
-          editPath={editWorkerPath}
-          handleDeleteClick={() => setShowModal(true)}
-        />
-      </Title>
+      <div className="row align-items-center">
+        <div className="col-auto">
+          <h2>{worker.name}</h2>
+        </div>
+        <div className="col mr-auto">
+          <ActiveStatus isActive={worker.isActive} />
+        </div>
+      </div>
 
-      <Create path={createLeavePath}>Leave</Create>
+      <div className="row align-items-center">
+        <div className="col mr-auto">
+          <Create path={createLeavePath}>Leave</Create>
+        </div>
+        <div className="col-auto">
+          <EditDeleteGroup
+            editPath={editWorkerPath}
+            handleDeleteClick={() => setShowModal(true)}
+          />
+        </div>
+      </div>
+
       <IndividualWeekSchedule
         schedule={schedule}
         start={start}

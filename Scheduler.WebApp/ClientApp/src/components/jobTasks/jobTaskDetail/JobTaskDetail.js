@@ -3,7 +3,6 @@ import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
 import { EditDeleteGroup } from "../../common/actions";
 import { CentredModal } from "../../common/modals";
-import Title from "../../common/title";
 
 const DELETE_MESSAGE = "Are you sure you want to delete this task?";
 
@@ -38,13 +37,17 @@ const JobTaskDetail = ({ jobTask, handleDelete }) => {
 
   return (
     <>
-      <Title>
-        <h2>{jobTask.description}</h2>
-        <EditDeleteGroup
-          editPath={editPath}
-          handleDeleteClick={() => setShowModal(true)}
-        />
-      </Title>
+      <div className="row align-items-center">
+        <div className="col ml-auto">
+          <h2>{jobTask.description}</h2>
+        </div>
+        <div className="col-auto">
+          <EditDeleteGroup
+            editPath={editPath}
+            handleDeleteClick={() => setShowModal(true)}
+          />
+        </div>
+      </div>
       <p>Start: {jobTask.start}</p>
       <p>Finish: {jobTask.end}</p>
       {jobTask.workers.length > 0 && (

@@ -1,18 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import Edit from './Edit';
-import Delete from './Delete';
-
-const Container = styled.div`
-    margin-left: auto;
-    align-self: flex-end;
-`;
+import React from "react";
+import Edit from "./Edit";
+import Delete from "./Delete";
 
 const EditDeleteGroup = ({ editPath, handleDeleteClick }) => (
-    <Container>
-        <Edit path={editPath} />
-        <Delete handleClick={handleDeleteClick} />
-    </Container>
+  <>
+    <Edit path={editPath} />
+    <Delete handleClick={handleDeleteClick} />
+  </>
 );
 
 export default EditDeleteGroup;
