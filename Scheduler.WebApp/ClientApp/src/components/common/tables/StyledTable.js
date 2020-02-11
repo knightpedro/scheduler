@@ -4,8 +4,7 @@ import Table from "react-bootstrap/Table";
 const StyledTable = styled(Table)`
   border-collapse: collapse;
   border-style: hidden;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  margin: 20px 0 50px 0;
+  margin: 0;
 
   &&& th,
   thead,
