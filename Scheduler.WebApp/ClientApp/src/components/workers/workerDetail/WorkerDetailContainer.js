@@ -10,47 +10,49 @@ import { useWorkerCalendar } from "../workersSchedule/workersCalendar";
 import Alert from "react-bootstrap/Alert";
 
 const WorkerDetailContainer = props => {
-  const id = props.match.params.id;
-  const [loading, loadingError, worker] = useWorkerCalendar(id);
-  const [deleteError, setDeleteError] = useState();
+    const id = props.match.params.id;
+    const [loading, loadingError, worker] = useWorkerCalendar(id);
+    const [deleteError, setDeleteError] = useState();
 
-  const handleDelete = () => {
-    setDeleteError(null);
-    axios
-      .delete(`${WORKERS_URL}/${id}`)
-      .then(() => props.history.push(Routes.workers.LIST))
-      .catch(error => setDeleteError(error));
-  };
+    const handleDelete = () => {
+        setDeleteError(null);
+        axios
+            .delete(`${WORKERS_URL}/${id}`)
+            .then(() => props.history.push(Routes.workers.LIST))
+            .catch(error => setDeleteError(error));
+    };
 
-  const renderBreadcrumb = () => (
-    <Breadcrumb>
-      <Breadcrumb.Item href={Routes.workers.LIST}>Staff</Breadcrumb.Item>
-      <Breadcrumb.Item active>{worker.name}</Breadcrumb.Item>
-    </Breadcrumb>
-  );
+    const renderBreadcrumb = () => (
+        <Breadcrumb>
+            <Breadcrumb.Item href={Routes.workers.LIST}>Staff</Breadcrumb.Item>
+            <Breadcrumb.Item active>{worker.name}</Breadcrumb.Item>
+        </Breadcrumb>
+    );
 
-  const renderComponent = component => <Container>{component}</Container>;
+    const renderComponent = component => <Container>{component}</Container>;
 
-  if (loading) return renderComponent(<Loading />);
-  if (loadingError)
-    return renderComponent(<LoadingFailure message={loadingError.message} />);
+    if (loading) return renderComponent(<Loading />);
+    if (loadingError)
+        return renderComponent(
+            <LoadingFailure message={loadingError.message} />
+        );
 
-  return renderComponent(
-    <>
-      {renderBreadcrumb()}
-      {deleteError && (
-        <Alert
-          className="mt-4"
-          variant="danger"
-          dismissible
-          onClose={() => setDeleteError(null)}
-        >
-          Delete failed: {deleteError.message}
-        </Alert>
-      )}
-      <WorkerDetail worker={worker} handleDelete={handleDelete} />
-    </>
-  );
+    return renderComponent(
+        <>
+            {renderBreadcrumb()}
+            {deleteError && (
+                <Alert
+                    className="mt-4"
+                    variant="danger"
+                    dismissible
+                    onClose={() => setDeleteError(null)}
+                >
+                    Delete failed: {deleteError.message}
+                </Alert>
+            )}
+            <WorkerDetail worker={worker} handleDelete={handleDelete} />
+        </>
+    );
 };
 
 export default WorkerDetailContainer;

@@ -1,5 +1,5 @@
-import { UserManager, WebStorageStateStore } from 'oidc-client';
-import { ApplicationPaths, ApplicationName } from './ApiAuthorizationConstants';
+import { UserManager, WebStorageStateStore } from "oidc-client";
+import { ApplicationPaths, ApplicationName } from "./ApiAuthorizationConstants";
 
 export class AuthorizeService {
     _callbacks = [];
@@ -43,7 +43,9 @@ export class AuthorizeService {
     async signIn(state) {
         await this.ensureUserManagerInitialized();
         try {
-            const silentUser = await this.userManager.signinSilent(this.createArguments());
+            const silentUser = await this.userManager.signinSilent(
+                this.createArguments()
+            );
             this.updateState(silentUser);
             return this.success(state);
         } catch (silentError) {
@@ -52,10 +54,14 @@ export class AuthorizeService {
 
             try {
                 if (this._popUpDisabled) {
-                    throw new Error('Popup disabled. Change \'AuthorizeService.js:AuthorizeService._popupDisabled\' to false to enable it.')
+                    throw new Error(
+                        "Popup disabled. Change 'AuthorizeService.js:AuthorizeService._popupDisabled' to false to enable it."
+                    );
                 }
 
-                const popUpUser = await this.userManager.signinPopup(this.createArguments());
+                const popUpUser = await this.userManager.signinPopup(
+                    this.createArguments()
+                );
                 this.updateState(popUpUser);
                 return this.success(state);
             } catch (popUpError) {
@@ -68,10 +74,15 @@ export class AuthorizeService {
 
                 // PopUps might be blocked by the user, fallback to redirect
                 try {
-                    await this.userManager.signinRedirect(this.createArguments(state));
+                    await this.userManager.signinRedirect(
+                        this.createArguments(state)
+                    );
                     return this.redirect();
                 } catch (redirectError) {
-                    console.log("Redirect authentication error: ", redirectError);
+                    console.log(
+                        "Redirect authentication error: ",
+                        redirectError
+                    );
                     return this.error(redirectError);
                 }
             }
@@ -85,8 +96,8 @@ export class AuthorizeService {
             this.updateState(user);
             return this.success(user && user.state);
         } catch (error) {
-            console.log('There was an error signing in: ', error);
-            return this.error('There was an error signing in.');
+            console.log("There was an error signing in: ", error);
+            return this.error("There was an error signing in.");
         }
     }
 
@@ -99,7 +110,9 @@ export class AuthorizeService {
         await this.ensureUserManagerInitialized();
         try {
             if (this._popUpDisabled) {
-                throw new Error('Popup disabled. Change \'AuthorizeService.js:AuthorizeService._popupDisabled\' to false to enable it.')
+                throw new Error(
+                    "Popup disabled. Change 'AuthorizeService.js:AuthorizeService._popupDisabled' to false to enable it."
+                );
             }
 
             await this.userManager.signoutPopup(this.createArguments());
@@ -108,7 +121,9 @@ export class AuthorizeService {
         } catch (popupSignOutError) {
             console.log("Popup signout error: ", popupSignOutError);
             try {
-                await this.userManager.signoutRedirect(this.createArguments(state));
+                await this.userManager.signoutRedirect(
+                    this.createArguments(state)
+                );
                 return this.redirect();
             } catch (redirectSignOutError) {
                 console.log("Redirect signout error: ", redirectSignOutError);
@@ -136,16 +151,25 @@ export class AuthorizeService {
     }
 
     subscribe(callback) {
-        this._callbacks.push({ callback, subscription: this._nextSubscriptionId++ });
+        this._callbacks.push({
+            callback,
+            subscription: this._nextSubscriptionId++,
+        });
         return this._nextSubscriptionId - 1;
     }
 
     unsubscribe(subscriptionId) {
         const subscriptionIndex = this._callbacks
-            .map((element, index) => element.subscription === subscriptionId ? { found: true, index } : { found: false })
+            .map((element, index) =>
+                element.subscription === subscriptionId
+                    ? { found: true, index }
+                    : { found: false }
+            )
             .filter(element => element.found === true);
         if (subscriptionIndex.length !== 1) {
-            throw new Error(`Found an invalid number of subscriptions ${subscriptionIndex.length}`);
+            throw new Error(
+                `Found an invalid number of subscriptions ${subscriptionIndex.length}`
+            );
         }
 
         this._callbacks.splice(subscriptionIndex[0].index, 1);
@@ -179,7 +203,9 @@ export class AuthorizeService {
             return;
         }
 
-        let response = await fetch(ApplicationPaths.ApiAuthorizationClientConfigurationUrl);
+        let response = await fetch(
+            ApplicationPaths.ApiAuthorizationClientConfigurationUrl
+        );
         if (!response.ok) {
             throw new Error(`Could not load settings for '${ApplicationName}'`);
         }
@@ -188,7 +214,7 @@ export class AuthorizeService {
         settings.automaticSilentRenew = true;
         settings.includeIdTokenInSilentRenew = true;
         settings.userStore = new WebStorageStateStore({
-            prefix: ApplicationName
+            prefix: ApplicationName,
         });
 
         this.userManager = new UserManager(settings);
@@ -199,7 +225,9 @@ export class AuthorizeService {
         });
     }
 
-    static get instance() { return authService }
+    static get instance() {
+        return authService;
+    }
 }
 
 const authService = new AuthorizeService();
@@ -207,7 +235,7 @@ const authService = new AuthorizeService();
 export default authService;
 
 export const AuthenticationResultStatus = {
-    Redirect: 'redirect',
-    Success: 'success',
-    Fail: 'fail'
+    Redirect: "redirect",
+    Success: "success",
+    Fail: "fail",
 };

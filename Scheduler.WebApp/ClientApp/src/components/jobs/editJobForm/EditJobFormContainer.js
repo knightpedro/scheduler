@@ -1,25 +1,24 @@
-import React from 'react';
-import Alert from 'react-bootstrap/Alert';
-import Container from '../../common/containers';
-import Breadcrumb from '../../common/breadcrumb';
-import axios from 'axios';
-import { Loading, LoadingFailure } from '../../common/loading';
-import EditJobForm from './EditJobForm';
-import { JOBS_URL, COORDINATORS_URL } from '../../../api';
-import { isEqual } from 'lodash';
-import moment from 'moment';
-import { generatePath } from 'react-router-dom';
-import Routes from '../../../routes';
+import React from "react";
+import Alert from "react-bootstrap/Alert";
+import Container from "../../common/containers";
+import Breadcrumb from "../../common/breadcrumb";
+import axios from "axios";
+import { Loading, LoadingFailure } from "../../common/loading";
+import EditJobForm from "./EditJobForm";
+import { JOBS_URL, COORDINATORS_URL } from "../../../api";
+import { isEqual } from "lodash";
+import moment from "moment";
+import { generatePath } from "react-router-dom";
+import Routes from "../../../routes";
 
 class EditJobFormContainer extends React.Component {
-
     state = {
         loading: true,
         loadingError: null,
         formError: null,
         job: null,
-        coordinators: null
-    }
+        coordinators: null,
+    };
 
     componentDidMount = async () => {
         const { id } = this.props.match.params;
@@ -28,27 +27,32 @@ class EditJobFormContainer extends React.Component {
             let jobRes = await axios.get(`${JOBS_URL}/${id}`);
             this.setState({
                 job: this.transformJobForForm(jobRes.data),
-                coordinators: this.transformCoordinatorsForSelection(coordinatorsRes.data.coordinators), 
-                loading: false
-            })
-        }
-        catch (error) {
-            this.setState({ 
-                loadingError: error, 
-                loading: false 
+                coordinators: this.transformCoordinatorsForSelection(
+                    coordinatorsRes.data.coordinators
+                ),
+                loading: false,
+            });
+        } catch (error) {
+            this.setState({
+                loadingError: error,
+                loading: false,
             });
         }
-    }
+    };
 
     transformJobForForm(job) {
-        const coordinator = job.coordinator ? { label: job.coordinator.name, value: job.coordinator.id } : null;
+        const coordinator = job.coordinator
+            ? { label: job.coordinator.name, value: job.coordinator.id }
+            : null;
         const dateReceived = moment(job.dateReceived);
         return { ...job, coordinator, dateReceived };
     }
 
     transformCoordinatorsForSelection(coordinators) {
-        const sorted = coordinators.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        return sorted.map(c => ({ label: c.name, value: c.id })); 
+        const sorted = coordinators.sort((a, b) =>
+            a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+        );
+        return sorted.map(c => ({ label: c.name, value: c.id }));
     }
 
     handleCancel = () => this.props.history.goBack();
@@ -58,34 +62,32 @@ class EditJobFormContainer extends React.Component {
         const { job } = this.state;
         const { id } = this.props.match.params;
 
-        const {coordinator, dateReceived, ...jobDetails } = values;
+        const { coordinator, dateReceived, ...jobDetails } = values;
 
         const jobBody = {
             dateReceived: dateReceived.format(),
-            ...jobDetails
+            ...jobDetails,
         };
 
         const coordinatorBody = {
-            coordinatorId: coordinator.value
+            coordinatorId: coordinator.value,
         };
 
-
         if (isEqual(job, values)) {
-            this.setState({ formError: { message: "No changes made" }});
+            this.setState({ formError: { message: "No changes made" } });
             setSubmitting(false);
             return;
         }
         try {
-            await axios.put(`${JOBS_URL}/${id}`, jobBody)
-            await axios.put(`${JOBS_URL}/${id}/coordinator/`, coordinatorBody)
+            await axios.put(`${JOBS_URL}/${id}`, jobBody);
+            await axios.put(`${JOBS_URL}/${id}/coordinator/`, coordinatorBody);
             const jobDetailPath = generatePath(Routes.jobs.DETAIL, { id });
             this.props.history.push(jobDetailPath);
-        }
-        catch (error) {
+        } catch (error) {
             this.setState({ formError: error });
             setSubmitting(false);
         }
-    }
+    };
 
     renderBreadcrumb = () => (
         <Breadcrumb>
@@ -105,14 +107,30 @@ class EditJobFormContainer extends React.Component {
     }
 
     render() {
-        const { loading, loadingError, formError, job, coordinators } = this.state;
+        const {
+            loading,
+            loadingError,
+            formError,
+            job,
+            coordinators,
+        } = this.state;
         if (loading) return this.renderComponent(<Loading />);
-        if (loadingError) return this.renderComponent(<LoadingFailure message={loadingError.message} />);
+        if (loadingError)
+            return this.renderComponent(
+                <LoadingFailure message={loadingError.message} />
+            );
 
         return this.renderComponent(
             <>
-            { formError && <Alert variant="danger">{formError.message}</Alert> }
-            <EditJobForm job={job} coordinators={coordinators} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel}/>
+                {formError && (
+                    <Alert variant="danger">{formError.message}</Alert>
+                )}
+                <EditJobForm
+                    job={job}
+                    coordinators={coordinators}
+                    handleSubmit={this.handleSubmit}
+                    handleCancel={this.handleCancel}
+                />
             </>
         );
     }

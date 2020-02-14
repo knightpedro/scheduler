@@ -1,1 +1,1 @@
-export {default} from "./EditWorkerFormContainer";
+export { default } from "./EditWorkerFormContainer";

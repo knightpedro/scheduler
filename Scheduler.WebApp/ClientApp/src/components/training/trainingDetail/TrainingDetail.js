@@ -9,54 +9,56 @@ import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 const DELETE_MESSAGE = "Are you sure you want to delete this training?";
 
 const TrainingDetail = ({ training, handleDelete }) => {
-  const [showModal, setShowModal] = useState(false);
-  const editPath = generatePath(Routes.training.EDIT, { id: training.id });
+    const [showModal, setShowModal] = useState(false);
+    const editPath = generatePath(Routes.training.EDIT, { id: training.id });
 
-  const handleModalSuccess = () => {
-    setShowModal(false);
-    handleDelete();
-  };
+    const handleModalSuccess = () => {
+        setShowModal(false);
+        handleDelete();
+    };
 
-  const renderWorker = worker => {
-    const workerPath = generatePath(Routes.workers.DETAIL, { id: worker.id });
+    const renderWorker = worker => {
+        const workerPath = generatePath(Routes.workers.DETAIL, {
+            id: worker.id,
+        });
+        return (
+            <li key={worker.id}>
+                <Link to={workerPath}>{worker.name}</Link>
+            </li>
+        );
+    };
+
     return (
-      <li key={worker.id}>
-        <Link to={workerPath}>{worker.name}</Link>
-      </li>
+        <>
+            <div className="row align-items-center">
+                <div className="col ml-auto">
+                    <h2>{training.description}</h2>
+                </div>
+                <div className="col-auto">
+                    <EditDeleteGroup
+                        editPath={editPath}
+                        handleDeleteClick={() => setShowModal(true)}
+                    />
+                </div>
+            </div>
+
+            <p>
+                <FontAwesomeIcon icon={faMapMarkerAlt} fixedWidth />
+                {training.location}
+            </p>
+            <p>Start: {training.start}</p>
+            <p>Finish: {training.end}</p>
+            <h5>Attendees</h5>
+            <ul>{training.workers.map(worker => renderWorker(worker))}</ul>
+            <CentredModal
+                show={showModal}
+                title={`Delete ${training.description}`}
+                content={DELETE_MESSAGE}
+                handleSuccess={handleModalSuccess}
+                handleHide={() => setShowModal(false)}
+            />
+        </>
     );
-  };
-
-  return (
-    <>
-      <div className="row align-items-center">
-        <div className="col ml-auto">
-          <h2>{training.description}</h2>
-        </div>
-        <div className="col-auto">
-          <EditDeleteGroup
-            editPath={editPath}
-            handleDeleteClick={() => setShowModal(true)}
-          />
-        </div>
-      </div>
-
-      <p>
-        <FontAwesomeIcon icon={faMapMarkerAlt} fixedWidth />
-        {training.location}
-      </p>
-      <p>Start: {training.start}</p>
-      <p>Finish: {training.end}</p>
-      <h5>Attendees</h5>
-      <ul>{training.workers.map(worker => renderWorker(worker))}</ul>
-      <CentredModal
-        show={showModal}
-        title={`Delete ${training.description}`}
-        content={DELETE_MESSAGE}
-        handleSuccess={handleModalSuccess}
-        handleHide={() => setShowModal(false)}
-      />
-    </>
-  );
 };
 
 export default TrainingDetail;

@@ -10,47 +10,51 @@ import { useResourceCalendar } from "../resourcesSchedule/resourcesCalendar";
 import Alert from "react-bootstrap/Alert";
 
 const ResourceDetailContainer = props => {
-  const id = props.match.params.id;
-  const [loading, loadingError, resource] = useResourceCalendar(id);
-  const [deleteError, setDeleteError] = useState();
+    const id = props.match.params.id;
+    const [loading, loadingError, resource] = useResourceCalendar(id);
+    const [deleteError, setDeleteError] = useState();
 
-  const handleDelete = () => {
-    setDeleteError(null);
-    axios
-      .delete(`${RESOURCES_URL}/${id}`)
-      .then(() => props.history.push(Routes.resources.LIST))
-      .catch(error => setDeleteError(error));
-  };
+    const handleDelete = () => {
+        setDeleteError(null);
+        axios
+            .delete(`${RESOURCES_URL}/${id}`)
+            .then(() => props.history.push(Routes.resources.LIST))
+            .catch(error => setDeleteError(error));
+    };
 
-  const renderBreadcrumb = () => (
-    <Breadcrumb>
-      <Breadcrumb.Item href={Routes.resources.LIST}>Plant</Breadcrumb.Item>
-      <Breadcrumb.Item active>{resource.name}</Breadcrumb.Item>
-    </Breadcrumb>
-  );
+    const renderBreadcrumb = () => (
+        <Breadcrumb>
+            <Breadcrumb.Item href={Routes.resources.LIST}>
+                Plant
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>{resource.name}</Breadcrumb.Item>
+        </Breadcrumb>
+    );
 
-  const renderComponent = component => <Container>{component}</Container>;
+    const renderComponent = component => <Container>{component}</Container>;
 
-  if (loading) return renderComponent(<Loading />);
-  if (loadingError)
-    return renderComponent(<LoadingFailure message={loadingError.message} />);
+    if (loading) return renderComponent(<Loading />);
+    if (loadingError)
+        return renderComponent(
+            <LoadingFailure message={loadingError.message} />
+        );
 
-  return renderComponent(
-    <>
-      {renderBreadcrumb()}
-      {deleteError && (
-        <Alert
-          className="mt-4"
-          variant="danger"
-          dismissible
-          onClose={() => setDeleteError(null)}
-        >
-          Delete failed: {deleteError.message}
-        </Alert>
-      )}
-      <ResourceDetail resource={resource} handleDelete={handleDelete} />
-    </>
-  );
+    return renderComponent(
+        <>
+            {renderBreadcrumb()}
+            {deleteError && (
+                <Alert
+                    className="mt-4"
+                    variant="danger"
+                    dismissible
+                    onClose={() => setDeleteError(null)}
+                >
+                    Delete failed: {deleteError.message}
+                </Alert>
+            )}
+            <ResourceDetail resource={resource} handleDelete={handleDelete} />
+        </>
+    );
 };
 
 export default ResourceDetailContainer;

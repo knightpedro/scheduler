@@ -1,11 +1,11 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faSyncAlt } from '@fortawesome/free-solid-svg-icons'
-import styled from 'styled-components';
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 
 const colors = {
     complete: "green",
-    incomplete: "darkblue"
+    incomplete: "darkblue",
 };
 
 const CompleteWrapper = styled.div`
@@ -28,14 +28,18 @@ const Complete = () => (
 
 const Incomplete = () => (
     <IncompleteWrapper>
-        <FontAwesomeIcon icon={faSyncAlt} color={colors.incomplete} fixedWidth />
+        <FontAwesomeIcon
+            icon={faSyncAlt}
+            color={colors.incomplete}
+            fixedWidth
+        />
         Ongoing
     </IncompleteWrapper>
 );
 
 const CompletionStatus = ({ isComplete }) => {
-    if (isComplete) return <Complete />
-    return <Incomplete />
+    if (isComplete) return <Complete />;
+    return <Incomplete />;
 };
 
 export default CompletionStatus;

@@ -1,1 +1,1 @@
-export { default } from './CreateTrainingFormContainer';
+export { default } from "./CreateTrainingFormContainer";

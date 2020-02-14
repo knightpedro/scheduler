@@ -1,5 +1,5 @@
-import React from 'react';
-import Container from '../common/containers';
+import React from "react";
+import Container from "../common/containers";
 
 const PageNotFound = () => {
     return (
@@ -7,6 +7,6 @@ const PageNotFound = () => {
             <h2>Page not found</h2>
         </Container>
     );
-}
+};
 
 export default PageNotFound;

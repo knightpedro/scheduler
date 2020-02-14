@@ -7,68 +7,70 @@ import { BasicTable, SearchColumnFilter } from "../../common/tables";
 const TIME_FORMAT = "HH:mm DD/MM/YYYY";
 
 const TrainingList = ({ training }) => {
-  const createPath = id => generatePath(Routes.training.DETAIL, { id });
+    const createPath = id => generatePath(Routes.training.DETAIL, { id });
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Description",
-        accessor: "description",
-        Cell: ({ row }) => (
-          <Link to={createPath(row.original.id)}>{row.values.description}</Link>
-        ),
-        Filter: SearchColumnFilter
-      },
-      {
-        Header: "Start",
-        accessor: "start",
-        className: "text-center",
-        Cell: ({ cell: { value } }) => value.format(TIME_FORMAT),
-        disableFilters: true,
-        sortType: "momentSort"
-      },
-      {
-        Header: "End",
-        accessor: "end",
-        className: "text-center",
-        Cell: ({ cell: { value } }) => value.format(TIME_FORMAT),
-        disableFilters: true,
-        sortType: "momentSort"
-      }
-    ],
-    []
-  );
+    const columns = useMemo(
+        () => [
+            {
+                Header: "Description",
+                accessor: "description",
+                Cell: ({ row }) => (
+                    <Link to={createPath(row.original.id)}>
+                        {row.values.description}
+                    </Link>
+                ),
+                Filter: SearchColumnFilter,
+            },
+            {
+                Header: "Start",
+                accessor: "start",
+                className: "text-center",
+                Cell: ({ cell: { value } }) => value.format(TIME_FORMAT),
+                disableFilters: true,
+                sortType: "momentSort",
+            },
+            {
+                Header: "End",
+                accessor: "end",
+                className: "text-center",
+                Cell: ({ cell: { value } }) => value.format(TIME_FORMAT),
+                disableFilters: true,
+                sortType: "momentSort",
+            },
+        ],
+        []
+    );
 
-  const data = useMemo(
-    () =>
-      training.map(t => ({
-        id: t.id,
-        description: t.description,
-        start: moment(t.start),
-        end: moment(t.end)
-      })),
-    [training]
-  );
+    const data = useMemo(
+        () =>
+            training.map(t => ({
+                id: t.id,
+                description: t.description,
+                start: moment(t.start),
+                end: moment(t.end),
+            })),
+        [training]
+    );
 
-  const initialTableState = useMemo(
-    () => ({
-      sortBy: [
-        {
-          id: "start",
-          desc: true
-        }
-      ]
-    }),
-    []
-  );
+    const initialTableState = useMemo(
+        () => ({
+            sortBy: [
+                {
+                    id: "start",
+                    desc: true,
+                },
+            ],
+        }),
+        []
+    );
 
-  return (
-    <BasicTable
-      columns={columns}
-      data={data}
-      initialState={initialTableState}
-    />
-  );
+    return (
+        <BasicTable
+            columns={columns}
+            data={data}
+            initialState={initialTableState}
+        />
+    );
 };
 
 export default TrainingList;

@@ -1,14 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import "react-datetime/css/react-datetime.css"
-import './index.css';
+import "react-datetime/css/react-datetime.css";
+import "./index.css";
 
-import React from 'react';
-import { render } from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import App from './app';
-import { ThemeProvider } from 'styled-components';
-import theme from './theme';
-import { configureAxios } from './api/configureAxios';
+import React from "react";
+import { render } from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import App from "./app";
+import { ThemeProvider } from "styled-components";
+import theme from "./theme";
+import { configureAxios } from "./api/configureAxios";
 
 configureAxios();
 
@@ -18,5 +18,5 @@ render(
             <App />
         </Router>
     </ThemeProvider>,
-    document.getElementById('root')
+    document.getElementById("root")
 );

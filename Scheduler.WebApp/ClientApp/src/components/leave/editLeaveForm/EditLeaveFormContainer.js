@@ -13,116 +13,120 @@ import Routes from "../../../routes";
 import { generatePath } from "react-router-dom";
 
 const EditLeaveFormContainer = props => {
-  const [loading, setLoading] = useState(true);
-  const [loadingError, setLoadingError] = useState();
-  const [formError, setFormError] = useState();
-  const [leave, setLeave] = useState();
-  const [leaveTypes, setLeaveTypes] = useState();
-  const leaveId = props.match.params.id;
+    const [loading, setLoading] = useState(true);
+    const [loadingError, setLoadingError] = useState();
+    const [formError, setFormError] = useState();
+    const [leave, setLeave] = useState();
+    const [leaveTypes, setLeaveTypes] = useState();
+    const leaveId = props.match.params.id;
 
-  useEffect(() => {
-    const fetchLeave = async () => {
-      try {
-        let leaveRes = await axios.get(`${LEAVE_URL}/${leaveId}`);
-        const l = leaveRes.data;
-        let workerRes = await axios.get(`${WORKERS_URL}/${l.workerId}`);
-        let leaveTypesRes = await axios.get(`${LEAVE_URL}/leave-types`);
-        const start = moment(l.start);
-        const end = moment(l.end);
-        const leaveType = { label: l.leaveType, value: l.leaveType };
-        setLeave({
-          ...l,
-          start,
-          end,
-          leaveType,
-          worker: workerRes.data
+    useEffect(() => {
+        const fetchLeave = async () => {
+            try {
+                let leaveRes = await axios.get(`${LEAVE_URL}/${leaveId}`);
+                const l = leaveRes.data;
+                let workerRes = await axios.get(`${WORKERS_URL}/${l.workerId}`);
+                let leaveTypesRes = await axios.get(`${LEAVE_URL}/leave-types`);
+                const start = moment(l.start);
+                const end = moment(l.end);
+                const leaveType = { label: l.leaveType, value: l.leaveType };
+                setLeave({
+                    ...l,
+                    start,
+                    end,
+                    leaveType,
+                    worker: workerRes.data,
+                });
+                setLeaveTypes(
+                    leaveTypesRes.data.sort().map(l => ({ label: l, value: l }))
+                );
+            } catch (error) {
+                setLoadingError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchLeave();
+    }, [leaveId]);
+
+    const handleCancel = () => props.history.goBack();
+
+    const handleDelete = () => {
+        axios
+            .delete(`${LEAVE_URL}/${leave.id}`)
+            .then(() => props.history.goBack())
+            .catch(error => setFormError(error));
+    };
+
+    const handleSubmit = (values, { setSubmitting }) => {
+        setFormError(null);
+        if (isEqual(values, leave)) {
+            setFormError({ message: "No changes made" });
+            setSubmitting(false);
+            return;
+        }
+
+        const putBody = {
+            id: values.id,
+            workerId: values.workerId,
+            leaveType: values.leaveType.value,
+            start: values.start.format(),
+            end: values.end.format(),
+        };
+
+        axios
+            .put(`${LEAVE_URL}/${leave.id}`, putBody)
+            .then(() => props.history.goBack())
+            .catch(error => {
+                setFormError(error);
+                setSubmitting(false);
+            });
+    };
+
+    const renderBreadcrumb = () => {
+        const workerPath = generatePath(Routes.workers.DETAIL, {
+            id: leave.worker.id,
         });
-        setLeaveTypes(
-          leaveTypesRes.data.sort().map(l => ({ label: l, value: l }))
+        return (
+            <Breadcrumb>
+                <Breadcrumb.Item href={Routes.jobs.LIST}>Staff</Breadcrumb.Item>
+                <Breadcrumb.Item href={workerPath}>
+                    {leave.worker.name}
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>Edit Leave</Breadcrumb.Item>
+            </Breadcrumb>
         );
-      } catch (error) {
-        setLoadingError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchLeave();
-  }, [leaveId]);
-
-  const handleCancel = () => props.history.goBack();
-
-  const handleDelete = () => {
-    axios
-      .delete(`${LEAVE_URL}/${leave.id}`)
-      .then(() => props.history.goBack())
-      .catch(error => setFormError(error));
-  };
-
-  const handleSubmit = (values, { setSubmitting }) => {
-    setFormError(null);
-    if (isEqual(values, leave)) {
-      setFormError({ message: "No changes made" });
-      setSubmitting(false);
-      return;
-    }
-
-    const putBody = {
-      id: values.id,
-      workerId: values.workerId,
-      leaveType: values.leaveType.value,
-      start: values.start.format(),
-      end: values.end.format()
     };
 
-    axios
-      .put(`${LEAVE_URL}/${leave.id}`, putBody)
-      .then(() => props.history.goBack())
-      .catch(error => {
-        setFormError(error);
-        setSubmitting(false);
-      });
-  };
-
-  const renderBreadcrumb = () => {
-    const workerPath = generatePath(Routes.workers.DETAIL, {
-      id: leave.worker.id
-    });
-    return (
-      <Breadcrumb>
-        <Breadcrumb.Item href={Routes.jobs.LIST}>Staff</Breadcrumb.Item>
-        <Breadcrumb.Item href={workerPath}>{leave.worker.name}</Breadcrumb.Item>
-        <Breadcrumb.Item active>Edit Leave</Breadcrumb.Item>
-      </Breadcrumb>
+    const renderComponent = component => (
+        <Container>
+            {leave && renderBreadcrumb()}
+            <div className="row align-items-center">
+                <div className="col ml-auto">
+                    <h2>Edit Leave</h2>
+                </div>
+                <div className="col-auto">
+                    {leave && <Delete handleClick={handleDelete} />}
+                </div>
+            </div>
+            {formError && <Alert variant="danger">{formError.message}</Alert>}
+            {component}
+        </Container>
     );
-  };
 
-  const renderComponent = component => (
-    <Container>
-      {leave && renderBreadcrumb()}
-      <div className="row align-items-center">
-        <div className="col ml-auto">
-          <h2>Edit Leave</h2>
-        </div>
-        <div className="col-auto">
-          {leave && <Delete handleClick={handleDelete} />}
-        </div>
-      </div>
-      {formError && <Alert variant="danger">{formError.message}</Alert>}
-      {component}
-    </Container>
-  );
-
-  if (loading) return renderComponent(<Loading />);
-  if (loadingError)
-    return renderComponent(<LoadingFailure message={loadingError.message} />);
-  return renderComponent(
-    <EditLeaveForm
-      leave={leave}
-      leaveTypes={leaveTypes}
-      handleCancel={handleCancel}
-      handleSubmit={handleSubmit}
-    />
-  );
+    if (loading) return renderComponent(<Loading />);
+    if (loadingError)
+        return renderComponent(
+            <LoadingFailure message={loadingError.message} />
+        );
+    return renderComponent(
+        <EditLeaveForm
+            leave={leave}
+            leaveTypes={leaveTypes}
+            handleCancel={handleCancel}
+            handleSubmit={handleSubmit}
+        />
+    );
 };
 
 export default EditLeaveFormContainer;

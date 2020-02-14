@@ -1,1 +1,1 @@
-export { default } from './EditResourceFormContainer';
+export { default } from "./EditResourceFormContainer";

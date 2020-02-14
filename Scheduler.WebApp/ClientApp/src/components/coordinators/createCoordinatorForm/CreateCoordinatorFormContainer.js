@@ -8,48 +8,48 @@ import Routes from "../../../routes";
 import Breadcrumb from "../../common/breadcrumb";
 
 class CreateCoordinatorFormContainer extends React.Component {
-  state = {
-    error: null
-  };
+    state = {
+        error: null,
+    };
 
-  handleCancel = () => this.props.history.goBack();
+    handleCancel = () => this.props.history.goBack();
 
-  handleSubmit = (values, { setSubmitting }) => {
-    this.setState({ error: null });
-    axios
-      .post(COORDINATORS_URL, values)
-      .then(() => this.props.history.push(Routes.coordinators.LIST))
-      .catch(error => {
-        this.setState({ error });
-        setSubmitting(false);
-      });
-  };
+    handleSubmit = (values, { setSubmitting }) => {
+        this.setState({ error: null });
+        axios
+            .post(COORDINATORS_URL, values)
+            .then(() => this.props.history.push(Routes.coordinators.LIST))
+            .catch(error => {
+                this.setState({ error });
+                setSubmitting(false);
+            });
+    };
 
-  renderBreadcrumb() {
-    return (
-      <Breadcrumb>
-        <Breadcrumb.Item href={Routes.coordinators.LIST}>
-          Coordinators
-        </Breadcrumb.Item>
-        <Breadcrumb.Item active>Create</Breadcrumb.Item>
-      </Breadcrumb>
-    );
-  }
+    renderBreadcrumb() {
+        return (
+            <Breadcrumb>
+                <Breadcrumb.Item href={Routes.coordinators.LIST}>
+                    Coordinators
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>Create</Breadcrumb.Item>
+            </Breadcrumb>
+        );
+    }
 
-  render() {
-    const { error } = this.state;
-    return (
-      <Container>
-        {this.renderBreadcrumb()}
-        <h2>Add Coordinator</h2>
-        {error && <Alert variant="danger">{error.message}</Alert>}
-        <CreateCoordinatorForm
-          handleSubmit={this.handleSubmit}
-          handleCancel={this.handleCancel}
-        />
-      </Container>
-    );
-  }
+    render() {
+        const { error } = this.state;
+        return (
+            <Container>
+                {this.renderBreadcrumb()}
+                <h2>Add Coordinator</h2>
+                {error && <Alert variant="danger">{error.message}</Alert>}
+                <CreateCoordinatorForm
+                    handleSubmit={this.handleSubmit}
+                    handleCancel={this.handleCancel}
+                />
+            </Container>
+        );
+    }
 }
 
 export default CreateCoordinatorFormContainer;

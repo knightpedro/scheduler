@@ -6,15 +6,15 @@ const TITLE = "";
 const Y_LABEL = "Jobs";
 
 const JobsReceivedChart = ({ data, xLabel }) => {
-  const chartSvg = useRef(null);
+    const chartSvg = useRef(null);
 
-  useBarChart(chartSvg, data, TITLE, xLabel, Y_LABEL);
+    useBarChart(chartSvg, data, TITLE, xLabel, Y_LABEL);
 
-  return (
-    <ChartWrapper>
-      <svg ref={chartSvg} />
-    </ChartWrapper>
-  );
+    return (
+        <ChartWrapper>
+            <svg ref={chartSvg} />
+        </ChartWrapper>
+    );
 };
 
 export default JobsReceivedChart;

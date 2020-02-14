@@ -1,22 +1,23 @@
-import React from 'react';
-import { BaseForm, FormGroup } from '../../common/forms';
-import * as yup from 'yup';
-
+import React from "react";
+import { BaseForm, FormGroup } from "../../common/forms";
+import * as yup from "yup";
 
 const validationSchema = yup.object().shape({
-    name: yup.string()
+    name: yup
+        .string()
         .label("Name")
         .required()
         .max(30),
-    description: yup.string()
+    description: yup
+        .string()
         .label("Description")
         .required()
-        .max(50)
+        .max(50),
 });
 
 const initialValues = {
-    name: '',
-    description: ''
+    name: "",
+    description: "",
 };
 
 const CreateResourceForm = ({ handleSubmit, handleCancel }) => (

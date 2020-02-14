@@ -1,1 +1,1 @@
-export { default } from './ResourcesWeekSchedule';
+export { default } from "./ResourcesWeekSchedule";

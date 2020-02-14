@@ -1,1 +1,1 @@
-export { default } from './WorkersWeekSchedule';
+export { default } from "./WorkersWeekSchedule";

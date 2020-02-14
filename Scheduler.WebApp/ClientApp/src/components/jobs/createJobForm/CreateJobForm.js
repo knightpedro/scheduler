@@ -1,36 +1,46 @@
-import React from 'react';
-import * as yup from 'yup';
-import { isPastDate } from '../../../utils';
-import { BaseForm, FormGroup, FormikDateTime, FormikSelect } from '../../common/forms';
-import moment from 'moment';
+import React from "react";
+import * as yup from "yup";
+import { isPastDate } from "../../../utils";
+import {
+    BaseForm,
+    FormGroup,
+    FormikDateTime,
+    FormikSelect,
+} from "../../common/forms";
+import moment from "moment";
 
 const validationSchema = yup.object().shape({
-    jobNumber: yup.string()
+    jobNumber: yup
+        .string()
         .label("Job number")
         .required()
         .max(10),
-    description: yup.string()
+    description: yup
+        .string()
         .label("Job description")
         .required()
         .max(160),
-    location: yup.string()
+    location: yup
+        .string()
         .label("Location")
         .required()
         .max(30),
-    dateReceived: yup.mixed()
+    dateReceived: yup
+        .mixed()
         .label("Date received")
         .required(),
-    coordinator: yup.mixed()
+    coordinator: yup
+        .mixed()
         .label("Coordinator")
-        .required("Assign a coordinator to the job")
+        .required("Assign a coordinator to the job"),
 });
 
 const initialValues = {
-    jobNumber: '',
-    description: '',
-    location: '',
+    jobNumber: "",
+    description: "",
+    location: "",
     dateReceived: moment(),
-    coordinator: null
+    coordinator: null,
 };
 
 const CreateJobForm = ({ coordinators, handleSubmit, handleCancel }) => {
@@ -44,10 +54,20 @@ const CreateJobForm = ({ coordinators, handleSubmit, handleCancel }) => {
             <FormGroup name="jobNumber" className="form-control" />
             <FormGroup name="description" className="form-control" />
             <FormGroup name="location" className="form-control" />
-            <FormGroup name="dateReceived" component={FormikDateTime} timeFormat={false} closeOnSelect={true} isValidDate={isPastDate} />
-            <FormGroup name="coordinator" component={FormikSelect} options={coordinators} />
+            <FormGroup
+                name="dateReceived"
+                component={FormikDateTime}
+                timeFormat={false}
+                closeOnSelect={true}
+                isValidDate={isPastDate}
+            />
+            <FormGroup
+                name="coordinator"
+                component={FormikSelect}
+                options={coordinators}
+            />
         </BaseForm>
-    )
-}
+    );
+};
 
 export default CreateJobForm;

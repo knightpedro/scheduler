@@ -1,1 +1,1 @@
-export { default } from './CoordinatorDetailContainer';
+export { default } from "./CoordinatorDetailContainer";

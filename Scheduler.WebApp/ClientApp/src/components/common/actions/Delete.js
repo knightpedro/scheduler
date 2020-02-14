@@ -5,18 +5,18 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import LinkButton from "./LinkButton";
 
 const DeleteButton = styled(LinkButton)`
-  color: #dc3545;
+    color: #dc3545;
 
-  &:hover {
-    color: darkred;
-  }
+    &:hover {
+        color: darkred;
+    }
 `;
 
 const Delete = ({ handleClick }) => (
-  <DeleteButton onClick={handleClick}>
-    <FontAwesomeIcon icon={faTrash} fixedWidth />
-    Delete
-  </DeleteButton>
+    <DeleteButton onClick={handleClick}>
+        <FontAwesomeIcon icon={faTrash} fixedWidth />
+        Delete
+    </DeleteButton>
 );
 
 export default Delete;

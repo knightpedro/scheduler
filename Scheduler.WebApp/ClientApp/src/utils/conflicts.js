@@ -1,7 +1,6 @@
-import axios from 'axios';
-import queryString from 'query-string';
-import { RESOURCES_URL, WORKERS_URL } from '../api';
-
+import axios from "axios";
+import queryString from "query-string";
+import { RESOURCES_URL, WORKERS_URL } from "../api";
 
 const conflictQuery = async (url, start, end) => {
     const query = { start, end };
@@ -9,8 +8,7 @@ const conflictQuery = async (url, start, end) => {
     try {
         let conflictsRes = await axios.get(queryUrl);
         return conflictsRes.data.conflicts;
-    }
-    catch {
+    } catch {
         return null;
     }
 };
@@ -20,7 +18,7 @@ export const createConflictMessage = (name, conflicts) => {
     let message = `${name} is already assigned to ${conflicts[0].description.toLowerCase()}`;
     if (conflicts.length > 1) {
         message += ` and ${conflicts.length - 1} other appointments`;
-    } 
+    }
     message += " during this time. Do you still want to save?";
     return message;
 };

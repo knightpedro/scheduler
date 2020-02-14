@@ -1,17 +1,19 @@
-import React from 'react';
-import { BaseForm, FormCheck, FormGroup } from '../../common/forms';
-import * as yup from 'yup';
+import React from "react";
+import { BaseForm, FormCheck, FormGroup } from "../../common/forms";
+import * as yup from "yup";
 
 const validationSchema = yup.object().shape({
-    name: yup.string()
+    name: yup
+        .string()
         .label("Name")
         .required()
         .max(30),
-    description: yup.string()
+    description: yup
+        .string()
         .label("Description")
         .required()
         .max(50),
-    isActive: yup.bool()
+    isActive: yup.bool(),
 });
 
 const EditResourceForm = ({ handleSubmit, handleCancel, resource }) => (
@@ -21,9 +23,9 @@ const EditResourceForm = ({ handleSubmit, handleCancel, resource }) => (
         onSubmit={handleSubmit}
         onCancel={handleCancel}
     >
-            <FormGroup name="name" className="form-control" />
-            <FormGroup name="description" className="form-control" />
-            <FormCheck name="isActive" />
+        <FormGroup name="name" className="form-control" />
+        <FormGroup name="description" className="form-control" />
+        <FormCheck name="isActive" />
     </BaseForm>
 );
 

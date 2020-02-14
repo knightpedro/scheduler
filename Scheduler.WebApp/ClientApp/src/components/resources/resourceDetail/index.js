@@ -1,1 +1,1 @@
-export { default } from './ResourceDetailContainer';
+export { default } from "./ResourceDetailContainer";

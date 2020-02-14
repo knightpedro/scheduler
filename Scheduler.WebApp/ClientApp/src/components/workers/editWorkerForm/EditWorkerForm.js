@@ -1,14 +1,14 @@
-import React from 'react';
-import { BaseForm, FormCheck, FormGroup } from '../../common/forms';
-import * as yup from 'yup';
-
+import React from "react";
+import { BaseForm, FormCheck, FormGroup } from "../../common/forms";
+import * as yup from "yup";
 
 const validationSchema = yup.object().shape({
-    name: yup.string()
+    name: yup
+        .string()
         .label("Name")
         .required()
         .max(50),
-    isActive: yup.bool()
+    isActive: yup.bool(),
 });
 
 const EditWorkerForm = ({ worker, handleSubmit, handleCancel }) => (
@@ -18,7 +18,11 @@ const EditWorkerForm = ({ worker, handleSubmit, handleCancel }) => (
         onSubmit={handleSubmit}
         onCancel={handleCancel}
     >
-        <FormGroup name="name" className="form-control" placeholder="Full Name"/>
+        <FormGroup
+            name="name"
+            className="form-control"
+            placeholder="Full Name"
+        />
         <FormCheck name="isActive" />
     </BaseForm>
 );

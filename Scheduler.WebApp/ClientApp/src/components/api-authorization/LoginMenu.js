@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
-import { Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import authService from './AuthorizeService';
-import { ApplicationPaths } from './ApiAuthorizationConstants';
+import React, { Component, Fragment } from "react";
+import { Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import authService from "./AuthorizeService";
+import { ApplicationPaths } from "./ApiAuthorizationConstants";
 
 export class LoginMenu extends Component {
     constructor(props) {
@@ -10,7 +10,7 @@ export class LoginMenu extends Component {
 
         this.state = {
             isAuthenticated: false,
-            userName: null
+            userName: null,
         };
     }
 
@@ -24,10 +24,13 @@ export class LoginMenu extends Component {
     }
 
     async populateState() {
-        const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()])
+        const [isAuthenticated, user] = await Promise.all([
+            authService.isAuthenticated(),
+            authService.getUser(),
+        ]);
         this.setState({
             isAuthenticated,
-            userName: user && user.name
+            userName: user && user.name,
         });
     }
 
@@ -39,7 +42,10 @@ export class LoginMenu extends Component {
             return this.anonymousView(registerPath, loginPath);
         } else {
             const profilePath = `${ApplicationPaths.Profile}`;
-            const logoutPath = { pathname: `${ApplicationPaths.LogOut}`, state: { local: true } };
+            const logoutPath = {
+                pathname: `${ApplicationPaths.LogOut}`,
+                state: { local: true },
+            };
             return this.authenticatedView(userName, profilePath, logoutPath);
         }
     }
@@ -47,18 +53,25 @@ export class LoginMenu extends Component {
     authenticatedView(userName, profilePath, logoutPath) {
         return (
             <>
-                <Nav.Link as={Link} to={profilePath}>Hello {userName}</Nav.Link>
-                <Nav.Link as={Link} to={logoutPath}>Logout</Nav.Link>
+                <Nav.Link as={Link} to={profilePath}>
+                    Hello {userName}
+                </Nav.Link>
+                <Nav.Link as={Link} to={logoutPath}>
+                    Logout
+                </Nav.Link>
             </>
         );
-
     }
 
     anonymousView(registerPath, loginPath) {
         return (
             <>
-                <Nav.Link as={Link} to={registerPath}>Register</Nav.Link>
-                <Nav.Link as={Link} to={loginPath}>Login</Nav.Link>
+                <Nav.Link as={Link} to={registerPath}>
+                    Register
+                </Nav.Link>
+                <Nav.Link as={Link} to={loginPath}>
+                    Login
+                </Nav.Link>
             </>
         );
     }

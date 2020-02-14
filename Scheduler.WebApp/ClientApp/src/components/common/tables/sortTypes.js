@@ -7,5 +7,5 @@ const momentSort = (rowA, rowB, columnId) => {
 };
 
 export const sortTypes = {
-    'momentSort': momentSort
+    momentSort: momentSort,
 };

@@ -1,1 +1,1 @@
-export { default } from './OutOfServicesList';
+export { default } from "./OutOfServicesList";

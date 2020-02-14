@@ -1,63 +1,78 @@
-import React from 'react';
-import EditWorkerForm from './EditWorkerForm';
-import { Loading, LoadingFailure } from '../../common/loading';
-import { generatePath } from 'react-router-dom';
-import Routes from '../../../routes';
-import axios from 'axios';
-import { WORKERS_URL } from '../../../api';
-import { isEqual } from 'lodash';
-import Alert from 'react-bootstrap/Alert';
-import Container from '../../common/containers';
-import Breadcrumb from '../../common/breadcrumb';
+import React from "react";
+import EditWorkerForm from "./EditWorkerForm";
+import { Loading, LoadingFailure } from "../../common/loading";
+import { generatePath } from "react-router-dom";
+import Routes from "../../../routes";
+import axios from "axios";
+import { WORKERS_URL } from "../../../api";
+import { isEqual } from "lodash";
+import Alert from "react-bootstrap/Alert";
+import Container from "../../common/containers";
+import Breadcrumb from "../../common/breadcrumb";
 
 class EditWorkerFormContainer extends React.Component {
     state = {
-        loading: true, 
+        loading: true,
         loadingError: null,
         formError: null,
-        worker: null
-    }
+        worker: null,
+    };
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        axios.get(`${WORKERS_URL}/${id}`).then(res => this.setState({
-            loading: false,
-            worker: res.data
-        }))
-        .catch(error => this.setState({
-            loading: false, 
-            loadingError: error
-        }));
+        axios
+            .get(`${WORKERS_URL}/${id}`)
+            .then(res =>
+                this.setState({
+                    loading: false,
+                    worker: res.data,
+                })
+            )
+            .catch(error =>
+                this.setState({
+                    loading: false,
+                    loadingError: error,
+                })
+            );
     }
 
     handleCancel = () => this.props.history.goBack();
 
-    handleSubmit = (values, {setSubmitting}) => {
+    handleSubmit = (values, { setSubmitting }) => {
         this.setState({ formError: null });
-        const { worker } = this.state
+        const { worker } = this.state;
         if (isEqual(worker, values)) {
-            this.setState({ formError: { message: "No changes made" }})
+            this.setState({ formError: { message: "No changes made" } });
             setSubmitting(false);
             return;
         }
-   
-        axios.put(`${WORKERS_URL}/${worker.id}`, values)
-        .then(() => {
-            const redirect = generatePath(Routes.workers.DETAIL, { id: worker.id });
-            this.props.history.push(redirect);
-        })
-        .catch(error => {
-            this.setState({ formError: error });
-            setSubmitting(false);
-        });
+
+        axios
+            .put(`${WORKERS_URL}/${worker.id}`, values)
+            .then(() => {
+                const redirect = generatePath(Routes.workers.DETAIL, {
+                    id: worker.id,
+                });
+                this.props.history.push(redirect);
+            })
+            .catch(error => {
+                this.setState({ formError: error });
+                setSubmitting(false);
+            });
     };
 
     renderBreadcrumb(worker) {
-        const workerPath = generatePath(Routes.workers.DETAIL, { id: worker.id });
+        const workerPath = generatePath(Routes.workers.DETAIL, {
+            id: worker.id,
+        });
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.workers.LIST}>Staff</Breadcrumb.Item>
-                <Breadcrumb.Item href={workerPath}>{worker.name}</Breadcrumb.Item>
+                <Breadcrumb.Item href={Routes.workers.LIST}>
+                    Staff
+                </Breadcrumb.Item>
+                <Breadcrumb.Item href={workerPath}>
+                    {worker.name}
+                </Breadcrumb.Item>
                 <Breadcrumb.Item active>Edit</Breadcrumb.Item>
             </Breadcrumb>
         );
@@ -73,17 +88,26 @@ class EditWorkerFormContainer extends React.Component {
     }
 
     render() {
-        const {loading, loadingError, formError, worker} = this.state;
+        const { loading, loadingError, formError, worker } = this.state;
 
-        if (loading) return this.renderComponent(<Loading />)
-        if (loadingError) return this.renderComponent(<LoadingFailure message={loadingError.message} />);
+        if (loading) return this.renderComponent(<Loading />);
+        if (loadingError)
+            return this.renderComponent(
+                <LoadingFailure message={loadingError.message} />
+            );
 
         return (
             <Container>
                 {this.renderBreadcrumb(worker)}
                 <h2>Edit Staff Member</h2>
-                {formError && <Alert variant="danger">{formError.message}</Alert>}
-                <EditWorkerForm worker={worker} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} />
+                {formError && (
+                    <Alert variant="danger">{formError.message}</Alert>
+                )}
+                <EditWorkerForm
+                    worker={worker}
+                    handleSubmit={this.handleSubmit}
+                    handleCancel={this.handleCancel}
+                />
             </Container>
         );
     }

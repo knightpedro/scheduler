@@ -1,1 +1,1 @@
-export { default } from './WorkerDetailContainer';
+export { default } from "./WorkerDetailContainer";
