@@ -96,7 +96,7 @@ export const WeekPickerControls = ({
         onChange={onDateChange}
       />
     </div>
-    <div className="col-1 d-flex justify-content-end">
+    <div className="col-1 d-flex justify-content-center">
       <NavigationButton title="Previous week" onClick={onPreviousWeek}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </NavigationButton>
@@ -106,7 +106,7 @@ export const WeekPickerControls = ({
         {"Week of " + start.format(TITLE_FORMAT)}
       </NavigationHeading>
     </div>
-    <div className="col-1 d-flex justify-content-start">
+    <div className="col-1 d-flex justify-content-center">
       <NavigationButton title="Next week" onClick={onNextWeek}>
         <FontAwesomeIcon icon={faChevronRight} />
       </NavigationButton>
