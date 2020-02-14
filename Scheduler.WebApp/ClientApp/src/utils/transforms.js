@@ -42,10 +42,19 @@ export const createAppointment = appointment => {
 
 export const createAppointmentPath = (id, type) => {
     let route;
-    if (type === appointmentTypes.JOB_TASK) route = Routes.jobTasks.DETAIL;
-    else if (type === appointmentTypes.LEAVE) route = Routes.leave.EDIT;
-    else if (type === appointmentTypes.OUT_OF_SERVICE)
-        route = Routes.outOfServices.EDIT;
-    else if (type === appointmentTypes.TRAINING) route = Routes.training.DETAIL;
+    switch (type) {
+        case appointmentTypes.LEAVE:
+            route = Routes.leave.EDIT;
+            break;
+        case appointmentTypes.OUT_OF_SERVICE:
+            route = Routes.outOfServices.EDIT;
+            break;
+        case appointmentTypes.TRAINING:
+            route = Routes.training.DETAIL;
+            break;
+        default:
+            route = Routes.jobTasks.DETAIL;
+            break;
+    }
     return generatePath(route, { id });
 };
