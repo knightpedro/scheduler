@@ -27,11 +27,6 @@ const GroupWeekSchedule = props => {
       <>
         <colgroup>{columns}</colgroup>
         <thead>
-          <tr>
-            <th colSpan={columns.length}>
-              <WeekPickerControls {...props} />
-            </th>
-          </tr>
           <tr>{headings}</tr>
         </thead>
       </>
@@ -59,11 +54,14 @@ const GroupWeekSchedule = props => {
   };
 
   return (
-    <div className="table-responsive shadow">
-      <Schedule>
-        {renderHeadings()}
-        <tbody>{renderRows()}</tbody>
-      </Schedule>
+    <div className="shadow mt-4 mb-5">
+      <WeekPickerControls {...props} />
+      <div className="table-responsive">
+        <Schedule>
+          {renderHeadings()}
+          <tbody>{renderRows()}</tbody>
+        </Schedule>
+      </div>
     </div>
   );
 };

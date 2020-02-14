@@ -24,11 +24,6 @@ const IndividualWeekSchedule = props => {
       <>
         <colgroup>{columns}</colgroup>
         <thead>
-          <tr>
-            <th colSpan={columns.length}>
-              <WeekPickerControls {...props} />
-            </th>
-          </tr>
           <tr>{headings}</tr>
         </thead>
       </>
@@ -48,11 +43,14 @@ const IndividualWeekSchedule = props => {
   );
 
   return (
-    <div className="table-responsive shadow mt-5 mb-5">
-      <Schedule>
-        {renderHeadings()}
-        <tbody>{renderRow()}</tbody>
-      </Schedule>
+    <div className="shadow mt-4 mb-5">
+      <WeekPickerControls {...props} />
+      <div className="table-responsive">
+        <Schedule>
+          {renderHeadings()}
+          <tbody>{renderRow()}</tbody>
+        </Schedule>
+      </div>
     </div>
   );
 };
