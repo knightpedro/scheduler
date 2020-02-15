@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Loading, LoadingFailure } from "../../common/loading";
 import { WORKERS_URL } from "../../../api";
@@ -24,7 +25,9 @@ const WorkerDetailContainer = props => {
 
     const renderBreadcrumb = () => (
         <Breadcrumb>
-            <Breadcrumb.Item href={Routes.workers.LIST}>Staff</Breadcrumb.Item>
+            <Link className="breadcrumb-item" to={Routes.workers.LIST}>
+                Staff
+            </Link>
             <Breadcrumb.Item active>{worker.name}</Breadcrumb.Item>
         </Breadcrumb>
     );

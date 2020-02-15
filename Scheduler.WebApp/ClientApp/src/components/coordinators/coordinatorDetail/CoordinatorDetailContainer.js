@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { COORDINATORS_URL, JOBS_URL } from "../../../api";
 import queryString from "query-string";
@@ -49,9 +50,9 @@ const CoordinatorDetailContainer = props => {
 
     const renderBreadcrumb = () => (
         <Breadcrumb>
-            <Breadcrumb.Item href={Routes.coordinators.LIST}>
+            <Link className="breadcrumb-item" to={Routes.coordinators.LIST}>
                 Coordinators
-            </Breadcrumb.Item>
+            </Link>
             <Breadcrumb.Item active>{coordinator.name}</Breadcrumb.Item>
         </Breadcrumb>
     );

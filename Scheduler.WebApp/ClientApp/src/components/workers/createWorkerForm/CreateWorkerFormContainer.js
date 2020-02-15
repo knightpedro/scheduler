@@ -6,6 +6,7 @@ import Routes from "../../../routes";
 import Alert from "react-bootstrap/Alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
+import { Link } from "react-router-dom";
 
 class CreateWorkerFormContainer extends React.Component {
     state = {
@@ -28,9 +29,9 @@ class CreateWorkerFormContainer extends React.Component {
     renderBreadcrumb() {
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.workers.LIST}>
+                <Link className="breadcrumb-item" to={Routes.workers.LIST}>
                     Staff
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Create</Breadcrumb.Item>
             </Breadcrumb>
         );

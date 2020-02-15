@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import CreateCoordinatorForm from "./CreateCoordinatorForm";
 import Container from "../../common/containers";
 import Alert from "react-bootstrap/Alert";
@@ -28,9 +29,9 @@ class CreateCoordinatorFormContainer extends React.Component {
     renderBreadcrumb() {
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.coordinators.LIST}>
+                <Link className="breadcrumb-item" to={Routes.coordinators.LIST}>
                     Coordinators
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Create</Breadcrumb.Item>
             </Breadcrumb>
         );

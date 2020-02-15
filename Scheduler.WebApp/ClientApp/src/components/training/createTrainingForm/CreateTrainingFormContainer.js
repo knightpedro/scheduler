@@ -7,7 +7,7 @@ import axios from "axios";
 import { TRAINING_URL, WORKERS_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import Routes from "../../../routes";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 
 class CreateTrainingFormContainer extends React.Component {
     state = {
@@ -67,9 +67,9 @@ class CreateTrainingFormContainer extends React.Component {
     renderBreadcrumb() {
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.training.LIST}>
+                <Link className="breadcrumb-item" to={Routes.training.LIST}>
                     Training
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Create</Breadcrumb.Item>
             </Breadcrumb>
         );

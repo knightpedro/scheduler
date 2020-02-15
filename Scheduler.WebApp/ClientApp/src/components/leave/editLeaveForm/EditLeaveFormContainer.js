@@ -10,7 +10,7 @@ import moment from "moment";
 import { isEqual } from "lodash";
 import { Delete } from "../../common/actions";
 import Routes from "../../../routes";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 
 const EditLeaveFormContainer = props => {
     const [loading, setLoading] = useState(true);
@@ -89,10 +89,12 @@ const EditLeaveFormContainer = props => {
         });
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.jobs.LIST}>Staff</Breadcrumb.Item>
-                <Breadcrumb.Item href={workerPath}>
+                <Link className="breadcrumb-item" to={Routes.jobs.LIST}>
+                    Staff
+                </Link>
+                <Link className="breadcrumb-item" to={workerPath}>
                     {leave.worker.name}
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Edit Leave</Breadcrumb.Item>
             </Breadcrumb>
         );

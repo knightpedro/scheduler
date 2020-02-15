@@ -8,7 +8,7 @@ import EditJobForm from "./EditJobForm";
 import { JOBS_URL, COORDINATORS_URL } from "../../../api";
 import { isEqual } from "lodash";
 import moment from "moment";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 import Routes from "../../../routes";
 
 class EditJobFormContainer extends React.Component {
@@ -91,7 +91,9 @@ class EditJobFormContainer extends React.Component {
 
     renderBreadcrumb = () => (
         <Breadcrumb>
-            <Breadcrumb.Item href={Routes.jobs.LIST}>Jobs</Breadcrumb.Item>
+            <Link className="breadcrumb-item" to={Routes.jobs.LIST}>
+                Jobs
+            </Link>
             <Breadcrumb.Item active>Edit</Breadcrumb.Item>
         </Breadcrumb>
     );

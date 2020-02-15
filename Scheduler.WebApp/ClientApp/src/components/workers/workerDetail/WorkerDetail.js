@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import { Create } from "../../common/actions";
-import { JobTasksList } from "../../jobTasks";
-import { LeaveList } from "../../leave";
+import JobTasksList from "../../jobTasks/jobTasksList";
+import LeaveList from "../../leave/leaveList";
 import TrainingList from "../../training/trainingList/TrainingList";
 import { IndividualWeekSchedule, useWeekPicker } from "../../common/schedule";
 import { EditDeleteGroup } from "../../common/actions";

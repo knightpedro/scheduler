@@ -8,7 +8,7 @@ import axios from "axios";
 import { isEqual } from "lodash";
 import { RESOURCES_URL } from "../../../api";
 import Routes from "../../../routes";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 
 class EditResourceFormContainer extends React.Component {
     state = {
@@ -60,12 +60,12 @@ class EditResourceFormContainer extends React.Component {
         });
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.resources.LIST}>
+                <Link className="breadcrumb-item" to={Routes.resources.LIST}>
                     Plant
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href={resourcePath}>
+                </Link>
+                <Link className="breadcrumb-item" to={resourcePath}>
                     {resource.name}
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Edit</Breadcrumb.Item>
             </Breadcrumb>
         );

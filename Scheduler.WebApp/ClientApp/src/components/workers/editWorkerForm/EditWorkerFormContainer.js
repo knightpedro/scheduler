@@ -1,7 +1,7 @@
 import React from "react";
 import EditWorkerForm from "./EditWorkerForm";
 import { Loading, LoadingFailure } from "../../common/loading";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 import Routes from "../../../routes";
 import axios from "axios";
 import { WORKERS_URL } from "../../../api";
@@ -67,12 +67,12 @@ class EditWorkerFormContainer extends React.Component {
         });
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.workers.LIST}>
+                <Link className="breadcrumb-item" to={Routes.workers.LIST}>
                     Staff
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href={workerPath}>
+                </Link>
+                <Link className="breadcrumb-item" to={workerPath}>
                     {worker.name}
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Edit</Breadcrumb.Item>
             </Breadcrumb>
         );

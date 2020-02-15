@@ -6,7 +6,7 @@ import Breadcrumb from "../../common/breadcrumb";
 import CreateJobForm from "./CreateJobForm";
 import { COORDINATORS_URL, JOBS_URL } from "../../../api";
 import axios from "axios";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 import Routes from "../../../routes";
 
 class CreateJobContainer extends React.Component {
@@ -78,7 +78,9 @@ class CreateJobContainer extends React.Component {
 
     renderBreadcrumb = () => (
         <Breadcrumb>
-            <Breadcrumb.Item href={Routes.jobs.LIST}>Jobs</Breadcrumb.Item>
+            <Link className="breadcrumb-item" to={Routes.jobs.LIST}>
+                Jobs
+            </Link>
             <Breadcrumb.Item active>Create</Breadcrumb.Item>
         </Breadcrumb>
     );

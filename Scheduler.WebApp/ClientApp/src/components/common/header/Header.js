@@ -74,13 +74,13 @@ const Header = () => {
                     <NavDropdown title="Planner" id="basic-nav-dropdown">
                         <NavDropdown.Item
                             as={Link}
-                            to={Routes.schedules.workers}
+                            to={Routes.workers.SCHEDULE}
                         >
                             Staff
                         </NavDropdown.Item>
                         <NavDropdown.Item
                             as={Link}
-                            to={Routes.schedules.resources}
+                            to={Routes.resources.SCHEDULE}
                         >
                             Plant
                         </NavDropdown.Item>

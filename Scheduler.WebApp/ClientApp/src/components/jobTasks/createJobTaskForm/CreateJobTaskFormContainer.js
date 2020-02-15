@@ -14,7 +14,7 @@ import Breadcrumb from "../../common/breadcrumb";
 import queryString from "query-string";
 import { entitiesSelect } from "../../../utils";
 import Routes from "../../../routes";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 
 class CreateJobTaskFormContainer extends React.Component {
     state = {
@@ -92,10 +92,12 @@ class CreateJobTaskFormContainer extends React.Component {
         const jobPath = generatePath(Routes.jobs.DETAIL, { id: job.id });
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.jobs.LIST}>Jobs</Breadcrumb.Item>
-                <Breadcrumb.Item href={jobPath}>
+                <Link className="breadcrumb-item" to={Routes.jobs.LIST}>
+                    Jobs
+                </Link>
+                <Link className="breadcrumb-item" to={jobPath}>
                     {job.jobNumber}
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Create Task</Breadcrumb.Item>
             </Breadcrumb>
         );

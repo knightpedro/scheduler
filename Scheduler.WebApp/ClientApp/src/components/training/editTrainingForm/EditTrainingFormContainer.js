@@ -10,7 +10,7 @@ import { createPatch, entitiesSelect } from "../../../utils";
 import { isEmpty } from "lodash";
 import moment from "moment";
 import Routes from "../../../routes";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 
 class EditTrainingFormContainer extends React.Component {
     state = {
@@ -90,12 +90,12 @@ class EditTrainingFormContainer extends React.Component {
         });
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.training.LIST}>
+                <Link className="breadcrumb-item" to={Routes.training.LIST}>
                     Training
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href={trainingPath}>
+                </Link>
+                <Link className="breadcrumb-item" to={trainingPath}>
                     {training.description}
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Edit</Breadcrumb.Item>
             </Breadcrumb>
         );

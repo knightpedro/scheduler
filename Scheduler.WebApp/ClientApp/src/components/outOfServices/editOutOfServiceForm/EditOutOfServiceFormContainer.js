@@ -7,7 +7,7 @@ import moment from "moment";
 import Alert from "react-bootstrap/Alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 import Routes from "../../../routes";
 import { isEqual } from "lodash";
 import { Delete } from "../../common/actions";
@@ -91,12 +91,12 @@ const EditOutOfServiceFormContainer = props => {
         });
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.resources.LIST}>
+                <Link className="breadcrumb-item" to={Routes.resources.LIST}>
                     Plant
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href={resourcePath}>
+                </Link>
+                <Link className="breadcrumb-item" to={resourcePath}>
                     {outOfService.resource.name}
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Edit Out Of Service</Breadcrumb.Item>
             </Breadcrumb>
         );

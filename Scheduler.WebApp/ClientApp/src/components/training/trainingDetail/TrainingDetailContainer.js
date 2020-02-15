@@ -8,6 +8,7 @@ import Container from "../../common/containers";
 import moment from "moment";
 import { sortByName } from "../../../utils";
 import Routes from "../../../routes";
+import { Link } from "react-router-dom";
 
 const DATE_FORMAT = "HH:mm D/MM/YYYY";
 
@@ -52,9 +53,9 @@ class TrainingDetailContainer extends React.Component {
     renderBreadcrumb(training) {
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.training.LIST}>
+                <Link className="breadcrumb-item" to={Routes.training.LIST}>
                     Training
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>{training.description}</Breadcrumb.Item>
             </Breadcrumb>
         );

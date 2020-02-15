@@ -3,6 +3,7 @@ import axios from "axios";
 import { JOBS_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import JobDetail from "./JobDetail";
+import { Link } from "react-router-dom";
 import Breadcrumb from "../../common/breadcrumb";
 import Container from "../../common/containers";
 import Routes from "../../../routes";
@@ -42,7 +43,9 @@ class JobDetailContainer extends React.Component {
 
     renderBreadcrumb = job => (
         <Breadcrumb>
-            <Breadcrumb.Item href={Routes.jobs.LIST}>Jobs</Breadcrumb.Item>
+            <Link className="breadcrumb-item" to={Routes.jobs.LIST}>
+                Jobs
+            </Link>
             <Breadcrumb.Item active>{job.jobNumber}</Breadcrumb.Item>
         </Breadcrumb>
     );

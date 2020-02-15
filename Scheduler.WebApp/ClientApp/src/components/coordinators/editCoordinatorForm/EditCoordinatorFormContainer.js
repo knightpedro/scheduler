@@ -8,7 +8,7 @@ import { COORDINATORS_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import EditCoordinatorForm from "./EditCoordinatorForm";
 import Routes from "../../../routes";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 
 class EditCoordinatorFormContainer extends React.Component {
     state = {
@@ -57,9 +57,9 @@ class EditCoordinatorFormContainer extends React.Component {
 
     renderBreadcrumb = () => (
         <Breadcrumb>
-            <Breadcrumb.Item href={Routes.coordinators.LIST}>
+            <Link className="breadcrumb-item" to={Routes.coordinators.LIST}>
                 Coordinators
-            </Breadcrumb.Item>
+            </Link>
             <Breadcrumb.Item active>Edit</Breadcrumb.Item>
         </Breadcrumb>
     );

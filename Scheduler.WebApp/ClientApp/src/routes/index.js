@@ -16,13 +16,18 @@ const Routes = {
     leave: createCrudRoutes("leave"),
     outOfServices: createCrudRoutes("outofservices"),
     reports: "/reports",
-    resources: createCrudRoutes("resources"),
+    resources: {
+        ...createCrudRoutes("resources"),
+        SCHEDULE: "/resources/schedule",
+    },
     schedules: {
         resources: "/schedule/resources",
-        workers: "/schedule/workers",
     },
     training: createCrudRoutes("training"),
-    workers: createCrudRoutes("workers"),
+    workers: {
+        ...createCrudRoutes("workers"),
+        SCHEDULE: "/workers/schedule",
+    },
 };
 
 export default Routes;

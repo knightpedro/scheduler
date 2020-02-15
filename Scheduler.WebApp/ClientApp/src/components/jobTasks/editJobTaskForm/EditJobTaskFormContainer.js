@@ -15,7 +15,7 @@ import { createPatch, entitiesSelect } from "../../../utils";
 import { isEmpty } from "lodash";
 import moment from "moment";
 import Routes from "../../../routes";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 
 class EditJobTaskFormContainer extends React.Component {
     state = {
@@ -115,10 +115,12 @@ class EditJobTaskFormContainer extends React.Component {
         const jobPath = generatePath(Routes.jobs.DETAIL, { id: job.id });
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.jobs.LIST}>Jobs</Breadcrumb.Item>
-                <Breadcrumb.Item href={jobPath}>
+                <Link className="breadcrumb-item" to={Routes.jobs.LIST}>
+                    Jobs
+                </Link>
+                <Link className="breadcrumb-item" to={jobPath}>
                     {job.jobNumber}
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Edit Task</Breadcrumb.Item>
             </Breadcrumb>
         );

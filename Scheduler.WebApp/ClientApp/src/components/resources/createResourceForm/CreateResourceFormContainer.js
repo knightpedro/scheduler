@@ -6,7 +6,7 @@ import Breadcrumb from "../../common/breadcrumb";
 import axios from "axios";
 import { RESOURCES_URL } from "../../../api";
 import Routes from "../../../routes";
-import { generatePath } from "react-router-dom";
+import { generatePath, Link } from "react-router-dom";
 
 class CreateResourceFormContainer extends React.Component {
     state = {
@@ -35,9 +35,9 @@ class CreateResourceFormContainer extends React.Component {
     renderBreadcrumb() {
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.resources.LIST}>
+                <Link className="breadcrumb-item" to={Routes.resources.LIST}>
                     Plant
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>Create</Breadcrumb.Item>
             </Breadcrumb>
         );

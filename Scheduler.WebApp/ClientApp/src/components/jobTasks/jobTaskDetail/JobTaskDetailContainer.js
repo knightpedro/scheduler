@@ -8,7 +8,7 @@ import Container from "../../common/containers";
 import moment from "moment";
 import { sortByName } from "../../../utils";
 import Routes from "../../../routes";
-import { generatePath } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 
 const DATE_FORMAT = "HH:mm D/MM/YYYY";
 
@@ -57,10 +57,12 @@ class JobTaskDetailContainer extends React.Component {
         });
         return (
             <Breadcrumb>
-                <Breadcrumb.Item href={Routes.jobs.LIST}>Jobs</Breadcrumb.Item>
-                <Breadcrumb.Item href={jobPath}>
+                <Link className="breadcrumb-item" to={Routes.jobs.LIST}>
+                    Jobs
+                </Link>
+                <Link className="breadcrumb-item" to={jobPath}>
                     {jobTask.job.jobNumber}
-                </Breadcrumb.Item>
+                </Link>
                 <Breadcrumb.Item active>{jobTask.description}</Breadcrumb.Item>
             </Breadcrumb>
         );

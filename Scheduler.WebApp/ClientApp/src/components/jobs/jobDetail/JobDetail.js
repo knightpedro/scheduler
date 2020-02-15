@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { JobTasksList } from "../../jobTasks";
+import JobTasksList from "../../jobTasks/jobTasksList";
 import { Create, EditDeleteGroup } from "../../common/actions";
 import { CentredModal } from "../../common/modals";
 import queryString from "query-string";

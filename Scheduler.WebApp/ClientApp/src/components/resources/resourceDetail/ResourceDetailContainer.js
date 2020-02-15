@@ -8,6 +8,7 @@ import ResourceDetail from "./ResourceDetail";
 import Routes from "../../../routes";
 import { useResourceCalendar } from "../resourcesSchedule/resourcesCalendar";
 import Alert from "react-bootstrap/Alert";
+import { Link } from "react-router-dom";
 
 const ResourceDetailContainer = props => {
     const id = props.match.params.id;
@@ -24,9 +25,9 @@ const ResourceDetailContainer = props => {
 
     const renderBreadcrumb = () => (
         <Breadcrumb>
-            <Breadcrumb.Item href={Routes.resources.LIST}>
+            <Link className="breadcrumb-item" to={Routes.resources.LIST}>
                 Plant
-            </Breadcrumb.Item>
+            </Link>
             <Breadcrumb.Item active>{resource.name}</Breadcrumb.Item>
         </Breadcrumb>
     );
