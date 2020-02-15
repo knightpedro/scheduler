@@ -8,7 +8,7 @@ import Container from "../../common/containers";
 import WorkerDetail from "./WorkerDetail";
 import Routes from "../../../routes";
 import { useWorkerCalendar } from "../workersSchedule/workersCalendar";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 
 const WorkerDetailContainer = props => {
     const id = props.match.params.id;

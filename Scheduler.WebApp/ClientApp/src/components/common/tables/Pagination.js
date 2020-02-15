@@ -18,7 +18,7 @@ const PageButton = styled.button`
     padding: 3px 10px;
 
     &:hover {
-        background: #e3e3e3;
+        background: ${props => props.theme.colours.onSurfaceLight};
     }
 
     &:focus {
@@ -26,12 +26,13 @@ const PageButton = styled.button`
     }
 
     &:disabled {
-        background: #f5f5f5;
+        color: ${props => props.theme.colours.onDisabled};
+        background: ${props => props.theme.colours.disabled};
     }
 
     &.selected {
-        color: ${props => props.theme.colours.navItem};
-        background: ${props => props.theme.colours.nav};
+        color: ${props => props.theme.colours.onPrimary};
+        background: ${props => props.theme.colours.primary};
     }
 
     :not(:last-child) {

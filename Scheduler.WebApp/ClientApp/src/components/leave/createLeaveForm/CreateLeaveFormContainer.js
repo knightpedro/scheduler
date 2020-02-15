@@ -3,7 +3,7 @@ import CreateLeaveForm from "./CreateLeaveForm";
 import Container from "../../common/containers";
 import axios from "axios";
 import { LEAVE_URL, WORKERS_URL } from "../../../api";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import queryString from "query-string";
 import { entitiesSelect } from "../../../utils";
 import { Loading, LoadingFailure } from "../../common/loading";

@@ -1,5 +1,5 @@
 import React from "react";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
 import axios from "axios";

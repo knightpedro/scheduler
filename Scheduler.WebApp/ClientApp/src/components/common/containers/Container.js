@@ -2,7 +2,8 @@ import Container from "react-bootstrap/Container";
 import styled from "styled-components";
 
 const StyledContainer = styled(Container).attrs(props => ({ fluid: true }))`
-    background: ${props => props.theme.colours.body};
+    background: ${props => props.theme.colours.background};
+    color: ${props => props.theme.colours.onBackground};
     padding: 20px;
     margin-bottom: 20px;
 

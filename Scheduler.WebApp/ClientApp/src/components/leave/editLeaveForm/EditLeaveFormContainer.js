@@ -3,7 +3,7 @@ import axios from "axios";
 import { WORKERS_URL, LEAVE_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import EditLeaveForm from "./EditLeaveForm";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
 import moment from "moment";

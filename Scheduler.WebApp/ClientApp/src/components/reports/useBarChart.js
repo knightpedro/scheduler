@@ -49,7 +49,7 @@ const useBarChart = (ref, data, title, xLabel, yLabel) => {
             .attr("y", HEIGHT)
             .attr("width", xScale.bandwidth())
             .attr("height", 0)
-            .attr("fill", "#5ebcd2")
+            .attr("class", "bar")
             .transition()
             .duration(1000)
             .delay((_, i) => i * 200)

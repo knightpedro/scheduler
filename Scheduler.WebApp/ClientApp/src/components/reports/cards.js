@@ -11,7 +11,7 @@ import {
 const Kpi = styled.div`
     font-size: 64px;
     font-weight: bold;
-    color: #1d2e81;
+    color: ${props => props.theme.colours.primary};
     text-align: end;
 `;
 
@@ -24,7 +24,11 @@ const KpiIndicator = styled.div`
     font-size: 20px;
     font-weight: bold;
     color: ${props =>
-        props.change > 0 ? "green" : props.change < 0 ? "red" : "gray"};
+        props.change > 0
+            ? props.theme.colours.success
+            : props.change < 0
+            ? props.theme.colours.error
+            : "gray"};
 `;
 
 export const JobsInProgressCard = ({ jobsCount }) => {

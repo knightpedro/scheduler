@@ -55,7 +55,10 @@ const ResourceDetail = ({ resource, handleDelete }) => {
                     <h2>{resource.name}</h2>
                 </div>
                 <div className="col mr-auto">
-                    <ActiveStatus isActive={resource.isActive} />
+                    <ActiveStatus
+                        isActive={resource.isActive}
+                        showLabel={true}
+                    />
                 </div>
             </div>
 

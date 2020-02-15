@@ -5,8 +5,8 @@ const FooterContainer = styled.div`
     position: fixed;
     bottom: 0px;
     width: 100%;
-    background-color: ${props => props.theme.colours.footer};
-    color: ${props => props.theme.colours.footerItem};
+    background-color: ${props => props.theme.colours.primary};
+    color: ${props => props.theme.colours.onPrimary};
     font-size: 14px;
     text-align: right;
     padding-right: 20px;

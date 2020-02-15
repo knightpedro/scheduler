@@ -57,7 +57,7 @@ const WorkerDetail = ({ worker, handleDelete }) => {
                     <h2>{worker.name}</h2>
                 </div>
                 <div className="col mr-auto">
-                    <ActiveStatus isActive={worker.isActive} />
+                    <ActiveStatus isActive={worker.isActive} showLabel={true} />
                 </div>
             </div>
 

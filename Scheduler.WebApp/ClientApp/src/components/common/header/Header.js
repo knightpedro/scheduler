@@ -8,53 +8,47 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { LoginMenu } from "../../api-authorization/LoginMenu";
 
 const StyledNavbar = styled(Navbar)`
-    background-color: ${props => props.theme.colours.nav};
+    background-color: ${props => props.theme.colours.primary};
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 
     .navbar-brand {
-        color: ${props => props.theme.colours.navItem};
-        text-decoration: none;
         font-size: 20px;
-
-        :hover {
-            color: ${props => props.theme.colours.navItemHover};
-            text-decoration: none;
-        }
     }
 
     .dropdown-menu {
-        background: ${props => props.theme.colours.navDropdown};
+        background: ${props => props.theme.colours.primaryVariant};
     }
 
     &&& a {
-        color: ${props => props.theme.colours.navItem};
+        color: ${props => props.theme.colours.onPrimary};
 
         :hover,
         :focus {
-            color: ${props => props.theme.colours.navItemHover};
+            color: ${props => props.theme.colours.onPrimary};
+            opacity: 80%;
         }
     }
 
     &&& a.dropdown-item {
-        color: ${props => props.theme.colours.navDropdownItem};
+        color: ${props => props.theme.colours.onPrimary};
 
         :hover,
         :focus {
-            background: ${props => props.theme.colours.navDropdownHover};
-            color: ${props => props.theme.colours.navDropdownItemHover};
+            background: ${props => props.theme.colours.primary};
+        }
+
+        :hover {
+            opacity: 100%;
         }
     }
 
     .navbar-toggler {
-        border-color: ${props => props.theme.colours.navItem};
-        color: ${props => props.theme.colours.navItem};
+        border-color: ${props => props.theme.colours.onPrimary};
+        color: ${props => props.theme.colours.onPrimary};
 
-        :hover {
-            border-color: ${props => props.theme.colours.navItemHover};
-            color: ${props => props.theme.colours.navItemHover};
-        }
-
+        :hover,
         :focus {
+            opacity: 80%;
             outline: none;
         }
     }

@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import uuid from "uuid/v4";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
 const APPOINTMENT_TIME_FORMAT = "HH:mm";
 
@@ -15,17 +17,18 @@ const StyledLink = styled(Link)`
 `;
 
 const Wrapper = styled.div`
-    border: ${props =>
-        props.isConflicting
-            ? props.theme.colours.appointments.conflict.border
-            : props.theme.colours.appointments[props.type].border};
-    border-radius: 3px;
-    background-color: ${props =>
-        props.theme.colours.appointments[props.type].background};
+    background-color: ${props => props.theme.colours.appointments[props.type]};
+    color: ${props => props.theme.colours.appointments.colour};
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     padding: 5px 10px;
     margin-bottom: 2px;
     line-height: 1;
+`;
+
+const ConflictWrapper = styled(Wrapper)`
+    background-color: ${props => props.theme.colours.surface};
+    color: ${props => props.theme.colours.error};
+    border-bottom: 2px solid ${props => props.theme.colours.error};
 `;
 
 const Title = styled.div`
@@ -42,16 +45,10 @@ const Content = styled.div`
     text-overflow: ellipsis;
 `;
 
-export const Appointment = ({
-    type,
-    description,
-    path,
-    isConflicting,
-    ...props
-}) => {
+const Appointment = ({ type, description, path, ...props }) => {
     return (
         <StyledLink to={path}>
-            <Wrapper type={type} isConflicting={isConflicting}>
+            <Wrapper type={type}>
                 <Title>{description}</Title>
                 <Content>
                     <small>{props.children}</small>
@@ -60,6 +57,22 @@ export const Appointment = ({
         </StyledLink>
     );
 };
+
+const ConflictingAppointment = ({ type, description, path, ...props }) => (
+    <StyledLink to={path}>
+        <ConflictWrapper className="d-flex align-items-center">
+            <div className="flex-fill flex-grow-1 mr-2">
+                <Title>{description}</Title>
+                <Content>
+                    <small>{props.children}</small>
+                </Content>
+            </div>
+            <div className="ml-auto">
+                <FontAwesomeIcon fixedWidth icon={faExclamationCircle} />
+            </div>
+        </ConflictWrapper>
+    </StyledLink>
+);
 
 export const renderAppointment = appointment => {
     const { start, end } = appointment;
@@ -74,6 +87,15 @@ export const renderAppointment = appointment => {
             "-" +
             appointment.end.format(APPOINTMENT_TIME_FORMAT);
     }
+
+    if (appointment.isConflicting) {
+        return (
+            <ConflictingAppointment key={uuid()} {...appointment}>
+                {content}
+            </ConflictingAppointment>
+        );
+    }
+
     return (
         <Appointment key={uuid()} {...appointment}>
             {content}

@@ -8,7 +8,7 @@ import {
     RESOURCES_URL,
     WORKERS_URL,
 } from "../../../api";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
 import queryString from "query-string";

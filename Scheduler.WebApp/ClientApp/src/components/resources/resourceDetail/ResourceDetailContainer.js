@@ -7,7 +7,7 @@ import Breadcrumb from "../../common/breadcrumb";
 import ResourceDetail from "./ResourceDetail";
 import Routes from "../../../routes";
 import { useResourceCalendar } from "../resourcesSchedule/resourcesCalendar";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import { Link } from "react-router-dom";
 
 const ResourceDetailContainer = props => {

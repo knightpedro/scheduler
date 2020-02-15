@@ -6,8 +6,7 @@ import {
     SearchColumnFilter,
     SelectColumnFilter,
 } from "../../common/tables";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { ActiveStatus } from "../../common/status";
 
 const status = {
     ACTIVE: "Active",
@@ -39,10 +38,7 @@ const ResourcesList = ({ resources }) => {
                 accessor: "status",
                 className: "text-center",
                 Cell: ({ cell: { value } }) => (
-                    <FontAwesomeIcon
-                        icon={value === status.ACTIVE ? faCheck : faTimes}
-                        color={value === status.ACTIVE ? "green" : "red"}
-                    />
+                    <ActiveStatus isActive={value === status.ACTIVE} />
                 ),
                 Filter: SelectColumnFilter,
                 filter: "exactText",

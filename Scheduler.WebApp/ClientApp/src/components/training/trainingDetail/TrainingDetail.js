@@ -43,7 +43,11 @@ const TrainingDetail = ({ training, handleDelete }) => {
             </div>
 
             <p>
-                <FontAwesomeIcon icon={faMapMarkerAlt} fixedWidth />
+                <FontAwesomeIcon
+                    className="mr-2"
+                    icon={faMapMarkerAlt}
+                    fixedWidth
+                />
                 {training.location}
             </p>
             <p>Start: {training.start}</p>

@@ -7,6 +7,7 @@ const Styles = styled(Container)`
     background: none;
 
     div {
+        border-radius: 0;
         background: white;
     }
 `;
@@ -14,7 +15,7 @@ const Styles = styled(Container)`
 const About = () => {
     return (
         <Styles>
-            <Jumbotron className="shadow">
+            <Jumbotron className="shadow mt-5">
                 <h1 className="display-4">About</h1>
                 <p className="lead">
                     Scheduler is a simple planning application built using React

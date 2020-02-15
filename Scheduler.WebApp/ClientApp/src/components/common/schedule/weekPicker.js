@@ -14,7 +14,7 @@ const WEEK_FORMAT = "isoWeek";
 
 const ControlsWrapper = styled.div`
     padding-top: 8px;
-    background: ${props => props.theme.colours.tableHead};
+    background: ${props => props.theme.colours.primaryVariant};
 `;
 
 const NavigationHeading = styled.div`
@@ -22,33 +22,32 @@ const NavigationHeading = styled.div`
     font-weight: bold;
     font-size: 20px;
     white-space: nowrap;
-    color: ${props => props.theme.colours.tableHeadingItem};
+    color: ${props => props.theme.colours.onPrimary};
 `;
 
 const NavigationButton = styled.button`
     background: none;
     border: none;
-    color: ${props => props.theme.colours.tableHeadingItem};
+    color: ${props => props.theme.colours.onPrimary};
 
     :focus {
         outline: none;
     }
 
     :hover {
-        color: ${props => props.theme.colours.tableHeadingItemHover};
+        opacity: 80%;
     }
 `;
 
 const TodayButton = styled.button`
     background: none;
     border: 1px solid;
-    border-color: ${props => props.theme.colours.tableHeadingItem};
+    border-color: ${props => props.theme.colours.onPrimary};
     border-radius: 4px;
-    color: ${props => props.theme.colours.tableHeadingItem};
+    color: ${props => props.theme.colours.onPrimary};
 
     :hover {
-        color: ${props => props.theme.colours.tableHeadingItemHover};
-        border-color: ${props => props.theme.colours.tableHeadingItemHover};
+        opacity: 80%;
     }
 
     :focus {
@@ -56,7 +55,12 @@ const TodayButton = styled.button`
     }
 `;
 
-const WeekPickerDatetime = styled(Datetime)``;
+const WeekPickerDatetime = styled(Datetime)`
+    td.rdtActive {
+        background-color: ${props => props.theme.colours.secondary};
+        color: ${props => props.theme.colours.onSecondary};
+    }
+`;
 
 const getStartOfWeek = date => moment(date).startOf(WEEK_FORMAT);
 
@@ -87,7 +91,7 @@ export const WeekPickerControls = ({
     onReset,
 }) => (
     <ControlsWrapper className="row no-gutters align-items-center">
-        <div className="col-2 d-flex justify-content-center">
+        <div className="col-2 d-flex justify-content-start pl-3">
             <WeekPickerDatetime
                 value={start}
                 closeOnSelect={true}
@@ -112,7 +116,7 @@ export const WeekPickerControls = ({
             </NavigationButton>
         </div>
 
-        <div className="col-2 d-flex justify-content-center">
+        <div className="col-2 d-flex justify-content-end pr-3">
             <TodayButton variant="outline-secondary" onClick={onReset}>
                 Now
             </TodayButton>

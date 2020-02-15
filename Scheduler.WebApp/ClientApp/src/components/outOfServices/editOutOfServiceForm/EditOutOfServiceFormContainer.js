@@ -4,7 +4,7 @@ import { Loading, LoadingFailure } from "../../common/loading";
 import { OUTOFSERVICE_URL, RESOURCES_URL } from "../../../api";
 import axios from "axios";
 import moment from "moment";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
 import { Link, generatePath } from "react-router-dom";

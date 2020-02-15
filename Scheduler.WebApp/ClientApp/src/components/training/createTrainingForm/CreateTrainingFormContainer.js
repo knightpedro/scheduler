@@ -1,6 +1,6 @@
 import React from "react";
 import CreateTrainingForm from "./CreateTrainingForm";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
 import axios from "axios";

@@ -27,7 +27,10 @@ const CoordinatorDetail = ({ coordinator, handleDelete }) => {
                     <h2>{coordinator.name}</h2>
                 </div>
                 <div className="col mr-auto">
-                    <ActiveStatus isActive={coordinator.isActive} />
+                    <ActiveStatus
+                        isActive={coordinator.isActive}
+                        showLabel={true}
+                    />
                 </div>
             </div>
 

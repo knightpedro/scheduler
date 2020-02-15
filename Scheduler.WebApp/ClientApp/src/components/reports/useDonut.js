@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { ThemeContext } from "styled-components";
 import * as d3 from "d3";
 
 const WIDTH = 300;
@@ -8,11 +9,11 @@ const LEGEND_HEIGHT = 100;
 const KEY = 20;
 const KEY_MARGIN = 5;
 const RADIUS = Math.min(WIDTH, HEIGHT) / 2;
-const COLOURS = ["#1d2e81", "#3984b6", "#85cbcf"];
 
 const useDonut = (ref, data, unit = "day") => {
+    const themeContext = useContext(ThemeContext);
     useEffect(() => {
-        const colorScale = d3.scaleOrdinal(COLOURS);
+        const colorScale = d3.scaleOrdinal(themeContext.colours.visualisation);
 
         const total = Math.round(
             data.reduce((acc, current) => acc + current.value, 0)

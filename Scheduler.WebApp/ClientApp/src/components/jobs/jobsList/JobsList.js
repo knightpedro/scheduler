@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import { CompletionStatus } from "../../common/status";
 import Routes from "../../../routes";
 import { generatePath } from "react-router-dom";
 import {
@@ -48,10 +47,7 @@ const JobsList = ({ jobs }) => {
                 accessor: "status",
                 className: "text-center",
                 Cell: ({ cell: { value } }) => (
-                    <FontAwesomeIcon
-                        color={value === status.COMPLETE ? "green" : "blue"}
-                        icon={value === status.COMPLETE ? faCheck : faSyncAlt}
-                    />
+                    <CompletionStatus isComplete={value === status.COMPLETE} />
                 ),
                 Filter: SelectColumnFilter,
                 filter: "exactText",

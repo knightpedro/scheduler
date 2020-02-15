@@ -3,7 +3,7 @@ import CreateWorkerForm from "./CreateWorkerForm";
 import axios from "axios";
 import { WORKERS_URL } from "../../../api";
 import Routes from "../../../routes";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
 import { Link } from "react-router-dom";

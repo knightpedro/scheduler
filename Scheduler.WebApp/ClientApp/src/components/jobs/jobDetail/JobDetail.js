@@ -37,7 +37,10 @@ const JobDetail = ({ job, handleDelete }) => {
                     <h2>Job {job.jobNumber}</h2>
                 </div>
                 <div className="col mr-auto">
-                    <CompletionStatus isComplete={job.isComplete} />
+                    <CompletionStatus
+                        isComplete={job.isComplete}
+                        showLabel={true}
+                    />
                 </div>
             </div>
 
@@ -54,7 +57,11 @@ const JobDetail = ({ job, handleDelete }) => {
             </div>
 
             <p>
-                <FontAwesomeIcon icon={faMapMarkerAlt} fixedWidth />
+                <FontAwesomeIcon
+                    className="mr-2"
+                    icon={faMapMarkerAlt}
+                    fixedWidth
+                />
                 {job.location}
             </p>
             <p>

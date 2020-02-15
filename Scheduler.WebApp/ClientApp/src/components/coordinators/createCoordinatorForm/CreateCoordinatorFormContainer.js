@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CreateCoordinatorForm from "./CreateCoordinatorForm";
 import Container from "../../common/containers";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import axios from "axios";
 import { COORDINATORS_URL } from "../../../api";
 import Routes from "../../../routes";

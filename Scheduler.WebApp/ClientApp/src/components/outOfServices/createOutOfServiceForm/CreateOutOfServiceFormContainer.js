@@ -3,7 +3,7 @@ import CreateOutOfServiceForm from "./CreateOutOfServiceForm";
 import Container from "../../common/containers";
 import axios from "axios";
 import { OUTOFSERVICE_URL, RESOURCES_URL } from "../../../api";
-import Alert from "react-bootstrap/Alert";
+import Alert from "../../common/alert";
 import { Loading, LoadingFailure } from "../../common/loading";
 import Routes from "../../../routes";
 import { generatePath } from "react-router-dom";

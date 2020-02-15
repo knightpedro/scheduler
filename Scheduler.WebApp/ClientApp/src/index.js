@@ -7,7 +7,7 @@ import { render } from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import App from "./app";
 import { ThemeProvider } from "styled-components";
-import theme from "./theme";
+import theme from "./theme/sunny";
 import { configureAxios } from "./api/configureAxios";
 
 configureAxios();

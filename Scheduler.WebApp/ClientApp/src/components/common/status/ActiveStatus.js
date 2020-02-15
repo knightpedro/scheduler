@@ -3,39 +3,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
-const colors = {
-    active: "green",
-    inactive: "#dc3545",
-};
-
 const ActiveWrapper = styled.div`
-    display: flex;
-    align-items: center;
     font-weight: bold;
-    color: ${colors.active};
+    color: ${props => props.theme.colours.success};
 `;
 
 const InactiveWrapper = styled(ActiveWrapper)`
-    color: ${colors.inactive};
+    color: ${props => props.theme.colours.error};
 `;
 
-const Active = () => (
+const Active = ({ showLabel }) => (
     <ActiveWrapper>
-        <FontAwesomeIcon icon={faCheck} color={colors.active} fixedWidth />
-        Active
+        <FontAwesomeIcon icon={faCheck} fixedWidth />
+        {showLabel && "Active"}
     </ActiveWrapper>
 );
 
-const Inactive = () => (
+const Inactive = ({ showLabel }) => (
     <InactiveWrapper>
-        <FontAwesomeIcon icon={faTimes} color={colors.inactive} fixedWidth />
-        Inactive
+        <FontAwesomeIcon icon={faTimes} fixedWidth />
+        {showLabel && "Inactive"}
     </InactiveWrapper>
 );
 
-const ActiveStatus = ({ isActive }) => {
-    if (isActive) return <Active />;
-    return <Inactive />;
+const ActiveStatus = ({ isActive, showLabel }) => {
+    if (isActive) return <Active showLabel={showLabel} />;
+    return <Inactive showLabel={showLabel} />;
 };
 
 export default ActiveStatus;
