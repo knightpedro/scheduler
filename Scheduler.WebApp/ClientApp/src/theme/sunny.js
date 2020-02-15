@@ -27,7 +27,7 @@ const theme = {
         onSurface: "#000000",
         onSurfaceLight: "#ededed",
         error: "#E53935",
-        onError: "#D32F2F",
+        onError: "#ffffff",
         visualisation,
     },
 };
