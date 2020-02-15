@@ -11,6 +11,7 @@ using Scheduler.Application.Common.Interfaces;
 using Scheduler.WebApp.Services;
 using Scheduler.WebApp.Middleware;
 using FluentValidation.AspNetCore;
+using Scheduler.WebApp.Converters;
 
 namespace Scheduler.WebApp
 {
@@ -33,7 +34,12 @@ namespace Scheduler.WebApp
             services.AddHttpContextAccessor();
 
             services.AddControllersWithViews()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+                })
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ISchedulerDbContext>());
+
             services.AddRazorPages();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();

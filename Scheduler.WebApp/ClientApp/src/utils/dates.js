@@ -47,10 +47,12 @@ export const generateSchedule = (days, appointments) => {
         // Adjust start and end times if appointment runs over multiple days.
         const dayStart = day.clone().startOf("day");
         const dayEnd = day.clone().endOf("day");
-        return overlapping.map(a => {
-            const start = a.start.isBefore(dayStart) ? dayStart : a.start;
-            const end = a.end.isAfter(dayEnd) ? dayEnd : a.end;
-            return { ...a, start, end };
-        });
+        return overlapping
+            .map(a => {
+                const start = a.start.isBefore(dayStart) ? dayStart : a.start;
+                const end = a.end.isAfter(dayEnd) ? dayEnd : a.end;
+                return { ...a, start, end };
+            })
+            .sort((a, b) => a.start.unix() - b.start.unix());
     });
 };
