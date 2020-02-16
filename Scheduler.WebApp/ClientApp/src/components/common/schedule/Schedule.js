@@ -6,13 +6,11 @@ const Schedule = styled(Table)`
         text-align: center;
     }
 
-    tr th {
-        width: 12.5%;
-    }
-
     td {
         background: none;
         height: 60px;
+        max-width: 220px;
+        min-width: 150px;
     }
 
     col.weekend {

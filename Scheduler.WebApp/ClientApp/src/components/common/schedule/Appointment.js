@@ -18,6 +18,7 @@ const StyledLink = styled(Link)`
 
 const Wrapper = styled.div`
     background-color: ${props => props.theme.colours.appointments[props.type]};
+    border-radius: 4px;
     color: ${props => props.theme.colours.appointments.colour};
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     padding: 5px 10px;
@@ -29,6 +30,10 @@ const ConflictWrapper = styled(Wrapper)`
     background-color: ${props => props.theme.colours.surface};
     color: ${props => props.theme.colours.error};
     border-bottom: 2px solid ${props => props.theme.colours.error};
+`;
+
+const ConflictContentWrapper = styled.div`
+    overflow: hidden;
 `;
 
 const Title = styled.div`
@@ -61,12 +66,12 @@ const Appointment = ({ type, description, path, ...props }) => {
 const ConflictingAppointment = ({ type, description, path, ...props }) => (
     <StyledLink to={path}>
         <ConflictWrapper className="d-flex align-items-center">
-            <div className="flex-fill flex-grow-1 mr-2">
+            <ConflictContentWrapper className="mr-2">
                 <Title>{description}</Title>
                 <Content>
                     <small>{props.children}</small>
                 </Content>
-            </div>
+            </ConflictContentWrapper>
             <div className="ml-auto">
                 <FontAwesomeIcon fixedWidth icon={faExclamationCircle} />
             </div>

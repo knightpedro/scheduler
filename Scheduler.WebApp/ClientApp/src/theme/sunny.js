@@ -1,4 +1,4 @@
-const visualisation = ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"];
+const visualisation = ["#3c1357", "#7b2895", "#d54d88", "#ff6361", "#f19a9b"];
 
 const appointments = {
     colour: "#ffffff",

@@ -11,7 +11,7 @@ import {
 const Kpi = styled.div`
     font-size: 64px;
     font-weight: bold;
-    color: ${props => props.theme.colours.primary};
+    color: ${props => props.theme.colours.secondary};
     text-align: end;
 `;
 

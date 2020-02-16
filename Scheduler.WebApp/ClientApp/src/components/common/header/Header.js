@@ -13,6 +13,7 @@ const StyledNavbar = styled(Navbar)`
 
     .navbar-brand {
         font-size: 20px;
+        font-weight: 500;
     }
 
     .dropdown-menu {
@@ -26,6 +27,7 @@ const StyledNavbar = styled(Navbar)`
         :focus {
             color: ${props => props.theme.colours.onPrimary};
             opacity: 80%;
+            font-weight: 500;
         }
     }
 

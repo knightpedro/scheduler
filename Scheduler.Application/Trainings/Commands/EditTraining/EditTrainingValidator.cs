@@ -6,8 +6,8 @@ namespace Scheduler.Application.Trainings.Commands.EditTraining
     {
         public EditTrainingValidator()
         {
-            RuleFor(t => t.Description).NotEmpty().MaximumLength(30);
-            RuleFor(t => t.Location).NotEmpty().MaximumLength(30);
+            RuleFor(t => t.Description).NotEmpty().MaximumLength(100);
+            RuleFor(t => t.Location).NotEmpty().MaximumLength(50);
         }
     }
 }

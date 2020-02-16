@@ -1,8 +1,16 @@
 import React from "react";
+import styled from "styled-components";
 import { Spinner } from "react-bootstrap";
 
-const Loading = () => {
-    return <Spinner animation="border" variant="primary" />;
-};
+const Styles = styled.div`
+    color: ${props => props.theme.colours.secondary};
+    margin-top: 100px;
+`;
+
+const Loading = () => (
+    <Styles className="d-flex justify-content-center align-items-center">
+        <Spinner animation="border" />
+    </Styles>
+);
 
 export default Loading;

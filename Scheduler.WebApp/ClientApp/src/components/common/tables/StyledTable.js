@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Table from "react-bootstrap/Table";
 
 const StyledTable = styled(Table)`
-    border-collapse: collapse;
+    border-collapse: hidden;
     border-style: hidden;
     margin: 0;
 
@@ -12,20 +12,18 @@ const StyledTable = styled(Table)`
     td,
     tbody {
         border: none;
+        border-spacing: 0;
     }
 
-    thead tr {
+    thead th {
         background: ${props => props.theme.colours.primaryVariant};
         color: ${props => props.theme.colours.onPrimary};
     }
 
-    tbody th {
+    tbody td {
         background: ${props => props.theme.colours.surface};
         color: ${props => props.theme.colours.onSurface};
-    }
-
-    th span {
-        margin-right: 5px;
+        border: 1px solid ${props => props.theme.colours.onSurfaceLight};
     }
 
     th {
@@ -35,15 +33,6 @@ const StyledTable = styled(Table)`
     &&& th,
     td {
         vertical-align: middle;
-    }
-
-    td {
-        border: 1px solid ${props => props.theme.colours.onSurfaceLight};
-        background: ${props => props.theme.colours.surface};
-    }
-
-    col {
-        background: ${props => props.theme.colours.surface};
     }
 `;
 

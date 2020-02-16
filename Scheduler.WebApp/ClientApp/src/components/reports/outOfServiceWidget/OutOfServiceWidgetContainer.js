@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { OUTOFSERVICE_URL, RESOURCES_URL } from "../../../api";
-import { Loading } from "../../common/loading";
+import { Loading, LoadingFailure } from "../../common/loading";
 import OutOfServiceWidget from "./OutOfServiceWidget";
 import { entitiesSelect } from "../../../utils/transforms";
 import Datetime from "react-datetime";
@@ -99,7 +99,8 @@ const OutOfServiceWidgetContainer = props => {
     );
 
     if (loading) return renderComponent(<Loading />);
-    if (error) return renderComponent(error.message);
+    if (error)
+        return renderComponent(<LoadingFailure message={error.message} />);
 
     return renderComponent(
         <>
