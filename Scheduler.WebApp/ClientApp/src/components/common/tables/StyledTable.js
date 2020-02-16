@@ -21,7 +21,6 @@ const StyledTable = styled(Table)`
     }
 
     tbody td {
-        background: ${props => props.theme.colours.surface};
         color: ${props => props.theme.colours.onSurface};
         border: 1px solid ${props => props.theme.colours.onSurfaceLight};
     }
@@ -33,6 +32,10 @@ const StyledTable = styled(Table)`
     &&& th,
     td {
         vertical-align: middle;
+    }
+
+    col {
+        background: ${props => props.theme.colours.surface};
     }
 `;
 

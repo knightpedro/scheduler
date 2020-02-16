@@ -16,6 +16,7 @@ const Styles = styled.div`
     }
 
     td:first-child {
+        background: ${props => props.theme.colours.surface};
         white-space: nowrap;
         min-width: 0;
     }
