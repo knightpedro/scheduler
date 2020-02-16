@@ -29,6 +29,10 @@ const StyledTable = styled(Table)`
         text-align: center;
     }
 
+    th > span > span {
+        margin-right: 5px;
+    }
+
     &&& th,
     td {
         vertical-align: middle;
