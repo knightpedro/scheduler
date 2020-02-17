@@ -50,10 +50,14 @@ const TrainingDetail = ({ training, handleDelete }) => {
                 />
                 {training.location}
             </p>
-            <p>Start: {training.start}</p>
-            <p>Finish: {training.end}</p>
-            <h5>Attendees</h5>
-            <ul>{training.workers.map(worker => renderWorker(worker))}</ul>
+            <h6>Start</h6>
+            <p>{training.start}</p>
+            <h6>Finish</h6>
+            <p>{training.end}</p>
+            <div className="mt-5">
+                <h5>Attendees</h5>
+                <ul>{training.workers.map(worker => renderWorker(worker))}</ul>
+            </div>
             <CentredModal
                 show={showModal}
                 title={`Delete ${training.description}`}

@@ -10,7 +10,7 @@ import { sortByName } from "../../../utils";
 import Routes from "../../../routes";
 import { Link } from "react-router-dom";
 
-const DATE_FORMAT = "HH:mm D/MM/YYYY";
+const DATE_FORMAT = "h:mma dddd Do MMMM YYYY";
 
 class TrainingDetailContainer extends React.Component {
     state = {

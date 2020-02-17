@@ -50,26 +50,36 @@ const JobTaskDetail = ({ jobTask, handleDelete }) => {
                     />
                 </div>
             </div>
-            <p>Start: {jobTask.start}</p>
-            <p>Finish: {jobTask.end}</p>
-            {jobTask.workers.length > 0 && (
-                <>
-                    <p className="font-weight-bold">Staff</p>
-                    <ul>
-                        {jobTask.workers.map(worker => renderWorker(worker))}
-                    </ul>
-                </>
-            )}
-            {jobTask.resources.length > 0 && (
-                <>
-                    <p className="font-weight-bold">Plant</p>
-                    <ul>
-                        {jobTask.resources.map(resource =>
-                            renderResource(resource)
-                        )}
-                    </ul>
-                </>
-            )}
+
+            <div>
+                <h6>Start</h6>
+                <p>{jobTask.start}</p>
+                <h6>Finish</h6>
+                <p>{jobTask.end}</p>
+            </div>
+
+            <div className="mt-5">
+                {jobTask.workers.length > 0 && (
+                    <>
+                        <h5>Staff</h5>
+                        <ul>
+                            {jobTask.workers.map(worker =>
+                                renderWorker(worker)
+                            )}
+                        </ul>
+                    </>
+                )}
+                {jobTask.resources.length > 0 && (
+                    <>
+                        <h5>Plant</h5>
+                        <ul>
+                            {jobTask.resources.map(resource =>
+                                renderResource(resource)
+                            )}
+                        </ul>
+                    </>
+                )}
+            </div>
             <CentredModal
                 show={showModal}
                 title={`Delete task ${jobTask.description}`}
