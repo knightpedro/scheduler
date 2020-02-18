@@ -2,10 +2,10 @@ const visualisation = ["#3c1357", "#7b2895", "#d54d88", "#ff6361", "#f19a9b"];
 
 const appointments = {
     colour: "#ffffff",
-    JobTask: visualisation[0],
-    Leave: visualisation[1],
-    Training: visualisation[2],
-    OutOfService: visualisation[3],
+    JobTask: "#019392",
+    Leave: "#cf597e",
+    Training: "#6470e3",
+    OutOfService: "#cf597e",
 };
 
 const theme = {

@@ -5,8 +5,21 @@ import { Link, generatePath } from "react-router-dom";
 import { CentredModal } from "../../common/modals";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 
 const DELETE_MESSAGE = "Are you sure you want to delete this training?";
+
+const TimeWrapper = styled.div`
+    background-color: #f9f9f9;
+
+    h4 {
+        color: ${props => props.theme.colours.secondary};
+    }
+
+    p {
+        font-weight: 400;
+    }
+`;
 
 const TrainingDetail = ({ training, handleDelete }) => {
     const [showModal, setShowModal] = useState(false);
@@ -50,13 +63,24 @@ const TrainingDetail = ({ training, handleDelete }) => {
                 />
                 {training.location}
             </p>
-            <h6>Start</h6>
-            <p>{training.start}</p>
-            <h6>Finish</h6>
-            <p>{training.end}</p>
-            <div className="mt-5">
-                <h5>Attendees</h5>
-                <ul>{training.workers.map(worker => renderWorker(worker))}</ul>
+
+            <TimeWrapper className="row mt-5 p-5 align-items-center">
+                <div className="col-md">
+                    <h4>Start</h4>
+                    <p className="lead">{training.start}</p>
+                </div>
+                <div className="col-md">
+                    <h4>Finish</h4>
+                    <p className="lead">{training.end}</p>
+                </div>
+            </TimeWrapper>
+            <div className="row mt-5">
+                <div className="col">
+                    <h5>Attendees</h5>
+                    <ul>
+                        {training.workers.map(worker => renderWorker(worker))}
+                    </ul>
+                </div>
             </div>
             <CentredModal
                 show={showModal}

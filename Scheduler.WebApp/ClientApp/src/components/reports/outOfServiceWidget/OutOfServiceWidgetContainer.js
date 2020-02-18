@@ -12,16 +12,8 @@ const SHOW_ALL = "all";
 const DATE_FORMAT = "D MMMM YYYY";
 
 const OutOfServiceWidgetContainer = props => {
-    const [start, setStart] = useState(
-        moment()
-            .subtract(1, "month")
-            .startOf("month")
-    );
-    const [end, setEnd] = useState(
-        moment()
-            .subtract(1, "month")
-            .endOf("month")
-    );
+    const [start, setStart] = useState(moment().startOf("month"));
+    const [end, setEnd] = useState(moment().endOf("month"));
     const [loading, setLoading] = useState(true);
     const [selectedResourceId, setSelectedResourceId] = useState(SHOW_ALL);
     const [resources, setResources] = useState();
