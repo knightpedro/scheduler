@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Coordinator Detail renders correctly 1`] = `
+<Fragment>
+  <div
+    className="row align-items-center"
+  >
+    <div
+      className="col-auto"
+    >
+      <h2>
+        Active Coordinator
+      </h2>
+    </div>
+    <div
+      className="col mr-auto"
+    >
+      <ActiveStatus
+        isActive={true}
+        showLabel={true}
+      />
+    </div>
+  </div>
+  <div
+    className="row align-items-center"
+  >
+    <div
+      className="col mr-auto"
+    />
+    <div
+      className="col-auto"
+    >
+      <EditDeleteGroup
+        editPath="/coordinators/edit/1"
+        handleDeleteClick={[Function]}
+      />
+    </div>
+  </div>
+  <NoContent
+    item="jobs"
+  />
+  <CentredModal
+    content="Are you sure you want to delete this coordinator?"
+    handleHide={[Function]}
+    handleSuccess={[Function]}
+    show={false}
+    title="Delete Active Coordinator"
+  />
+</Fragment>
+`;
