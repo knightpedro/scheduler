@@ -1,13 +1,6 @@
 import React from "react";
 import CreateJobTaskForm from "./CreateJobTaskForm";
 import { Loading, LoadingFailure } from "../../common/loading";
-import axios from "axios";
-import {
-    JOBS_URL,
-    JOBTASKS_URL,
-    RESOURCES_URL,
-    WORKERS_URL,
-} from "../../../api";
 import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
@@ -15,6 +8,12 @@ import queryString from "query-string";
 import { entitiesSelect } from "../../../utils";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
+import {
+    jobsService,
+    resourcesService,
+    workersService,
+    jobTasksService,
+} from "../../../services";
 
 class CreateJobTaskFormContainer extends React.Component {
     state = {
@@ -26,21 +25,22 @@ class CreateJobTaskFormContainer extends React.Component {
         resources: null,
     };
 
-    componentDidMount = async () => {
-        try {
-            const jobId = queryString.parse(this.props.location.search).jobid;
-            let jobRes = await axios.get(`${JOBS_URL}/${jobId}`);
-            let resourcesRes = await axios.get(RESOURCES_URL);
-            let workersRes = await axios.get(WORKERS_URL);
-            this.setState({
-                loading: false,
-                job: jobRes.data,
-                resources: entitiesSelect(resourcesRes.data.resources),
-                workers: entitiesSelect(workersRes.data.workers),
-            });
-        } catch (error) {
-            this.setState({ loading: false, loadingError: error });
-        }
+    componentDidMount = () => {
+        const jobId = queryString.parse(this.props.location.search).jobid;
+        Promise.all([
+            jobsService.getById(jobId),
+            resourcesService.getAll(),
+            workersService.getAll(),
+        ])
+            .then(([job, resources, workers]) =>
+                this.setState({
+                    job,
+                    resources: entitiesSelect(resources),
+                    workers: entitiesSelect(workers),
+                })
+            )
+            .catch(error => this.setState({ loadingError: error }))
+            .finally(() => this.setState({ loading: false }));
     };
 
     handleCancel = () => this.props.history.goBack();
@@ -56,27 +56,19 @@ class CreateJobTaskFormContainer extends React.Component {
         };
 
         try {
-            const jobTaskRes = await axios.post(JOBTASKS_URL, postBody);
-            const jobTaskId = jobTaskRes.data.id;
-
+            const jobTaskId = await jobTasksService.create(postBody);
             if (values.selectedWorkers) {
                 const workersPatch = {
                     add: values.selectedWorkers.map(w => w.value),
                 };
-                await axios.patch(
-                    `${JOBTASKS_URL}/${jobTaskId}/workers`,
-                    workersPatch
-                );
+                await jobTasksService.patchWorkers(jobTaskId, workersPatch);
             }
 
             if (values.selectedResources) {
                 const resourcesPatch = {
                     add: values.selectedResources.map(r => r.value),
                 };
-                await axios.patch(
-                    `${JOBTASKS_URL}/${jobTaskId}/resources`,
-                    resourcesPatch
-                );
+                await jobTasksService.patchResources(jobTaskId, resourcesPatch);
             }
             const jobTaskDetailPath = generatePath(Routes.jobTasks.DETAIL, {
                 id: jobTaskId,

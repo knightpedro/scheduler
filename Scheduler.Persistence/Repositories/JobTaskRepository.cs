@@ -31,6 +31,7 @@ namespace Scheduler.Persistence.Repositories
         public async Task<JobTask> GetByIdWithShifts(int id)
         {
             return await context.JobTasks
+                .Include(j => j.Job)
                 .Include(j => j.WorkerShifts)
                     .ThenInclude(ws => ws.Worker)
                 .Include(j => j.ResourceShifts)

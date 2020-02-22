@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { WORKERS_URL } from "../../../api";
-import axios from "axios";
+import { workersService } from "../../../services";
 import {
     createAppointment,
     getDatesBetween,
@@ -9,9 +8,6 @@ import {
 } from "../../../utils";
 import { generatePath } from "react-router-dom";
 import Routes from "../../../routes";
-import queryString from "query-string";
-
-const DATE_REQUEST_FORMAT = "YYYY-MM-DD";
 
 export const createWorkerSchedule = (worker, start, end) => {
     const days = getDatesBetween(start, end);
@@ -35,16 +31,10 @@ export const useWorkerCalendar = (id, start, end) => {
     const [error, setError] = useState();
 
     useEffect(() => {
-        const startQuery = start ? start.format(DATE_REQUEST_FORMAT) : start;
-        const endQuery = end ? end.format(DATE_REQUEST_FORMAT) : end;
-        const queryUrl = queryString.stringifyUrl({
-            url: `${WORKERS_URL}/${id}/calendar`,
-            query: { start: startQuery, end: endQuery },
-        });
-        axios
-            .get(queryUrl)
-            .then(res => {
-                setWorkerCalendar(res.data);
+        workersService
+            .getIndividualCalendar(id, start, end)
+            .then(calendar => {
+                setWorkerCalendar(calendar);
                 setLoading(false);
             })
             .catch(error => {
@@ -62,12 +52,10 @@ export const useWorkersCalendar = (start, end) => {
     const [error, setError] = useState();
 
     useEffect(() => {
-        const startQuery = start.format(DATE_REQUEST_FORMAT);
-        const endQuery = end.format(DATE_REQUEST_FORMAT);
-        axios
-            .get(`${WORKERS_URL}/calendar/${startQuery}/${endQuery}`)
-            .then(res => {
-                setWorkersCalendar(res.data.workers);
+        workersService
+            .getAllCalenders(start, end)
+            .then(calendar => {
+                setWorkersCalendar(calendar);
                 setLoading(false);
             })
             .catch(error => {

@@ -3,14 +3,13 @@ import CreateTrainingForm from "../createTrainingForm/CreateTrainingForm";
 import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
-import axios from "axios";
-import { TRAINING_URL, WORKERS_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import { createPatch, entitiesSelect } from "../../../utils";
 import { isEmpty } from "lodash";
 import moment from "moment";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
+import { trainingService, workersService } from "../../../services";
 
 class EditTrainingFormContainer extends React.Component {
     state = {
@@ -21,22 +20,22 @@ class EditTrainingFormContainer extends React.Component {
         workers: null,
     };
 
-    componentDidMount = async () => {
+    componentDidMount = () => {
         const id = this.props.match.params.id;
-        try {
-            let trainingRes = await axios.get(`${TRAINING_URL}/${id}`);
-            let workersRes = await axios.get(WORKERS_URL);
-            this.setState({
-                loading: false,
-                training: this.transformTraining(trainingRes.data),
-                workers: entitiesSelect(workersRes.data.workers),
-            });
-        } catch (error) {
-            this.setState({
-                loading: false,
-                loadingError: error,
-            });
-        }
+
+        Promise.all([trainingService.getById(id), workersService.getAll()])
+            .then(([training, workers]) =>
+                this.setState({
+                    training: this.transformTraining(training),
+                    workers: entitiesSelect(workers),
+                })
+            )
+            .catch(error =>
+                this.setState({
+                    loadingError: error,
+                })
+            )
+            .finally(() => this.setState({ loading: false }));
     };
 
     transformTraining(training) {
@@ -64,17 +63,13 @@ class EditTrainingFormContainer extends React.Component {
         };
 
         try {
-            await axios.put(`${TRAINING_URL}/${training.id}`, putBody);
+            trainingService.edit(putBody);
             const initialWorkers = training.selectedWorkers.map(w => w.value);
             const finalWorkers = values.selectedWorkers.map(w => w.value);
             const workersPatch = createPatch(initialWorkers, finalWorkers);
             if (!isEmpty(workersPatch)) {
-                await axios.patch(
-                    `${TRAINING_URL}/${training.id}/workers`,
-                    workersPatch
-                );
+                await trainingService.patchWorkers(training.id, workersPatch);
             }
-
             this.props.history.push(
                 generatePath(Routes.training.DETAIL, { id: training.id })
             );

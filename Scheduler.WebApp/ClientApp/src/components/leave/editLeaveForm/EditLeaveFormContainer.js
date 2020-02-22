@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { WORKERS_URL, LEAVE_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import EditLeaveForm from "./EditLeaveForm";
 import Alert from "../../common/alert";
@@ -11,6 +9,7 @@ import { isEqual } from "lodash";
 import { Delete } from "../../common/actions";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
+import { leaveService, workersService } from "../../../services";
 
 const EditLeaveFormContainer = props => {
     const [loading, setLoading] = useState(true);
@@ -23,22 +22,24 @@ const EditLeaveFormContainer = props => {
     useEffect(() => {
         const fetchLeave = async () => {
             try {
-                let leaveRes = await axios.get(`${LEAVE_URL}/${leaveId}`);
-                const l = leaveRes.data;
-                let workerRes = await axios.get(`${WORKERS_URL}/${l.workerId}`);
-                let leaveTypesRes = await axios.get(`${LEAVE_URL}/leave-types`);
-                const start = moment(l.start);
-                const end = moment(l.end);
-                const leaveType = { label: l.leaveType, value: l.leaveType };
+                const leave = await leaveService.getById(leaveId);
+                const leaveTypes = await leaveService.getTypes();
+                const worker = await workersService.getById(leave.workerId);
+                const start = moment(leave.start);
+                const end = moment(leave.end);
+                const leaveType = {
+                    label: leave.leaveType,
+                    value: leave.leaveType,
+                };
                 setLeave({
-                    ...l,
+                    ...leave,
                     start,
                     end,
                     leaveType,
-                    worker: workerRes.data,
+                    worker,
                 });
                 setLeaveTypes(
-                    leaveTypesRes.data.sort().map(l => ({ label: l, value: l }))
+                    leaveTypes.sort().map(l => ({ label: l, value: l }))
                 );
             } catch (error) {
                 setLoadingError(error);
@@ -52,8 +53,8 @@ const EditLeaveFormContainer = props => {
     const handleCancel = () => props.history.goBack();
 
     const handleDelete = () => {
-        axios
-            .delete(`${LEAVE_URL}/${leave.id}`)
+        leaveService
+            .destroy(leave.id)
             .then(() => props.history.goBack())
             .catch(error => setFormError(error));
     };
@@ -74,8 +75,8 @@ const EditLeaveFormContainer = props => {
             end: values.end.format(),
         };
 
-        axios
-            .put(`${LEAVE_URL}/${leave.id}`, putBody)
+        leaveService
+            .edit(putBody)
             .then(() => props.history.goBack())
             .catch(error => {
                 setFormError(error);

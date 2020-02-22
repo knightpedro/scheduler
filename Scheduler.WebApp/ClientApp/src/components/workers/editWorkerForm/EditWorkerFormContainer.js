@@ -3,8 +3,7 @@ import EditWorkerForm from "./EditWorkerForm";
 import { Loading, LoadingFailure } from "../../common/loading";
 import { Link, generatePath } from "react-router-dom";
 import Routes from "../../../routes";
-import axios from "axios";
-import { WORKERS_URL } from "../../../api";
+import { workersService } from "../../../services";
 import { isEqual } from "lodash";
 import Alert from "../../common/alert";
 import Container from "../../common/containers";
@@ -20,12 +19,12 @@ class EditWorkerFormContainer extends React.Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        axios
-            .get(`${WORKERS_URL}/${id}`)
-            .then(res =>
+        workersService
+            .getById(id)
+            .then(worker =>
                 this.setState({
                     loading: false,
-                    worker: res.data,
+                    worker,
                 })
             )
             .catch(error =>
@@ -47,8 +46,8 @@ class EditWorkerFormContainer extends React.Component {
             return;
         }
 
-        axios
-            .put(`${WORKERS_URL}/${worker.id}`, values)
+        workersService
+            .edit(values)
             .then(() => {
                 const redirect = generatePath(Routes.workers.DETAIL, {
                     id: worker.id,

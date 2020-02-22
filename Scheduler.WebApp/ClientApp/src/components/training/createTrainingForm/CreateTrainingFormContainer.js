@@ -3,11 +3,11 @@ import CreateTrainingForm from "./CreateTrainingForm";
 import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
-import axios from "axios";
-import { TRAINING_URL, WORKERS_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
+import { workersService, trainingService } from "../../../services";
+import { entitiesSelect } from "../../../utils";
 
 class CreateTrainingFormContainer extends React.Component {
     state = {
@@ -18,21 +18,15 @@ class CreateTrainingFormContainer extends React.Component {
     };
 
     componentDidMount() {
-        axios
-            .get(WORKERS_URL)
-            .then(res => {
-                const sorted = res.data.workers.sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                );
-                const workers = sorted.map(w => ({
-                    label: w.name,
-                    value: w.id,
-                }));
-                this.setState({ workers, loading: false });
+        workersService
+            .getAll()
+            .then(workers => {
+                this.setState({
+                    workers: entitiesSelect(workers),
+                });
             })
-            .catch(error =>
-                this.setState({ loadingError: error, loading: false })
-            );
+            .catch(error => this.setState({ loadingError: error }))
+            .finally(() => this.setState({ loading: false }));
     }
 
     handleCancel = () => this.props.history.goBack();
@@ -48,12 +42,8 @@ class CreateTrainingFormContainer extends React.Component {
         };
 
         try {
-            let trainingRes = await axios.post(TRAINING_URL, training);
-            const trainingId = trainingRes.data.id;
-            await axios.patch(
-                `${TRAINING_URL}/${trainingId}/workers`,
-                workersPatch
-            );
+            const trainingId = await trainingService.create(training);
+            await trainingService.patchWorkers(trainingId, workersPatch);
             const trainingDetailPath = generatePath(Routes.training.DETAIL, {
                 id: trainingId,
             });

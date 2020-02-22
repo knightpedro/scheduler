@@ -1,11 +1,10 @@
 import React from "react";
 import { Loading, LoadingFailure } from "../../common/loading";
 import TrainingList from "./TrainingList";
-import axios from "axios";
-import { TRAINING_URL } from "../../../api";
 import Container from "../../common/containers";
 import { Create } from "../../common/actions";
 import Routes from "../../../routes";
+import { trainingService } from "../../../services";
 
 class TrainingListContainer extends React.Component {
     state = {
@@ -15,20 +14,19 @@ class TrainingListContainer extends React.Component {
     };
 
     componentDidMount() {
-        axios
-            .get(TRAINING_URL)
-            .then(res =>
+        trainingService
+            .getAll()
+            .then(training =>
                 this.setState({
-                    loading: false,
-                    training: res.data.training,
+                    training,
                 })
             )
             .catch(error =>
                 this.setState({
-                    loading: false,
                     error,
                 })
-            );
+            )
+            .finally(() => this.setState({ loading: false }));
     }
 
     renderComponent(component) {

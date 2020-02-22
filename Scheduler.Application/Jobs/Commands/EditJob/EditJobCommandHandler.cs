@@ -25,6 +25,7 @@ namespace Scheduler.Application.Jobs.Commands.EditJob
             job.JobNumber = request.JobNumber;
             job.Description = request.Description;
             job.Location = request.Location;
+            job.CoordinatorId = request.CoordinatorId;
             job.DateReceived = request.DateReceived;
             job.DateScheduled = request.DateScheduled;
             job.IsComplete = request.IsComplete;

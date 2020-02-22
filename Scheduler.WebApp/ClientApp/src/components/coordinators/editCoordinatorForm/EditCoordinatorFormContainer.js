@@ -3,8 +3,7 @@ import Alert from "../../common/alert";
 import Breadcrumb from "../../common/breadcrumb";
 import Container from "../../common/containers";
 import { isEqual } from "lodash";
-import axios from "axios";
-import { COORDINATORS_URL } from "../../../api";
+import { coordinatorsService } from "../../../services";
 import { Loading, LoadingFailure } from "../../common/loading";
 import EditCoordinatorForm from "./EditCoordinatorForm";
 import Routes from "../../../routes";
@@ -20,11 +19,9 @@ class EditCoordinatorFormContainer extends React.Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        axios
-            .get(`${COORDINATORS_URL}/${id}`)
-            .then(res =>
-                this.setState({ coordinator: res.data, loading: false })
-            )
+        coordinatorsService
+            .getById(id)
+            .then(c => this.setState({ coordinator: c, loading: false }))
             .catch(error =>
                 this.setState({ loading: false, loadingError: error })
             );
@@ -39,8 +36,8 @@ class EditCoordinatorFormContainer extends React.Component {
             this.setState({ formError: { message: "No changes made." } });
             setSubmitting(false);
         } else {
-            axios
-                .put(`${COORDINATORS_URL}/${coordinator.id}`, values)
+            coordinatorsService
+                .edit(values)
                 .then(() => {
                     const detailPath = generatePath(
                         Routes.coordinators.DETAIL,

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { workersService } from "../../../services";
 import { Loading, LoadingFailure } from "../../common/loading";
-import { WORKERS_URL } from "../../../api";
 import Breadcrumb from "../../common/breadcrumb";
 import Container from "../../common/containers";
 import WorkerDetail from "./WorkerDetail";
@@ -17,8 +16,8 @@ const WorkerDetailContainer = props => {
 
     const handleDelete = () => {
         setDeleteError(null);
-        axios
-            .delete(`${WORKERS_URL}/${id}`)
+        workersService
+            .destroy(id)
             .then(() => props.history.push(Routes.workers.LIST))
             .catch(error => setDeleteError(error));
     };

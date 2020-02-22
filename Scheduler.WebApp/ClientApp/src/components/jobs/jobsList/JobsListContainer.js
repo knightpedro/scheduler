@@ -1,9 +1,8 @@
 import React from "react";
 import { Loading, LoadingFailure } from "../../common/loading";
-import { JOBS_URL } from "../../../api";
+import { jobsService } from "../../../services";
 import Container from "../../common/containers";
 import JobsList from "./JobsList";
-import axios from "axios";
 import { Create } from "../../common/actions";
 import Routes from "../../../routes";
 
@@ -15,11 +14,11 @@ class JobsListContainer extends React.Component {
     };
 
     componentDidMount() {
-        axios
-            .get(JOBS_URL)
-            .then(res =>
+        jobsService
+            .getAll()
+            .then(jobs =>
                 this.setState({
-                    jobs: res.data.jobs,
+                    jobs,
                     loading: false,
                 })
             )

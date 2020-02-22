@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
-import axios from "axios";
 import moment from "moment";
-import { JOBS_URL, COORDINATORS_URL } from "../../api";
 import { Loading, LoadingFailure } from "../common/loading";
 import CoordinatorWorkLoadChart from "./CoordinatorWorkLoadChart";
 import JobsReceivedChart from "./JobsReceivedChart";
 import { JobsInProgressCard, JobsReceivedCard } from "./cards";
 import { sortByName } from "../../utils/transforms";
 import { Row, Col } from "react-bootstrap";
+import { jobsService, coordinatorsService } from "../../services";
 
 const periods = {
     MONTH: "month",
@@ -117,23 +116,16 @@ const JobsPerformanceContainer = props => {
     }, [jobs, period, minYear]);
 
     useEffect(() => {
-        const jobsRequest = axios.get(JOBS_URL);
-        const coordinatorsRequest = axios.get(COORDINATORS_URL);
-        axios
-            .all([jobsRequest, coordinatorsRequest])
-            .then(
-                axios.spread((jobsRes, coordinatorsRes) => {
-                    setJobs(
-                        jobsRes.data.jobs.map(j => ({
-                            ...j,
-                            dateReceived: moment(j.dateReceived),
-                        }))
-                    );
-                    setCoordinators(
-                        coordinatorsRes.data.coordinators.sort(sortByName)
-                    );
-                })
-            )
+        Promise.all([coordinatorsService.getAll(), jobsService.getAll()])
+            .then(([coordinators, jobs]) => {
+                setCoordinators(coordinators.sort(sortByName));
+                setJobs(
+                    jobs.map(j => ({
+                        ...j,
+                        dateReceived: moment(j.dateReceived),
+                    }))
+                );
+            })
             .catch(error => setError(error))
             .finally(() => setLoading(false));
     }, []);

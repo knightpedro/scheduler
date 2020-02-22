@@ -12,9 +12,10 @@ const RADIUS = Math.min(WIDTH, HEIGHT) / 2;
 
 const useDonut = (ref, data, unit = "day") => {
     const themeContext = useContext(ThemeContext);
-    useEffect(() => {
-        const colorScale = d3.scaleOrdinal(themeContext.colours.visualisation);
 
+    const colorScale = d3.scaleOrdinal(themeContext.colours.visualisation);
+
+    useEffect(() => {
         const total = Math.round(
             data.reduce((acc, current) => acc + current.value, 0)
         );
@@ -96,7 +97,7 @@ const useDonut = (ref, data, unit = "day") => {
             .attr("y", (_, i) => i * (KEY + KEY_MARGIN) + 15)
             .attr("text-anchor", "start")
             .text(d => d.label);
-    }, [ref, data, unit]);
+    }, [ref, data, unit, colorScale]);
 };
 
 export default useDonut;

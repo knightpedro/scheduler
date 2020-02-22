@@ -4,10 +4,9 @@ import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
 import CreateJobForm from "./CreateJobForm";
-import { COORDINATORS_URL, JOBS_URL } from "../../../api";
-import axios from "axios";
 import { Link, generatePath } from "react-router-dom";
 import Routes from "../../../routes";
+import { coordinatorsService, jobsService } from "../../../services";
 
 class CreateJobContainer extends React.Component {
     state = {
@@ -18,22 +17,21 @@ class CreateJobContainer extends React.Component {
     };
 
     componentDidMount() {
-        axios
-            .get(COORDINATORS_URL)
-            .then(res =>
+        coordinatorsService
+            .getAll()
+            .then(coordinators =>
                 this.setState({
                     coordinators: this.transformCoordinatorsForSelection(
-                        res.data.coordinators
+                        coordinators
                     ),
-                    loading: false,
                 })
             )
             .catch(error =>
                 this.setState({
                     loadingError: error,
-                    loading: false,
                 })
-            );
+            )
+            .finally(() => this.setState({ loading: false }));
     }
 
     transformCoordinatorsForSelection(coordinators) {
@@ -48,32 +46,24 @@ class CreateJobContainer extends React.Component {
     handleSubmit = async (values, { setSubmitting }) => {
         this.setState({ formError: null });
 
-        const { coordinator, dateReceived, ...jobDetails } = values;
-
         const jobBody = {
-            dateReceived: dateReceived.format(),
-            ...jobDetails,
+            ...values,
+            dateReceived: values.dateReceived.format(),
+            coordinatorId: values.coordinator.value,
         };
 
-        const coordinatorBody = {
-            coordinatorId: coordinator.value,
-        };
-
-        try {
-            let res = await axios.post(JOBS_URL, jobBody);
-            const jobId = res.data.id;
-            await axios.put(
-                `${JOBS_URL}/${jobId}/coordinator/`,
-                coordinatorBody
-            );
-            const jobDetailPath = generatePath(Routes.jobs.DETAIL, {
-                id: jobId,
+        jobsService
+            .create(jobBody)
+            .then(id => {
+                const detailPath = generatePath(Routes.jobs.DETAIL, {
+                    id,
+                });
+                this.props.history.push(detailPath);
+            })
+            .catch(error => {
+                this.setState({ formError: error });
+                setSubmitting(false);
             });
-            this.props.history.push(jobDetailPath);
-        } catch (error) {
-            this.setState({ formError: error });
-            setSubmitting(false);
-        }
     };
 
     renderBreadcrumb = () => (

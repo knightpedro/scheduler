@@ -1,12 +1,11 @@
 import React from "react";
-import axios from "axios";
-import { JOBS_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import JobDetail from "./JobDetail";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../common/breadcrumb";
 import Container from "../../common/containers";
 import Routes from "../../../routes";
+import { jobsService } from "../../../services";
 
 class JobDetailContainer extends React.Component {
     state = {
@@ -17,11 +16,11 @@ class JobDetailContainer extends React.Component {
 
     componentDidMount() {
         const { id } = this.props.match.params;
-        axios
-            .get(`${JOBS_URL}/${id}`)
-            .then(res =>
+        jobsService
+            .getById(id)
+            .then(job =>
                 this.setState({
-                    job: res.data,
+                    job,
                     loading: false,
                 })
             )
@@ -35,8 +34,8 @@ class JobDetailContainer extends React.Component {
 
     handleDelete = () => {
         const id = this.state.job.id;
-        axios
-            .delete(`${JOBS_URL}/${id}`)
+        jobsService
+            .destroy(id)
             .then(() => this.props.history.push(Routes.jobs.LIST))
             .catch(error => this.setState({ error }));
     };

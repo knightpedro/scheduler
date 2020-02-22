@@ -8,7 +8,7 @@ namespace Scheduler.Application.JobTasks.Queries.GetJobTaskDetail
     public class JobTaskDetailVm
     {
         public int Id { get; set; }
-        public int JobId { get; set; }
+        public JobDto Job { get; set; }
         public string Description { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
@@ -18,7 +18,7 @@ namespace Scheduler.Application.JobTasks.Queries.GetJobTaskDetail
         public JobTaskDetailVm(JobTask task)
         {
             Id = task.Id;
-            JobId = task.JobId;
+            Job = new JobDto(task.Job);
             Description = task.Description;
             Start = task.TaskPeriod.Start;
             End = task.TaskPeriod.End;

@@ -1,12 +1,11 @@
 import React from "react";
 import CreateWorkerForm from "./CreateWorkerForm";
-import axios from "axios";
-import { WORKERS_URL } from "../../../api";
+import { workersService } from "../../../services";
 import Routes from "../../../routes";
 import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
-import { Link } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 
 class CreateWorkerFormContainer extends React.Component {
     state = {
@@ -17,9 +16,12 @@ class CreateWorkerFormContainer extends React.Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         this.setState({ error: null });
-        axios
-            .post(WORKERS_URL, values)
-            .then(() => this.props.history.push(Routes.workers.LIST))
+        workersService
+            .create(values)
+            .then(id => {
+                const detailPath = generatePath(Routes.workers.DETAIL, { id });
+                this.props.history.push(detailPath);
+            })
             .catch(error => {
                 this.setState({ error });
                 setSubmitting(false);

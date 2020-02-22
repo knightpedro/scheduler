@@ -2,11 +2,10 @@ import React from "react";
 import ResourcesList from "./ResourcesList";
 import { Create } from "../../common/actions";
 import Container from "../../common/containers";
-import { RESOURCES_URL } from "../../../api";
-import axios from "axios";
 import { Loading, LoadingFailure } from "../../common/loading";
 import { sortByName } from "../../../utils";
 import Routes from "../../../routes";
+import { resourcesService } from "../../../services";
 
 class ResourcesListContainer extends React.Component {
     state = {
@@ -16,15 +15,15 @@ class ResourcesListContainer extends React.Component {
     };
 
     componentDidMount() {
-        axios
-            .get(RESOURCES_URL)
-            .then(res =>
+        resourcesService
+            .getAll()
+            .then(resources =>
                 this.setState({
-                    resources: res.data.resources.sort(sortByName),
-                    loading: false,
+                    resources: resources.sort(sortByName),
                 })
             )
-            .catch(error => this.setState({ error, loading: false }));
+            .catch(error => this.setState({ error }))
+            .finally(() => this.setState({ loading: false }));
     }
 
     renderComponent(component) {

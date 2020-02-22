@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Scheduler.Application.Jobs.Commands.AssignCoordinator;
 using Scheduler.Application.Jobs.Commands.CreateJob;
 using Scheduler.Application.Jobs.Commands.DeleteJob;
 using Scheduler.Application.Jobs.Commands.EditJob;
@@ -64,17 +63,6 @@ namespace Scheduler.WebApp.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await Mediator.Send(new DeleteJobCommand { Id = id });
-            return NoContent();
-        }
-
-        [HttpPut("{id}/coordinator")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AssignCoordinator(int id, [FromBody] AssignCoordinatorCommand command)
-        {
-            command.JobId = id;
-            await Mediator.Send(command);
             return NoContent();
         }
     }

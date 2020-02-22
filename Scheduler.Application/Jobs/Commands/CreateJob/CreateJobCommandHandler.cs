@@ -22,6 +22,7 @@ namespace Scheduler.Application.Jobs.Commands.CreateJob
                 JobNumber = request.JobNumber,
                 Description = request.Description,
                 Location = request.Location,
+                CoordinatorId = request.CoordinatorId,
                 DateReceived = request.DateReceived,
                 DateScheduled = request.DateScheduled,
             };

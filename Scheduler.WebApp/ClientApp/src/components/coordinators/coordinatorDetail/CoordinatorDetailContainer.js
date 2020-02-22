@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { COORDINATORS_URL, JOBS_URL } from "../../../api";
-import queryString from "query-string";
+import { coordinatorsService } from "../../../services";
 import Routes from "../../../routes";
 import Breadcrumb from "../../common/breadcrumb";
 import Container from "../../common/containers";
@@ -14,39 +12,21 @@ const CoordinatorDetailContainer = props => {
     const [error, setError] = useState();
     const [coordinator, setCoordinator] = useState();
     const coordinatorId = props.match.params.id;
-    const jobsQueryUrl = queryString.stringifyUrl({
-        url: JOBS_URL,
-        query: {
-            coordinatorId,
-        },
-    });
 
     const deleteCoordinator = () => {
-        axios
-            .delete(`${COORDINATORS_URL}/${coordinatorId}`)
+        coordinatorsService
+            .destroy(coordinatorId)
             .then(() => props.history.push(Routes.coordinators.LIST))
             .catch(error => setError(error));
     };
 
     useEffect(() => {
-        const fetchCoordinator = async () => {
-            try {
-                let coordinatorRes = await axios.get(
-                    `${COORDINATORS_URL}/${coordinatorId}`
-                );
-                let jobsRes = await axios.get(jobsQueryUrl);
-                setCoordinator({
-                    ...coordinatorRes.data,
-                    jobs: jobsRes.data.jobs,
-                });
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchCoordinator();
-    }, [coordinatorId, jobsQueryUrl]);
+        coordinatorsService
+            .getWithJobs(coordinatorId)
+            .then(c => setCoordinator(c))
+            .catch(error => setError(error))
+            .finally(() => setLoading(false));
+    }, [coordinatorId]);
 
     const renderBreadcrumb = () => (
         <Breadcrumb>

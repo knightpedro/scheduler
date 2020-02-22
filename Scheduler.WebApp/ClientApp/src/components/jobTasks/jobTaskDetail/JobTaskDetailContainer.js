@@ -1,14 +1,13 @@
 import React from "react";
 import JobTaskDetail from "./JobTaskDetail";
 import { Loading, LoadingFailure } from "../../common/loading";
-import { JOBS_URL, JOBTASKS_URL } from "../../../api";
-import axios from "axios";
 import Breadcrumb from "../../common/breadcrumb";
 import Container from "../../common/containers";
 import moment from "moment";
 import { sortByName } from "../../../utils";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
+import { jobTasksService } from "../../../services";
 
 const DATE_FORMAT = "h:mma dddd Do MMMM YYYY";
 
@@ -20,24 +19,22 @@ class JobTaskDetailContainer extends React.Component {
     };
 
     componentDidMount = async () => {
-        const jobTaskId = this.props.match.params.id;
-        try {
-            let jobTaskRes = await axios.get(`${JOBTASKS_URL}/${jobTaskId}`);
-            let jobRes = await axios.get(
-                `${JOBS_URL}/${jobTaskRes.data.jobId}`
-            );
-            const jobTask = {
-                ...jobTaskRes.data,
-                job: jobRes.data,
-                workers: jobTaskRes.data.workers.sort(sortByName),
-                resources: jobTaskRes.data.resources.sort(sortByName),
-                start: moment(jobTaskRes.data.start).format(DATE_FORMAT),
-                end: moment(jobTaskRes.data.end).format(DATE_FORMAT),
-            };
-            this.setState({ loading: false, jobTask });
-        } catch (error) {
-            this.setState({ loading: false, error });
-        }
+        const id = this.props.match.params.id;
+        jobTasksService
+            .getById(id)
+            .then(task =>
+                this.setState({
+                    jobTask: {
+                        ...task,
+                        workers: task.workers.sort(sortByName),
+                        resources: task.resources.sort(sortByName),
+                        start: moment(task.start).format(DATE_FORMAT),
+                        end: moment(task.end).format(DATE_FORMAT),
+                    },
+                })
+            )
+            .catch(error => this.setState({ error }))
+            .finally(() => this.setState({ loading: false }));
     };
 
     handleDelete = () => {
@@ -45,8 +42,8 @@ class JobTaskDetailContainer extends React.Component {
         const jobPath = generatePath(Routes.jobs.DETAIL, {
             id: jobTask.job.id,
         });
-        axios
-            .delete(`${JOBTASKS_URL}/${jobTask.id}`)
+        jobTasksService
+            .destroy(jobTask.id)
             .then(() => this.props.history.push(jobPath))
             .catch(error => this.setState({ error }));
     };

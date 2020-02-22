@@ -4,11 +4,10 @@ import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
 import { Loading, LoadingFailure } from "../../common/loading";
-import axios from "axios";
 import { isEqual } from "lodash";
-import { RESOURCES_URL } from "../../../api";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
+import { resourcesService } from "../../../services";
 
 class EditResourceFormContainer extends React.Component {
     state = {
@@ -20,12 +19,11 @@ class EditResourceFormContainer extends React.Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        axios
-            .get(`${RESOURCES_URL}/${id}`)
-            .then(res => this.setState({ resource: res.data, loading: false }))
-            .catch(error =>
-                this.setState({ loadingError: error, loading: false })
-            );
+        resourcesService
+            .getById(id)
+            .then(resource => this.setState({ resource }))
+            .catch(error => this.setState({ loadingError: error }))
+            .finally(() => this.setState({ loading: false }));
     }
 
     handleCancel = () => this.props.history.goBack();
@@ -37,21 +35,21 @@ class EditResourceFormContainer extends React.Component {
         if (isEqual(values, resource)) {
             this.setState({ formError: { message: "No changes made." } });
             setSubmitting(false);
-        } else {
-            axios
-                .put(`${RESOURCES_URL}/${resource.id}`, values)
-                .then(() => {
-                    const resourceDetailPath = generatePath(
-                        Routes.resources.DETAIL,
-                        { id: resource.id }
-                    );
-                    this.props.history.push(resourceDetailPath);
-                })
-                .catch(error => {
-                    this.setState({ formError: error });
-                    setSubmitting(false);
-                });
+            return;
         }
+        resourcesService
+            .edit(values)
+            .then(() => {
+                const resourceDetailPath = generatePath(
+                    Routes.resources.DETAIL,
+                    { id: resource.id }
+                );
+                this.props.history.push(resourceDetailPath);
+            })
+            .catch(error => {
+                this.setState({ formError: error });
+                setSubmitting(false);
+            });
     };
 
     renderBreadcrumb(resource) {

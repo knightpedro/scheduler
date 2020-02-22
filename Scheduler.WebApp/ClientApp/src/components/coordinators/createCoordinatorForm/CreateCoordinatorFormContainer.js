@@ -1,10 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
 import CreateCoordinatorForm from "./CreateCoordinatorForm";
 import Container from "../../common/containers";
 import Alert from "../../common/alert";
-import axios from "axios";
-import { COORDINATORS_URL } from "../../../api";
+import { coordinatorsService } from "../../../services";
 import Routes from "../../../routes";
 import Breadcrumb from "../../common/breadcrumb";
 
@@ -17,9 +16,14 @@ class CreateCoordinatorFormContainer extends React.Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         this.setState({ error: null });
-        axios
-            .post(COORDINATORS_URL, values)
-            .then(() => this.props.history.push(Routes.coordinators.LIST))
+        coordinatorsService
+            .create(values)
+            .then(id => {
+                const detailPath = generatePath(Routes.coordinators.DETAIL, {
+                    id,
+                });
+                this.props.history.push(detailPath);
+            })
             .catch(error => {
                 this.setState({ error });
                 setSubmitting(false);

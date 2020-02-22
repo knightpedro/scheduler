@@ -1,15 +1,13 @@
 import React from "react";
 import CreateOutOfServiceForm from "./CreateOutOfServiceForm";
 import Container from "../../common/containers";
-import axios from "axios";
-import { OUTOFSERVICE_URL, RESOURCES_URL } from "../../../api";
 import Alert from "../../common/alert";
 import { Loading, LoadingFailure } from "../../common/loading";
 import Routes from "../../../routes";
 import { generatePath } from "react-router-dom";
 import queryString from "query-string";
-
-const REASONS_URL = OUTOFSERVICE_URL + "/reasons";
+import { entitiesSelect } from "../../../utils";
+import { oosService, resourcesService } from "../../../services";
 
 class OutOfServiceFormContainer extends React.Component {
     state = {
@@ -21,49 +19,36 @@ class OutOfServiceFormContainer extends React.Component {
         initialResource: null,
     };
 
-    async componentDidMount() {
+    componentDidMount() {
         const resourceId = queryString.parse(this.props.location.search)
             .resourceId;
-        const reasonsRequest = axios.get(REASONS_URL);
-        const resourcesRequest = axios.get(RESOURCES_URL);
 
-        try {
-            const [reasonsResponse, resourcesResponse] = await Promise.all([
-                reasonsRequest,
-                resourcesRequest,
-            ]);
-            const resources = this.transformResourcesForSelect(
-                resourcesResponse.data.resources
-            );
-            const reasons = this.transformReasonsForSelect(
-                reasonsResponse.data
-            );
-            this.setState({
-                loading: false,
-                reasons,
-                resources,
-                initialResource: resources.find(
-                    r => r.value.toString() === resourceId
-                ),
-            });
-        } catch (error) {
-            this.setState({
-                loading: false,
-                loadingError: error,
-            });
-        }
+        Promise.all([oosService.getReasons(), resourcesService.getAll()])
+            .then(([reasons, resources]) => {
+                const selectResources = entitiesSelect(resources);
+                const selectReasons = this.transformReasonsForSelect(reasons);
+                const initialResource = resourceId
+                    ? selectResources.find(
+                          r => r.value.toString() === resourceId
+                      )
+                    : null;
+                this.setState({
+                    reasons: selectReasons,
+                    resources: selectResources,
+                    initialResource,
+                });
+            })
+            .catch(error =>
+                this.setState({
+                    loadingError: error,
+                })
+            )
+            .finally(() => this.setState({ loading: false }));
     }
 
     transformReasonsForSelect(reasons) {
         reasons.sort();
         return reasons.map(r => ({ label: r, value: r }));
-    }
-
-    transformResourcesForSelect(resources) {
-        const sorted = resources.sort((a, b) =>
-            a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-        );
-        return sorted.map(r => ({ label: r.name, value: r.id }));
     }
 
     handleCancel = () => this.props.history.goBack();
@@ -80,8 +65,8 @@ class OutOfServiceFormContainer extends React.Component {
             end: values.end.format(),
         };
 
-        axios
-            .post(OUTOFSERVICE_URL, postBody)
+        oosService
+            .create(postBody)
             .then(() => {
                 const resourceDetailPath = generatePath(
                     Routes.resources.DETAIL,

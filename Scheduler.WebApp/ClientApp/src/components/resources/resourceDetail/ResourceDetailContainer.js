@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Loading, LoadingFailure } from "../../common/loading";
-import { RESOURCES_URL } from "../../../api";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
 import ResourceDetail from "./ResourceDetail";
@@ -9,6 +7,7 @@ import Routes from "../../../routes";
 import { useResourceCalendar } from "../resourcesSchedule/resourcesCalendar";
 import Alert from "../../common/alert";
 import { Link } from "react-router-dom";
+import { resourcesService } from "../../../services";
 
 const ResourceDetailContainer = props => {
     const id = props.match.params.id;
@@ -17,8 +16,8 @@ const ResourceDetailContainer = props => {
 
     const handleDelete = () => {
         setDeleteError(null);
-        axios
-            .delete(`${RESOURCES_URL}/${id}`)
+        resourcesService
+            .destroy(id)
             .then(() => props.history.push(Routes.resources.LIST))
             .catch(error => setDeleteError(error));
     };

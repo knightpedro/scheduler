@@ -1,13 +1,6 @@
 import React from "react";
 import CreateJobTaskForm from "../createJobTaskForm/CreateJobTaskForm";
 import { Loading, LoadingFailure } from "../../common/loading";
-import axios from "axios";
-import {
-    JOBS_URL,
-    JOBTASKS_URL,
-    RESOURCES_URL,
-    WORKERS_URL,
-} from "../../../api";
 import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
@@ -16,39 +9,43 @@ import { isEmpty } from "lodash";
 import moment from "moment";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
+import {
+    jobTasksService,
+    workersService,
+    resourcesService,
+} from "../../../services";
 
 class EditJobTaskFormContainer extends React.Component {
     state = {
         loading: true,
         loadingError: null,
         formError: null,
-        job: null,
         jobTask: null,
         workers: null,
         resources: null,
     };
 
-    componentDidMount = async () => {
+    componentDidMount = () => {
         const id = this.props.match.params.id;
-        try {
-            let jobTaskRes = await axios.get(`${JOBTASKS_URL}/${id}`);
-            const jobTask = this.transformJobTask(jobTaskRes.data);
-            let jobRes = await axios.get(`${JOBS_URL}/${jobTask.jobId}`);
-            let workersRes = await axios.get(WORKERS_URL);
-            let resourcesRes = await axios.get(RESOURCES_URL);
-            this.setState({
-                loading: false,
-                job: jobRes.data,
-                jobTask,
-                workers: entitiesSelect(workersRes.data.workers),
-                resources: entitiesSelect(resourcesRes.data.resources),
-            });
-        } catch (error) {
-            this.setState({
-                loading: false,
-                loadingError: error,
-            });
-        }
+
+        Promise.all([
+            jobTasksService.getById(id),
+            resourcesService.getAll(),
+            workersService.getAll(),
+        ])
+            .then(([jobTask, resources, workers]) =>
+                this.setState({
+                    jobTask: this.transformJobTask(jobTask),
+                    resources: entitiesSelect(resources),
+                    workers: entitiesSelect(workers),
+                })
+            )
+            .catch(error => this.setState({ loadingError: error }))
+            .finally(() =>
+                this.setState({
+                    loading: false,
+                })
+            );
     };
 
     transformJobTask(task) {
@@ -68,7 +65,7 @@ class EditJobTaskFormContainer extends React.Component {
 
         const { jobTask } = this.state;
 
-        const putBody = {
+        const jobTaskEdit = {
             id: jobTask.id,
             description: values.description,
             start: values.start.format(),
@@ -76,16 +73,13 @@ class EditJobTaskFormContainer extends React.Component {
         };
 
         try {
-            await axios.put(`${JOBTASKS_URL}/${jobTask.id}`, putBody);
+            jobTasksService.edit(jobTaskEdit);
 
             const initialWorkers = jobTask.workers.map(w => w.id);
             const finalWorkers = values.selectedWorkers.map(w => w.value);
             const workersPatch = createPatch(initialWorkers, finalWorkers);
             if (!isEmpty(workersPatch)) {
-                await axios.patch(
-                    `${JOBTASKS_URL}/${jobTask.id}/workers`,
-                    workersPatch
-                );
+                await jobTasksService.patchWorkers(jobTask.id, workersPatch);
             }
 
             const initialResources = jobTask.resources.map(r => r.id);
@@ -95,8 +89,8 @@ class EditJobTaskFormContainer extends React.Component {
                 finalResources
             );
             if (!isEmpty(resourcesPatch)) {
-                await axios.patch(
-                    `${JOBTASKS_URL}/${jobTask.id}/resources`,
+                await jobTasksService.patchResources(
+                    jobTask.id,
                     resourcesPatch
                 );
             }
@@ -140,7 +134,6 @@ class EditJobTaskFormContainer extends React.Component {
             loading,
             loadingError,
             formError,
-            job,
             jobTask,
             workers,
             resources,
@@ -153,7 +146,7 @@ class EditJobTaskFormContainer extends React.Component {
 
         return (
             <Container>
-                {this.renderBreadcrumb(job)}
+                {this.renderBreadcrumb(jobTask.job)}
                 <h2>Edit Task</h2>
                 {formError && (
                     <Alert variant="danger">{formError.message}</Alert>

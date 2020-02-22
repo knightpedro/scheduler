@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
-import axios from "axios";
-import { OUTOFSERVICE_URL, RESOURCES_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import OutOfServiceWidget from "./OutOfServiceWidget";
 import { entitiesSelect } from "../../../utils/transforms";
 import Datetime from "react-datetime";
 import moment from "moment";
+import { oosService, resourcesService } from "../../../services";
 
 const SHOW_ALL = "all";
 const DATE_FORMAT = "D MMMM YYYY";
@@ -54,33 +53,24 @@ const OutOfServiceWidgetContainer = props => {
     };
 
     useEffect(() => {
-        const fetch = async () => {
-            try {
-                let resourcesRes = await axios.get(RESOURCES_URL);
-                let oosRes = await axios.get(OUTOFSERVICE_URL);
-                setResources(entitiesSelect(resourcesRes.data.resources));
-                const shapedOutOfServices = oosRes.data.outOfServices.reduce(
-                    (acc, current) => {
-                        acc[current.resourceId] = [
-                            ...(acc[current.resourceId] || []),
-                            {
-                                ...current,
-                                start: moment(current.start),
-                                end: moment(current.end),
-                            },
-                        ];
-                        return acc;
-                    },
-                    {}
-                );
+        Promise.all([oosService.getAll(), resourcesService.getAll()])
+            .then(([oos, resources]) => {
+                const shapedOutOfServices = oos.reduce((acc, current) => {
+                    acc[current.resourceId] = [
+                        ...(acc[current.resourceId] || []),
+                        {
+                            ...current,
+                            start: moment(current.start),
+                            end: moment(current.end),
+                        },
+                    ];
+                    return acc;
+                }, {});
                 setOutOfServices(shapedOutOfServices);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetch();
+                setResources(entitiesSelect(resources));
+            })
+            .catch(error => setError(error))
+            .finally(() => setLoading(false));
     }, []);
 
     const renderComponent = component => (

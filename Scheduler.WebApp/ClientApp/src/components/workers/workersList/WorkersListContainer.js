@@ -3,8 +3,7 @@ import { Create } from "../../common/actions";
 import { Loading, LoadingFailure } from "../../common/loading";
 import WorkersList from "./WorkersList";
 import Container from "../../common/containers";
-import axios from "axios";
-import { WORKERS_URL } from "../../../api";
+import { workersService } from "../../../services";
 import { sortByName } from "../../../utils";
 import Routes from "../../../routes";
 
@@ -16,12 +15,12 @@ class WorkersListContainer extends React.Component {
     };
 
     componentDidMount() {
-        axios
-            .get(WORKERS_URL)
-            .then(res =>
+        workersService
+            .getAll()
+            .then(workers =>
                 this.setState({
                     loading: false,
-                    workers: res.data.workers.sort(sortByName),
+                    workers: workers.sort(sortByName),
                 })
             )
             .catch(error =>

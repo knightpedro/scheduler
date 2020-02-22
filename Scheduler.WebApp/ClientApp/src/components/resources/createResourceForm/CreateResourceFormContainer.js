@@ -3,10 +3,9 @@ import CreateResourceForm from "./CreateResourceForm";
 import Alert from "../../common/alert";
 import Container from "../../common/containers";
 import Breadcrumb from "../../common/breadcrumb";
-import axios from "axios";
-import { RESOURCES_URL } from "../../../api";
 import Routes from "../../../routes";
 import { generatePath, Link } from "react-router-dom";
+import { resourcesService } from "../../../services";
 
 class CreateResourceFormContainer extends React.Component {
     state = {
@@ -17,14 +16,14 @@ class CreateResourceFormContainer extends React.Component {
 
     handleSubmit = (values, { setSubmitting }) => {
         this.setState({ error: null });
-        axios
-            .post(RESOURCES_URL, values)
-            .then(res => {
-                const resourceDetailPath = generatePath(
-                    Routes.resources.DETAIL,
-                    { id: res.data.id }
-                );
-                this.props.history.push(resourceDetailPath);
+
+        resourcesService
+            .create(values)
+            .then(id => {
+                const detailPath = generatePath(Routes.resources.DETAIL, {
+                    id,
+                });
+                this.props.history.push(detailPath);
             })
             .catch(error => {
                 this.setState({ error });

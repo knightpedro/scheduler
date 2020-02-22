@@ -1,16 +1,13 @@
 import React from "react";
 import CreateLeaveForm from "./CreateLeaveForm";
 import Container from "../../common/containers";
-import axios from "axios";
-import { LEAVE_URL, WORKERS_URL } from "../../../api";
 import Alert from "../../common/alert";
 import queryString from "query-string";
 import { entitiesSelect } from "../../../utils";
 import { Loading, LoadingFailure } from "../../common/loading";
 import Routes from "../../../routes";
 import { generatePath } from "react-router-dom";
-
-const LEAVE_TYPES_URL = LEAVE_URL + "/leave-types";
+import { leaveService, workersService } from "../../../services";
 
 class CreateLeaveFormContainer extends React.Component {
     state = {
@@ -22,26 +19,23 @@ class CreateLeaveFormContainer extends React.Component {
         initialWorker: null,
     };
 
-    componentDidMount = async () => {
+    componentDidMount = () => {
         const workerId = queryString.parse(this.props.location.search).workerId;
 
-        try {
-            let leaveTypesRes = await axios.get(LEAVE_TYPES_URL);
-            let workersRes = await axios.get(WORKERS_URL);
-            const workers = entitiesSelect(workersRes.data.workers);
-            this.setState({
-                leaveTypes: this.transformLeaveTypesForSelect(
-                    leaveTypesRes.data
-                ),
-                workers,
-                initialWorker: workers.find(
-                    w => w.value.toString() === workerId
-                ),
-                loading: false,
-            });
-        } catch (error) {
-            this.setState({ loading: false, loadingError: error });
-        }
+        Promise.all([leaveService.getTypes(), workersService.getAll()])
+            .then(([leaveTypes, workers]) => {
+                const selectWorkers = entitiesSelect(workers);
+                const initialWorker = workerId
+                    ? selectWorkers.find(w => w.value.toString() === workerId)
+                    : null;
+                this.setState({
+                    leaveTypes: this.transformLeaveTypesForSelect(leaveTypes),
+                    workers: selectWorkers,
+                    initialWorker,
+                });
+            })
+            .catch(error => this.setState({ loadingError: error }))
+            .finally(() => this.setState({ loading: false }));
     };
 
     transformLeaveTypesForSelect(leaveTypes) {
@@ -66,8 +60,9 @@ class CreateLeaveFormContainer extends React.Component {
         const workerDetailPath = generatePath(Routes.workers.DETAIL, {
             id: postBody.workerId,
         });
-        axios
-            .post(LEAVE_URL, postBody)
+
+        leaveService
+            .create(postBody)
             .then(() => {
                 this.props.history.push(workerDetailPath);
             })

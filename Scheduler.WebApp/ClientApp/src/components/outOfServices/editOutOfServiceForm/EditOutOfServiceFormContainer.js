@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EditOutOfServiceForm from "./EditOutOfServiceForm";
 import { Loading, LoadingFailure } from "../../common/loading";
-import { OUTOFSERVICE_URL, RESOURCES_URL } from "../../../api";
-import axios from "axios";
 import moment from "moment";
 import Alert from "../../common/alert";
 import Container from "../../common/containers";
@@ -11,6 +9,7 @@ import { Link, generatePath } from "react-router-dom";
 import Routes from "../../../routes";
 import { isEqual } from "lodash";
 import { Delete } from "../../common/actions";
+import { oosService, resourcesService } from "../../../services";
 
 const EditOutOfServiceFormContainer = props => {
     const id = props.match.params.id;
@@ -23,26 +22,18 @@ const EditOutOfServiceFormContainer = props => {
     useEffect(() => {
         const fetchOutOfService = async () => {
             try {
-                let oosRes = await axios.get(`${OUTOFSERVICE_URL}/${id}`);
-                const o = oosRes.data;
-                let reasonsRes = await axios.get(`${OUTOFSERVICE_URL}/reasons`);
-                const resourceId = o.resourceId;
-                const reason = { label: o.reason, value: o.reason };
-                const start = moment(o.start);
-                const end = moment(o.end);
-                let resourceRes = await axios.get(
-                    `${RESOURCES_URL}/${resourceId}`
-                );
+                const oos = await oosService.getById(id);
+                const reasons = await oosService.getReasons();
+                const reason = { label: oos.reason, value: oos.reason };
+                const resource = resourcesService.getById(oos.resourceId);
                 setOutOfService({
-                    ...o,
+                    ...oos,
                     reason,
-                    start,
-                    end,
-                    resource: resourceRes.data,
+                    start: moment(oos.start),
+                    end: moment(oos.end),
+                    resource,
                 });
-                setReasons(
-                    reasonsRes.data.sort().map(r => ({ label: r, value: r }))
-                );
+                setReasons(reasons.sort().map(r => ({ label: r, value: r })));
             } catch (error) {
                 setLoadingError(error);
             } finally {
@@ -55,8 +46,8 @@ const EditOutOfServiceFormContainer = props => {
     const handleCancel = () => props.history.goBack();
 
     const handleDelete = () => {
-        axios
-            .delete(`${OUTOFSERVICE_URL}/${id}`)
+        oosService
+            .destroy(id)
             .then(() => props.history.goBack())
             .catch(error => setFormError(error));
     };
@@ -76,8 +67,9 @@ const EditOutOfServiceFormContainer = props => {
             start: values.start.format(),
             end: values.end.format(),
         };
-        axios
-            .put(`${OUTOFSERVICE_URL}/${id}`, putBody)
+
+        oosService
+            .edit(putBody)
             .then(() => props.history.goBack())
             .catch(error => {
                 setFormError(error);

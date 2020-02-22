@@ -1,6 +1,4 @@
 import React from "react";
-import axios from "axios";
-import { TRAINING_URL } from "../../../api";
 import { Loading, LoadingFailure } from "../../common/loading";
 import TrainingDetail from "./TrainingDetail";
 import Breadcrumb from "../../common/breadcrumb";
@@ -9,6 +7,7 @@ import moment from "moment";
 import { sortByName } from "../../../utils";
 import Routes from "../../../routes";
 import { Link } from "react-router-dom";
+import { trainingService } from "../../../services";
 
 const DATE_FORMAT = "h:mma dddd Do MMMM YYYY";
 
@@ -21,31 +20,30 @@ class TrainingDetailContainer extends React.Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        axios
-            .get(`${TRAINING_URL}/${id}`)
-            .then(res =>
+        trainingService
+            .getById(id)
+            .then(training =>
                 this.setState({
-                    loading: false,
                     training: {
-                        ...res.data,
-                        workers: res.data.workers.sort(sortByName),
-                        start: moment(res.data.start).format(DATE_FORMAT),
-                        end: moment(res.data.end).format(DATE_FORMAT),
+                        ...training,
+                        workers: training.workers.sort(sortByName),
+                        start: moment(training.start).format(DATE_FORMAT),
+                        end: moment(training.end).format(DATE_FORMAT),
                     },
                 })
             )
             .catch(error =>
                 this.setState({
-                    loading: false,
                     error,
                 })
-            );
+            )
+            .finally(() => this.setState({ loading: false }));
     }
 
     handleDelete = () => {
         const id = this.state.training.id;
-        axios
-            .delete(`${TRAINING_URL}/${id}`)
+        trainingService
+            .destroy(id)
             .then(() => this.props.history.push(Routes.training.LIST))
             .catch(error => this.setState({ error }));
     };

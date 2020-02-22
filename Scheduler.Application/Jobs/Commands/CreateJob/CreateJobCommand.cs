@@ -8,6 +8,7 @@ namespace Scheduler.Application.Jobs.Commands.CreateJob
         public string JobNumber { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
+        public int? CoordinatorId { get; set; }
         public DateTime? DateScheduled { get; set; }
         public DateTime? DateReceived { get; set; }
     }

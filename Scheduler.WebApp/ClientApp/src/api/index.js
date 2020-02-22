@@ -1,10 +1,35 @@
-export const BASE_URL = "api";
+import axios from "axios";
+import authService from "../components/api-authorization/AuthorizeService";
 
-export const COORDINATORS_URL = BASE_URL + "/coordinators";
-export const JOBS_URL = BASE_URL + "/jobs";
-export const JOBTASKS_URL = BASE_URL + "/jobtasks";
-export const LEAVE_URL = BASE_URL + "/leave";
-export const OUTOFSERVICE_URL = BASE_URL + "/outofservice";
-export const RESOURCES_URL = BASE_URL + "/resources";
-export const TRAINING_URL = BASE_URL + "/training";
-export const WORKERS_URL = BASE_URL + "/workers";
+export const apiConstants = {
+    DATE_FORMAT: "YYYY-MM-DD",
+};
+
+export const apiRoutes = {
+    BASE: "api/",
+    COORDINATORS: "coordinators/",
+    JOBS: "jobs/",
+    JOB_TASKS: "jobtasks/",
+    LEAVE: "leave/",
+    LEAVE_TYPES: "leave/leave-types",
+    OUT_OF_SERVICE: "outofservice/",
+    OUT_OF_SERVICE_REASONS: "outofservice/reasons",
+    RESOURCES: "resources/",
+    TRAINING: "training/",
+    WORKERS: "workers/",
+};
+
+const instance = axios.create({
+    baseURL: apiRoutes.BASE,
+});
+
+instance.interceptors.request.use(
+    async config => {
+        const token = await authService.getAccessToken();
+        config.headers = !token ? {} : { Authorization: `Bearer ${token}` };
+        return config;
+    },
+    error => Promise.reject(error)
+);
+
+export default instance;
