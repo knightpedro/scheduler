@@ -43,7 +43,7 @@ export class Logout extends Component {
             case LogoutActions.LoggedOut:
                 this.setState({
                     isReady: true,
-                    message: "You successfully logged out!",
+                    message: "You successfully logged out",
                 });
                 break;
             default:
@@ -101,7 +101,7 @@ export class Logout extends Component {
                     throw new Error("Invalid authentication result status.");
             }
         } else {
-            this.setState({ message: "You successfully logged out!" });
+            this.setState({ message: "You successfully logged out" });
         }
     }
 

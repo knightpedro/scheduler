@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { Route } from "react-router";
+import React, { Component } from "react";
+import { Route } from "react-router-dom";
 import { Login } from "./Login";
 import { Logout } from "./Logout";
 import {
@@ -11,7 +11,7 @@ import {
 export default class ApiAuthorizationRoutes extends Component {
     render() {
         return (
-            <Fragment>
+            <>
                 <Route
                     path={ApplicationPaths.Login}
                     render={() => loginAction(LoginActions.Login)}
@@ -44,7 +44,7 @@ export default class ApiAuthorizationRoutes extends Component {
                     path={ApplicationPaths.LoggedOut}
                     render={() => logoutAction(LogoutActions.LoggedOut)}
                 />
-            </Fragment>
+            </>
         );
     }
 }
