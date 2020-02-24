@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-// TODO: handle nulls in Overlaps
 
 namespace Scheduler.Domain.ValueObjects
 {

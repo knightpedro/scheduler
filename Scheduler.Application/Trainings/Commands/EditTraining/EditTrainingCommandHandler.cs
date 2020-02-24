@@ -27,7 +27,7 @@ namespace Scheduler.Application.Trainings.Commands.EditTraining
             training.Location = request.Location;
             training.TrainingPeriod = new DateTimeRange(request.Start, request.End);
 
-            await _repo.Update(training); // TODO: confirm this doesn't affect relationships.
+            await _repo.Update(training);
             return Unit.Value;
         }
     }
