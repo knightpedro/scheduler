@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BaseForm renders correctly 1`] = `
+<BaseForm>
+  <Formik>
+    <Form>
+      <form
+        action="#"
+        onReset={[Function]}
+        onSubmit={[Function]}
+      >
+        <Button
+          active={false}
+          className="mr-2"
+          disabled={false}
+          type="submit"
+          variant="primary"
+        >
+          <button
+            className="mr-2 btn btn-primary"
+            disabled={false}
+            type="submit"
+          >
+            Save
+          </button>
+        </Button>
+        <Button
+          active={false}
+          disabled={false}
+          type="button"
+          variant="danger"
+        >
+          <button
+            className="btn btn-danger"
+            disabled={false}
+            type="button"
+          >
+            Cancel
+          </button>
+        </Button>
+      </form>
+    </Form>
+  </Formik>
+</BaseForm>
+`;

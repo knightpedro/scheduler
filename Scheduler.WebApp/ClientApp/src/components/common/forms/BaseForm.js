@@ -14,7 +14,6 @@ const BaseForm = ({
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
-            onCancel={onCancel}
         >
             {({ isSubmitting }) => (
                 <Form>
