@@ -23,8 +23,12 @@ const EditResourceForm = ({ handleSubmit, handleCancel, resource }) => (
         onSubmit={handleSubmit}
         onCancel={handleCancel}
     >
-        <FormGroup name="name" className="form-control" />
-        <FormGroup name="description" className="form-control" />
+        <FormGroup name="name" className="form-control" placeholder="Name" />
+        <FormGroup
+            name="description"
+            className="form-control"
+            placeholder="Description"
+        />
         <FormCheck name="isActive" />
     </BaseForm>
 );

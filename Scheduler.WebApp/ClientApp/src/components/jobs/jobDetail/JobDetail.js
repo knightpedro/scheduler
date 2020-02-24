@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import JobTasksList from "../../jobTasks/jobTasksList";
 import { Create, EditDeleteGroup } from "../../common/actions";
-import { CentredModal } from "../../common/modals";
+import Modal from "../../common/modals";
 import queryString from "query-string";
 import { Link } from "react-router-dom";
 import { generatePath } from "react-router-dom";
@@ -68,7 +68,7 @@ const JobDetail = ({ job, handleDelete }) => {
                 Coordinator:{" "}
                 {job.coordinator ? renderCoordinator() : "Not assigned"}
             </p>
-            <CentredModal
+            <Modal
                 show={showModal}
                 title={`Delete Job ${job.jobNumber}`}
                 content={DELETE_MESSAGE}

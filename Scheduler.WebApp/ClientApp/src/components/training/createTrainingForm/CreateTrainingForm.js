@@ -62,8 +62,16 @@ const CreateTrainingForm = ({
         onSubmit={handleSubmit}
         onCancel={handleCancel}
     >
-        <FormGroup name="description" className="form-control" />
-        <FormGroup name="location" className="form-control" />
+        <FormGroup
+            name="description"
+            className="form-control"
+            placeholder="Description"
+        />
+        <FormGroup
+            name="location"
+            className="form-control"
+            placeholder="Location"
+        />
         <FormGroup
             name="start"
             component={FormikDateTime}

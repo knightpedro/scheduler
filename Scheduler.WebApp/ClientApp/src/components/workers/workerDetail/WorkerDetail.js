@@ -9,7 +9,7 @@ import { EditDeleteGroup } from "../../common/actions";
 import { generatePath } from "react-router-dom";
 import Routes from "../../../routes";
 import queryString from "query-string";
-import { CentredModal } from "../../common/modals";
+import Modal from "../../common/modals";
 import { ActiveStatus } from "../../common/status";
 import { createWorkerSchedule } from "../workersSchedule/workersCalendar";
 import { appointmentTypes } from "../../../utils";
@@ -104,7 +104,7 @@ const WorkerDetail = ({ worker, handleDelete }) => {
                     )}
                 </Tab>
             </Tabs>
-            <CentredModal
+            <Modal
                 show={showModal}
                 title={`Delete ${worker.name}`}
                 content={DELETE_MESSAGE}

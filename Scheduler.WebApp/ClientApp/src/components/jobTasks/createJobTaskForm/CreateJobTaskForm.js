@@ -76,7 +76,11 @@ const CreateJobTaskForm = ({
             onSubmit={handleSubmit}
             onCancel={handleCancel}
         >
-            <FormGroup name="description" className="form-control" />
+            <FormGroup
+                name="description"
+                className="form-control"
+                placeholder="Description"
+            />
             <FormGroup
                 name="start"
                 component={FormikDateTime}

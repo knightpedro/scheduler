@@ -68,7 +68,11 @@ const OutOfServiceForm = ({
             options={resourceOptions}
         />
         <FormGroup name="reason" component={FormikSelect} options={reasons} />
-        <FormGroup name="description" className="form-control" />
+        <FormGroup
+            name="description"
+            className="form-control"
+            placeholder="Description"
+        />
         <FormGroup
             name="start"
             component={FormikDateTime}

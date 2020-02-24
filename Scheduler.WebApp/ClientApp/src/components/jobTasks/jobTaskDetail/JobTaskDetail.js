@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
 import { EditDeleteGroup } from "../../common/actions";
-import { CentredModal } from "../../common/modals";
+import Modal from "../../common/modals";
 import styled from "styled-components";
 
 const DELETE_MESSAGE = "Are you sure you want to delete this task?";
@@ -103,7 +103,7 @@ const JobTaskDetail = ({ jobTask, handleDelete }) => {
                     )}
                 </div>
             </div>
-            <CentredModal
+            <Modal
                 show={showModal}
                 title={`Delete task ${jobTask.description}`}
                 content={DELETE_MESSAGE}

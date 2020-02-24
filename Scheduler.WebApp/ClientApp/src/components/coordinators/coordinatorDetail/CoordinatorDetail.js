@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { EditDeleteGroup } from "../../common/actions";
 import Routes from "../../../routes";
 import { generatePath } from "react-router-dom";
-import { CentredModal } from "../../common/modals";
+import Modal from "../../common/modals";
 import JobsList from "../../jobs/jobsList/JobsList";
 import { ActiveStatus } from "../../common/status";
 import NoContent from "../../common/noContent";
@@ -49,7 +49,7 @@ const CoordinatorDetail = ({ coordinator, handleDelete }) => {
             ) : (
                 <NoContent item="jobs" />
             )}
-            <CentredModal
+            <Modal
                 show={showModal}
                 title={`Delete ${coordinator.name}`}
                 content={DELETE_MESSAGE}

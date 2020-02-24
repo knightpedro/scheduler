@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CoordinatorsList renders correctly 1`] = `
+<BasicTable
+  columns={
+    Array [
+      Object {
+        "Cell": [Function],
+        "Filter": [Function],
+        "Header": "Name",
+        "accessor": "name",
+      },
+      Object {
+        "Cell": [Function],
+        "Filter": [Function],
+        "Header": "Active",
+        "accessor": "status",
+        "className": "text-center",
+        "filter": "exactText",
+      },
+    ]
+  }
+  data={Array []}
+  initialState={
+    Object {
+      "sortBy": Array [
+        Object {
+          "id": "name",
+        },
+      ],
+    }
+  }
+/>
+`;

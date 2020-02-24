@@ -44,7 +44,11 @@ const EditOutOfServiceForm = ({
         onCancel={handleCancel}
     >
         <FormGroup name="reason" component={FormikSelect} options={reasons} />
-        <FormGroup name="description" className="form-control" />
+        <FormGroup
+            name="description"
+            className="form-control"
+            placeholder="description"
+        />
         <FormGroup
             name="start"
             component={FormikDateTime}

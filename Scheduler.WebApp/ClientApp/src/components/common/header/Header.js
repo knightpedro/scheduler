@@ -26,7 +26,6 @@ const StyledNavbar = styled(Navbar)`
         :hover,
         :focus {
             color: ${props => props.theme.colours.onPrimary};
-            opacity: 80%;
             font-weight: 500;
         }
     }
@@ -38,10 +37,6 @@ const StyledNavbar = styled(Navbar)`
         :focus {
             background: ${props => props.theme.colours.primary};
         }
-
-        :hover {
-            opacity: 100%;
-        }
     }
 
     .navbar-toggler {
@@ -50,7 +45,6 @@ const StyledNavbar = styled(Navbar)`
 
         :hover,
         :focus {
-            opacity: 80%;
             outline: none;
         }
     }

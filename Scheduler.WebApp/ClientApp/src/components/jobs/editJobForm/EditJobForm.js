@@ -44,9 +44,21 @@ const EditJobForm = ({ job, coordinators, handleSubmit, handleCancel }) => {
             onSubmit={handleSubmit}
             onCancel={handleCancel}
         >
-            <FormGroup name="jobNumber" className="form-control" />
-            <FormGroup name="description" className="form-control" />
-            <FormGroup name="location" className="form-control" />
+            <FormGroup
+                name="jobNumber"
+                className="form-control"
+                placeholder="Job Number"
+            />
+            <FormGroup
+                name="description"
+                className="form-control"
+                placeholder="Description"
+            />
+            <FormGroup
+                name="location"
+                className="form-control"
+                placeholder="Location"
+            />
             <FormGroup
                 name="dateReceived"
                 component={FormikDateTime}

@@ -1,3 +1,1 @@
-import CentredModal from "./CentredModal";
-
-export { CentredModal };
+export { default } from "./CentredModal";

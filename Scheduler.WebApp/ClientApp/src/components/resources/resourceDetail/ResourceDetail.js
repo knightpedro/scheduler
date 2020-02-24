@@ -9,7 +9,7 @@ import { EditDeleteGroup } from "../../common/actions";
 import { generatePath } from "react-router-dom";
 import Routes from "../../../routes";
 import queryString from "query-string";
-import { CentredModal } from "../../common/modals";
+import Modal from "../../common/modals";
 import OutOfServicesList from "../../outOfServices/outOfServicesList";
 import moment from "moment";
 import { appointmentTypes } from "../../../utils";
@@ -100,7 +100,7 @@ const ResourceDetail = ({ resource, handleDelete }) => {
                     )}
                 </Tab>
             </Tabs>
-            <CentredModal
+            <Modal
                 show={showModal}
                 title={`Delete ${resource.name}`}
                 content={DELETE_MESSAGE}

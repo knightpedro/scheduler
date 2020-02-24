@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { EditDeleteGroup } from "../../common/actions";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
-import { CentredModal } from "../../common/modals";
+import Modal from "../../common/modals";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
@@ -82,7 +82,7 @@ const TrainingDetail = ({ training, handleDelete }) => {
                     </ul>
                 </div>
             </div>
-            <CentredModal
+            <Modal
                 show={showModal}
                 title={`Delete ${training.description}`}
                 content={DELETE_MESSAGE}
