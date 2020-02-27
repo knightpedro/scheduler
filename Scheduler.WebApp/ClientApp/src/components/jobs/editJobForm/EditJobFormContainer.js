@@ -55,7 +55,7 @@ class EditJobFormContainer extends React.Component {
 
     handleCancel = () => this.props.history.goBack();
 
-    handleSubmit = async (values, { setSubmitting }) => {
+    handleSubmit = (values, { setSubmitting }) => {
         this.setState({ formError: null });
         const { job } = this.state;
         const { id } = this.props.match.params;

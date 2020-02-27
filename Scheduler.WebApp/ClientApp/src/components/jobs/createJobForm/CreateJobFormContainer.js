@@ -7,6 +7,7 @@ import CreateJobForm from "./CreateJobForm";
 import { Link, generatePath } from "react-router-dom";
 import Routes from "../../../routes";
 import { coordinatorsService, jobsService } from "../../../services";
+import { entitiesSelect } from "../../../utils";
 
 class CreateJobContainer extends React.Component {
     state = {
@@ -21,9 +22,7 @@ class CreateJobContainer extends React.Component {
             .getAll()
             .then(coordinators =>
                 this.setState({
-                    coordinators: this.transformCoordinatorsForSelection(
-                        coordinators
-                    ),
+                    coordinators: entitiesSelect(coordinators),
                 })
             )
             .catch(error =>
@@ -34,16 +33,9 @@ class CreateJobContainer extends React.Component {
             .finally(() => this.setState({ loading: false }));
     }
 
-    transformCoordinatorsForSelection(coordinators) {
-        const sorted = coordinators.sort((a, b) =>
-            a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-        );
-        return sorted.map(c => ({ label: c.name, value: c.id }));
-    }
-
     handleCancel = () => this.props.history.goBack();
 
-    handleSubmit = async (values, { setSubmitting }) => {
+    handleSubmit = (values, { setSubmitting }) => {
         this.setState({ formError: null });
 
         const jobBody = {
