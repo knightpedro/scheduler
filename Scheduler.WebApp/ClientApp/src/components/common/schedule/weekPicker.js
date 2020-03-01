@@ -19,7 +19,7 @@ const ControlsWrapper = styled.div`
 
 const NavigationHeading = styled.div`
     vertical-align: middle;
-    font-size: 1.3em;
+    font-size: 1.15rem;
     font-weight: bold;
     white-space: nowrap;
     color: ${props => props.theme.colours.onPrimary};
