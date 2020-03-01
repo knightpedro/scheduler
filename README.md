@@ -1,8 +1,8 @@
 # Scheduler
 
-Scheduler is a planning application built using ASP.NET Core with a React front end.
+Scheduler is a work planning application built using ASP.NET Core with a React front end.
 
-Schedule jobs, assign staff and resources and quickly identify conflicts.
+Schedule jobs, assign resources and quickly identify conflicts.
 
 View the app running at https://schedulerwebapp.azurewebsites.net/.
 
@@ -23,7 +23,7 @@ Contains models and setup for IdentityServer.
 ### Application
 Commands and queries are created using MediatR and validated with Fluent Validation.
 
-Interfaces for the repository pattern and EF Core DBContext are defined here to implemented in other layers. 
+Interfaces for the repository pattern and EF Core DBContext are defined here to be implemented in other layers. 
 
 ### Web App
 API controllers deliver data to the React client.
