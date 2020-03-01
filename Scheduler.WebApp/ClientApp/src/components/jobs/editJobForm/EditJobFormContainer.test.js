@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { mountWithProvider } from "../../../utils";
+import { mountWithProvider, testError } from "../../../utils";
 import { jobsService, coordinatorsService } from "../../../services";
 import EditJobFormContainer from "./EditJobFormContainer";
 import { Loading } from "../../common/loading";
@@ -8,8 +8,6 @@ import EditJobForm from "./EditJobForm";
 import { act } from "react-dom/test-utils";
 
 jest.mock("../../../services");
-
-const errorMessage = "Test Error";
 
 const matchStub = {
     params: {
@@ -33,7 +31,7 @@ describe("EditJobFormContainer", () => {
     });
 
     it("shows an error if the coordinators service fails", async () => {
-        coordinatorsService.getAll.mockRejectedValue(new Error(errorMessage));
+        coordinatorsService.getAll.mockRejectedValue(testError);
         let wrapper;
         await act(async () => {
             wrapper = mountWithProvider(
@@ -41,11 +39,11 @@ describe("EditJobFormContainer", () => {
             );
         });
         wrapper.setProps({});
-        expect(wrapper.text()).toContain(errorMessage);
+        expect(wrapper.text()).toContain(testError.message);
     });
 
     it("shows an error if the job service fails", async () => {
-        jobsService.getById.mockRejectedValue(new Error(errorMessage));
+        jobsService.getById.mockRejectedValue(testError);
         let wrapper;
         await act(async () => {
             wrapper = mountWithProvider(
@@ -53,7 +51,7 @@ describe("EditJobFormContainer", () => {
             );
         });
         wrapper.setProps({});
-        expect(wrapper.text()).toContain(errorMessage);
+        expect(wrapper.text()).toContain(testError.message);
     });
 
     it("shows the job form once loaded", async () => {
@@ -94,7 +92,7 @@ describe("EditJobFormContainer", () => {
     it("shows an error if the edit job service fails", async () => {
         coordinatorsService.getAll.mockResolvedValue([]);
         jobsService.getById.mockResolvedValue({});
-        jobsService.edit.mockRejectedValue(new Error(errorMessage));
+        jobsService.edit.mockRejectedValue(testError);
         let wrapper;
         await act(async () => {
             wrapper = mountWithProvider(
@@ -102,7 +100,7 @@ describe("EditJobFormContainer", () => {
             );
         });
         wrapper.setProps({});
-        expect(wrapper.text()).not.toContain(errorMessage);
+        expect(wrapper.text()).not.toContain(testError.message);
         await act(async () => {
             wrapper
                 .find(EditJobForm)
@@ -110,6 +108,6 @@ describe("EditJobFormContainer", () => {
                 .handleSubmit(onSubmitParameters, { setSubmitting: jest.fn() });
         });
         wrapper.setProps({});
-        expect(wrapper.text()).toContain(errorMessage);
+        expect(wrapper.text()).toContain(testError.message);
     });
 });

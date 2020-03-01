@@ -9,7 +9,7 @@ import queryString from "query-string";
 import { entitiesSelect } from "../../../utils";
 import { oosService, resourcesService } from "../../../services";
 
-class OutOfServiceFormContainer extends React.Component {
+class CreateOutOfServiceFormContainer extends React.Component {
     state = {
         loading: true,
         loadingError: null,
@@ -121,4 +121,4 @@ class OutOfServiceFormContainer extends React.Component {
     }
 }
 
-export default OutOfServiceFormContainer;
+export default CreateOutOfServiceFormContainer;

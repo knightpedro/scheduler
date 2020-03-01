@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datetime/css/react-datetime.css";
 import "./index.css";
+import "typeface-muli";
 
 import React from "react";
 import { render } from "react-dom";

@@ -73,7 +73,7 @@ class EditJobTaskFormContainer extends React.Component {
         };
 
         try {
-            jobTasksService.edit(jobTaskEdit);
+            await jobTasksService.edit(jobTaskEdit);
 
             const initialWorkers = jobTask.workers.map(w => w.id);
             const finalWorkers = values.selectedWorkers.map(w => w.value);

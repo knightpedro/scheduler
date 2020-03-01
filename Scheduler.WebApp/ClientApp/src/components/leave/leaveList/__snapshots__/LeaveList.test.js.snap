@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LeaveList renders correctly 1`] = `
+<BasicTable
+  columns={
+    Array [
+      Object {
+        "Cell": [Function],
+        "Filter": [Function],
+        "Header": "Type",
+        "accessor": "type",
+      },
+      Object {
+        "Cell": [Function],
+        "Header": "Start",
+        "accessor": "start",
+        "className": "text-center",
+        "disableFilters": true,
+        "sortType": "momentSort",
+      },
+      Object {
+        "Cell": [Function],
+        "Header": "End",
+        "accessor": "end",
+        "className": "text-center",
+        "disableFilters": true,
+        "sortType": "momentSort",
+      },
+    ]
+  }
+  data={
+    Array [
+      Object {
+        "end": "2020-02-29T23:00:00.000Z",
+        "id": 1,
+        "start": "2020-02-29T19:00:00.000Z",
+        "type": "Annual Leave",
+      },
+    ]
+  }
+  initialState={
+    Object {
+      "sortBy": Array [
+        Object {
+          "desc": true,
+          "id": "start",
+        },
+      ],
+    }
+  }
+/>
+`;

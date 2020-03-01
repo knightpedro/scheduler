@@ -63,7 +63,7 @@ class EditTrainingFormContainer extends React.Component {
         };
 
         try {
-            trainingService.edit(putBody);
+            await trainingService.edit(putBody);
             const initialWorkers = training.selectedWorkers.map(w => w.value);
             const finalWorkers = values.selectedWorkers.map(w => w.value);
             const workersPatch = createPatch(initialWorkers, finalWorkers);

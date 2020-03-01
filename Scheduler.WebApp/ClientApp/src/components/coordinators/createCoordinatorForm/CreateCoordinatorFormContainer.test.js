@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { mountWithProvider } from "../../../utils";
+import { mountWithProvider, testError } from "../../../utils";
 import { coordinatorsService } from "../../../services";
 import CreateCoordinatorFormContainer from "./CreateCoordinatorFormContainer";
 import CreateCoordinatorForm from "./CreateCoordinatorForm";
@@ -19,8 +19,7 @@ describe("CreateCoordinatorFormContainer", () => {
     });
 
     it("shows an error message when coordinators service fails", async () => {
-        const errorMessage = "Test error message";
-        coordinatorsService.create.mockRejectedValue(new Error(errorMessage));
+        coordinatorsService.create.mockRejectedValue(testError);
         let wrapper;
         await act(async () => {
             wrapper = mountWithProvider(<CreateCoordinatorFormContainer />);
@@ -31,6 +30,6 @@ describe("CreateCoordinatorFormContainer", () => {
         });
         wrapper.setProps({});
         expect(coordinatorsService.create).toHaveBeenCalledTimes(1);
-        expect(wrapper.text()).toContain(errorMessage);
+        expect(wrapper.text()).toContain(testError.message);
     });
 });

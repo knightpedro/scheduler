@@ -65,7 +65,7 @@ const JobDetail = ({ job, handleDelete }) => {
                 {job.location}
             </p>
             <p>
-                Coordinator:{" "}
+                Coordinator:
                 {job.coordinator ? renderCoordinator() : "Not assigned"}
             </p>
             <Modal

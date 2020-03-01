@@ -5,7 +5,7 @@ import CoordinatorDetailContainer from "./CoordinatorDetailContainer";
 import CoordinatorDetail from "./CoordinatorDetail";
 import { coordinatorsService } from "../../../services";
 import { Loading, LoadingFailure } from "../../common/loading";
-import { mountWithProvider } from "../../../utils";
+import { mountWithProvider, testError } from "../../../utils";
 
 const match = {
     params: {
@@ -31,10 +31,7 @@ describe("CoordinatorDetailContainer", () => {
     });
 
     it("shows error correctly", async () => {
-        const errorMessage = "Test Error";
-        coordinatorsService.getWithJobs.mockRejectedValueOnce(
-            new Error(errorMessage)
-        );
+        coordinatorsService.getWithJobs.mockRejectedValueOnce(testError);
         let wrapper;
         await act(async () => {
             wrapper = mountWithProvider(
@@ -44,8 +41,7 @@ describe("CoordinatorDetailContainer", () => {
         expect(wrapper.find(LoadingFailure)).toHaveLength(0);
         wrapper.setProps({});
         expect(coordinatorsService.getWithJobs).toHaveBeenCalled();
-        expect(wrapper.find(LoadingFailure)).toHaveLength(1);
-        expect(wrapper.find(LoadingFailure).text()).toContain(errorMessage);
+        expect(wrapper.text()).toContain(testError.message);
     });
 
     it("renders CoordinatorDetail successfully", async () => {

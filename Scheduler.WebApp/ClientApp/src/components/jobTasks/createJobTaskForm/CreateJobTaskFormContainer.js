@@ -9,10 +9,10 @@ import { entitiesSelect } from "../../../utils";
 import Routes from "../../../routes";
 import { Link, generatePath } from "react-router-dom";
 import {
+    jobTasksService,
     jobsService,
     resourcesService,
     workersService,
-    jobTasksService,
 } from "../../../services";
 
 class CreateJobTaskFormContainer extends React.Component {

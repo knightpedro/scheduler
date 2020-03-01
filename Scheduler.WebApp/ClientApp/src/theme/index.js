@@ -1,3 +1,3 @@
-import theme from "./sunny";
+import theme from "./slate";
 
 export default theme;

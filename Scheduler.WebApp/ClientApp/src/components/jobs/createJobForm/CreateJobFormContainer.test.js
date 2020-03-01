@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { mountWithProvider } from "../../../utils";
+import { mountWithProvider, testError } from "../../../utils";
 import { jobsService, coordinatorsService } from "../../../services";
 import CreateJobFormContainer from "./CreateJobFormContainer";
 import { Loading } from "../../common/loading";
@@ -16,8 +16,6 @@ const onSubmitParameters = {
     },
 };
 
-const errorMessage = "Test Error";
-
 describe("CreateJobFormContainer", () => {
     beforeEach(() => {
         jest.clearAllMocks();
@@ -30,13 +28,13 @@ describe("CreateJobFormContainer", () => {
     });
 
     it("shows an error message if loading coordinators fails", async () => {
-        coordinatorsService.getAll.mockRejectedValue(new Error(errorMessage));
+        coordinatorsService.getAll.mockRejectedValue(testError);
         let wrapper;
         await act(async () => {
             wrapper = mountWithProvider(<CreateJobFormContainer />);
         });
         wrapper.setProps({});
-        expect(wrapper.text()).toContain(errorMessage);
+        expect(wrapper.text()).toContain(testError.message);
     });
 
     it("shows correct form when loaded", async () => {
@@ -71,13 +69,13 @@ describe("CreateJobFormContainer", () => {
 
     it("shows an error if the job service fails", async () => {
         coordinatorsService.getAll.mockResolvedValue([]);
-        jobsService.create.mockRejectedValue(new Error(errorMessage));
+        jobsService.create.mockRejectedValue(testError);
         let wrapper;
         await act(async () => {
             wrapper = mountWithProvider(<CreateJobFormContainer />);
         });
         wrapper.setProps({});
-        expect(wrapper.text()).not.toContain(errorMessage);
+        expect(wrapper.text()).not.toContain(testError.message);
         await act(async () => {
             wrapper
                 .find(CreateJobForm)
@@ -87,6 +85,6 @@ describe("CreateJobFormContainer", () => {
                 });
         });
         wrapper.setProps({});
-        expect(wrapper.text()).toContain(errorMessage);
+        expect(wrapper.text()).toContain(testError.message);
     });
 });

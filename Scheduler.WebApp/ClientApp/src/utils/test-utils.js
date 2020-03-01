@@ -12,3 +12,5 @@ const AppProvider = ({ children }) => (
 
 export const mountWithProvider = component =>
     mount(component, { wrappingComponent: AppProvider });
+
+export const testError = new Error("Test Error");

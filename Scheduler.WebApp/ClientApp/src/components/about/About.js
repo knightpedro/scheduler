@@ -16,7 +16,7 @@ const About = () => {
     return (
         <Styles>
             <Jumbotron className="shadow mt-5">
-                <h1 className="display-4">About</h1>
+                <h1 className="display-4 mb-4">About</h1>
                 <p className="lead">
                     Scheduler is a simple planning application built using React
                     and ASP.NET Core.

@@ -23,13 +23,13 @@ const Wrapper = styled.div`
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     padding: 5px 10px;
     margin-bottom: 2px;
-    line-height: 1;
+    line-height: 1em;
 `;
 
 const ConflictWrapper = styled(Wrapper)`
     background-color: ${props => props.theme.colours.surface};
     color: ${props => props.theme.colours.error};
-    border-bottom: 2px solid ${props => props.theme.colours.error};
+    border: 2px solid ${props => props.theme.colours.error};
 `;
 
 const ConflictContentWrapper = styled.div`

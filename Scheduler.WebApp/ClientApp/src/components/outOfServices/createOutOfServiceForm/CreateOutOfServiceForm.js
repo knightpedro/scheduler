@@ -48,7 +48,7 @@ const initialValues = {
         .add(16, "hour"),
 };
 
-const OutOfServiceForm = ({
+const CreateOutOfServiceForm = ({
     handleSubmit,
     handleCancel,
     reasons,
@@ -86,4 +86,4 @@ const OutOfServiceForm = ({
     </BaseForm>
 );
 
-export default OutOfServiceForm;
+export default CreateOutOfServiceForm;
