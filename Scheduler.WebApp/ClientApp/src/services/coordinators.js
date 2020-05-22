@@ -1,15 +1,11 @@
 import api, { apiRoutes } from "../api";
 import queryString from "query-string";
 
-export const getAll = async () => {
-  const res = await api.get(apiRoutes.COORDINATORS);
-  return res.data.coordinators;
-};
+export const getAll = () =>
+  api.get(apiRoutes.COORDINATORS).then((res) => res.data.coordinators);
 
-export const getById = async (id) => {
-  const res = await api.get(apiRoutes.COORDINATORS + id);
-  return res.data;
-};
+export const getById = (id) =>
+  api.get(apiRoutes.COORDINATORS + id).then((res) => res.data);
 
 export const getWithJobs = async (id) => {
   const jobsQuery = queryString.stringifyUrl({
