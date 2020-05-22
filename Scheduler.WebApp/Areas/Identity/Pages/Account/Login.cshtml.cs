@@ -105,16 +105,5 @@ namespace Scheduler.WebApp.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
-
-        public async Task<IActionResult> OnPostGuestLoginAsync()
-        {
-            var result = await _signInManager.PasswordSignInAsync("Guest@scheduler", "Guest123+", false, lockoutOnFailure: false);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("Guest logged in.");
-                return LocalRedirect(Url.Content("~/"));
-            }
-            return Page();
-        }
     }
 }
