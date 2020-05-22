@@ -1,18 +1,4 @@
+html,
 body {
-  margin: 0;
-  background-color: white;
   height: 100%;
-  font-family: 'muli'
-}
-
-html {
-  height: 100%;
-}
-
-#root {
-  height: 100%;
-}
-
-h2 {
-  margin: 40px 0;
 }

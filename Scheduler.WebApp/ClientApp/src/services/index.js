@@ -8,12 +8,12 @@ import * as trainingService from "./training";
 import * as workersService from "./workers";
 
 export {
-    coordinatorsService,
-    jobsService,
-    jobTasksService,
-    leaveService,
-    oosService,
-    resourcesService,
-    trainingService,
-    workersService,
+  coordinatorsService,
+  jobsService,
+  jobTasksService,
+  leaveService,
+  oosService,
+  resourcesService,
+  trainingService,
+  workersService,
 };
