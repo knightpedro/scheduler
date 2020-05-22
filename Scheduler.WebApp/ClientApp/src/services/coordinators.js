@@ -7,25 +7,23 @@ export const getAll = () =>
 export const getById = (id) =>
   api.get(apiRoutes.COORDINATORS + id).then((res) => res.data);
 
-export const getWithJobs = async (id) => {
+export const getWithJobs = (id) => {
   const jobsQuery = queryString.stringifyUrl({
     url: apiRoutes.JOBS,
     query: {
       coordinatorId: id,
     },
   });
-  const coordinator = await getById(id);
-  const jobsRes = await api.get(jobsQuery);
-  return {
-    ...coordinator,
-    jobs: jobsRes.data.jobs,
-  };
+  return Promise.all([getById(id), api.get(jobsQuery)]).then(
+    ([coordinator, jobsRes]) => ({
+      ...coordinator,
+      jobs: jobsRes.data.jobs,
+    })
+  );
 };
 
-export const create = async (coordinator) => {
-  const res = await api.post(apiRoutes.COORDINATORS, coordinator);
-  return res.data.id;
-};
+export const create = (coordinator) =>
+  api.post(apiRoutes.COORDINATORS, coordinator).then((res) => res.data.id);
 
 export const edit = (coordinator) =>
   api.put(apiRoutes.COORDINATORS + coordinator.id, coordinator);

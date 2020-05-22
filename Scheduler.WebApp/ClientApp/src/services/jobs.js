@@ -1,19 +1,13 @@
 import api, { apiRoutes } from "../api";
 
-export const getAll = async () => {
-  const res = await api.get(apiRoutes.JOBS);
-  return res.data.jobs;
-};
+export const getAll = () =>
+  api.get(apiRoutes.JOBS).then((res) => res.data.jobs);
 
-export const getById = async (id) => {
-  const res = await api.get(apiRoutes.JOBS + id);
-  return res.data;
-};
+export const getById = (id) =>
+  api.get(apiRoutes.JOBS + id).then((res) => res.data);
 
-export const create = async (job) => {
-  const res = await api.post(apiRoutes.JOBS, job);
-  return res.data.id;
-};
+export const create = (job) =>
+  api.post(apiRoutes.JOBS, job).then((res) => res.data.id);
 
 export const edit = (job) => api.put(apiRoutes.JOBS + job.id, job);
 
