@@ -1,14 +1,18 @@
 import React from "react";
 import { render } from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 import App from "./app";
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+import reducer from "./ducks";
 
 import "semantic-ui-css/semantic.min.css";
 import "./index.css";
 
+const store = configureStore({ reducer });
+
 render(
-  <Router>
+  <Provider store={store}>
     <App />
-  </Router>,
+  </Provider>,
   document.getElementById("root")
 );

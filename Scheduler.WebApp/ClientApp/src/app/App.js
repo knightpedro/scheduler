@@ -1,22 +1,35 @@
 ﻿import React from "react";
-import { Route, Switch } from "react-router-dom";
-import Routes from "../routes";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
+import routes from "../routes";
 import AuthorizeRoute from "../components/api-authorization/AuthorizeRoute";
 import ApiAuthorizationRoutes from "../components/api-authorization/ApiAuthorizationRoutes";
 import { ApplicationPaths } from "../components/api-authorization/ApiAuthorizationConstants";
+import { MainMenu } from "../components/menus";
+import Schedules from "../components/schedules";
+import Workers from "../components/workers";
 import PageNotFound from "../components/pageNotFound";
 
 function App() {
   return (
-    <>
+    <Router>
+      <MainMenu />
       <Switch>
+        <AuthorizeRoute exact path={routes.home}>
+          <Redirect to={routes.schedules} />
+        </AuthorizeRoute>
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}
         />
+        <AuthorizeRoute to={routes.schedules} component={Schedules} />
         <Route component={PageNotFound} />
       </Switch>
-    </>
+    </Router>
   );
 }
 

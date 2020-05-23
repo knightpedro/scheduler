@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import authService from "./AuthorizeService";
 import { ApplicationPaths } from "./ApiAuthorizationConstants";
+import { Menu, Icon } from "semantic-ui-react";
 
 export class LoginMenu extends Component {
   constructor(props) {
@@ -52,8 +53,13 @@ export class LoginMenu extends Component {
   authenticatedView(userName, profilePath, logoutPath) {
     return (
       <>
-        <Link to={profilePath}>Hello {userName}</Link>
-        <Link to={logoutPath}>Logout</Link>
+        <Menu.Item as={Link} to={profilePath}>
+          <Icon name="user circle" />
+          {userName}
+        </Menu.Item>
+        <Menu.Item as={Link} to={logoutPath}>
+          Logout
+        </Menu.Item>
       </>
     );
   }
@@ -61,12 +67,12 @@ export class LoginMenu extends Component {
   anonymousView(registerPath, loginPath) {
     return (
       <>
-        <Nav.Link as={Link} to={registerPath}>
-          Register
-        </Nav.Link>
-        <Nav.Link as={Link} to={loginPath}>
+        <Menu.Item as={Link} to={loginPath}>
           Login
-        </Nav.Link>
+        </Menu.Item>
+        <Menu.Item as={Link} to={registerPath}>
+          Register
+        </Menu.Item>
       </>
     );
   }
