@@ -7,7 +7,7 @@ import { useActiveRoute } from "../../utils/hooks";
 
 const MainMenu = () => {
   return (
-    <Menu>
+    <Menu stackable>
       <Menu.Item
         as={Link}
         to={routes.schedules.base}

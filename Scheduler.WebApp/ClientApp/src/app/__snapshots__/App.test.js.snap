@@ -1,62 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App renders without crashing 1`] = `
-<Fragment>
-  <Header />
+<BrowserRouter>
+  <MainMenu />
   <Switch>
-    <AuthorizeRoute
-      component={[Function]}
+    <Route
       exact={true}
       path="/"
-    />
+    >
+      <Redirect
+        to="/schedule"
+      />
+    </Route>
     <Route
       component={[Function]}
       path="/authentication"
     />
     <AuthorizeRoute
       component={[Function]}
-      path="/reports"
-    />
-    <Route
-      component={[Function]}
-      path="/about"
-    />
-    <AuthorizeRoute
-      component={[Function]}
-      path="/coordinators"
-    />
-    <AuthorizeRoute
-      component={[Function]}
-      path="/jobs"
-    />
-    <AuthorizeRoute
-      component={[Function]}
-      path="/tasks"
-    />
-    <AuthorizeRoute
-      component={[Function]}
-      path="/resources"
+      path="/schedule"
     />
     <AuthorizeRoute
       component={[Function]}
       path="/workers"
     />
-    <AuthorizeRoute
-      component={[Function]}
-      path="/leave"
-    />
-    <AuthorizeRoute
-      component={[Function]}
-      path="/outofservices"
-    />
-    <AuthorizeRoute
-      component={[Function]}
-      path="/training"
-    />
     <Route
       component={[Function]}
     />
   </Switch>
-  <Footer />
-</Fragment>
+</BrowserRouter>
 `;

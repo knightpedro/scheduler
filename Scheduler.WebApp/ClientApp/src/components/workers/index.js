@@ -4,7 +4,7 @@ import WorkersList from "./WorkersList";
 
 const Workers = () => (
   <Switch>
-    <Route path="/" component={WorkersList} />
+    <Route component={WorkersList} />
   </Switch>
 );
 

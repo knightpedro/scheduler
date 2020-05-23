@@ -19,14 +19,15 @@ function App() {
     <Router>
       <MainMenu />
       <Switch>
-        <AuthorizeRoute exact path={routes.home}>
-          <Redirect to={routes.schedules} />
-        </AuthorizeRoute>
+        <Route path="/" exact>
+          <Redirect to={routes.schedules.base} />
+        </Route>
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}
         />
-        <AuthorizeRoute to={routes.schedules} component={Schedules} />
+        <AuthorizeRoute path={routes.schedules.base} component={Schedules} />
+        <AuthorizeRoute path={routes.workers.list} component={Workers} />
         <Route component={PageNotFound} />
       </Switch>
     </Router>
