@@ -9,15 +9,24 @@ import routes from "../routes";
 import AuthorizeRoute from "../components/api-authorization/AuthorizeRoute";
 import ApiAuthorizationRoutes from "../components/api-authorization/ApiAuthorizationRoutes";
 import { ApplicationPaths } from "../components/api-authorization/ApiAuthorizationConstants";
-import { MainMenu } from "../components/menus";
+import { MainMenu } from "../components/common";
 import Schedules from "../components/schedules";
 import Workers from "../components/workers";
 import PageNotFound from "../components/pageNotFound";
+import ErrorMessages from "../components/common/ErrorMessages";
+import { Grid } from "semantic-ui-react";
 
 function App() {
   return (
     <Router>
       <MainMenu />
+      <Grid container>
+        <Grid.Row columns="equal">
+          <Grid.Column>
+            <ErrorMessages />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
       <Switch>
         <Route path="/" exact>
           <Redirect to={routes.schedules.base} />

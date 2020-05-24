@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import WorkersList from "./WorkersList";
+import WorkersPage from "./WorkersPage";
 
 const Workers = () => (
   <Switch>
-    <Route component={WorkersList} />
+    <Route component={WorkersPage} />
   </Switch>
 );
 

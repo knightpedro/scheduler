@@ -45,9 +45,18 @@ const workersAdapter = createEntityAdapter({
   sortComparer: (a, b) => a.name.localeCompare(b.name),
 });
 
-export const workersSelectors = workersAdapter.getSelectors(
-  (state) => state.workers
-);
+const adapterSelectors = workersAdapter.getSelectors((state) => state.workers);
+
+export const workersSelectors = {
+  ...adapterSelectors,
+  selectFiltered: (state, filter) => {
+    const allWorkers = adapterSelectors.selectAll(state);
+    if (!filter) return allWorkers;
+    return allWorkers.filter((w) =>
+      w.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  },
+};
 
 const workersSlice = createSlice({
   name: "workers",
@@ -62,6 +71,9 @@ const workersSlice = createSlice({
     },
     [fetchIndividualCalendar.fulfilled]: (state, action) => {
       workersAdapter.upsertOne(state, action.payload);
+    },
+    [createWorker.fulfilled]: (state, action) => {
+      workersAdapter.addOne(state, action.payload);
     },
     [updateWorker.fulfilled]: (state, action) => {
       workersAdapter.upsertOne(state, action.payload);
