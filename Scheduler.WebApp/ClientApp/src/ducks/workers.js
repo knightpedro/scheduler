@@ -4,6 +4,11 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { workersService } from "../services";
+import {
+  getDatesBetween,
+  generateSchedule,
+  createAppointment,
+} from "../utils/appointments";
 
 export const fetchWorkers = createAsyncThunk("workers/fetchAll", () =>
   workersService.getAll()
@@ -47,15 +52,34 @@ const workersAdapter = createEntityAdapter({
 
 const adapterSelectors = workersAdapter.getSelectors((state) => state.workers);
 
+const selectFiltered = (state, filter) => {
+  const workers = adapterSelectors.selectAll(state);
+  if (!filter) return workers;
+  return workers.filter((w) =>
+    w.name.toLowerCase().includes(filter.toLowerCase())
+  );
+};
+
+const selectCalendar = (state, start, end) => {
+  const workers = adapterSelectors.selectAll(state);
+  const days = getDatesBetween(start, end);
+  return workers.reduce((calendar, worker) => {
+    if (!worker.appointments) return calendar;
+    const appointments = worker.appointments.map((a) => createAppointment(a));
+    const schedule = generateSchedule(days, appointments);
+    calendar.push({
+      id: worker.id,
+      name: worker.name,
+      schedule,
+    });
+    return calendar;
+  }, []);
+};
+
 export const workersSelectors = {
   ...adapterSelectors,
-  selectFiltered: (state, filter) => {
-    const allWorkers = adapterSelectors.selectAll(state);
-    if (!filter) return allWorkers;
-    return allWorkers.filter((w) =>
-      w.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  },
+  selectFiltered,
+  selectCalendar,
 };
 
 const workersSlice = createSlice({

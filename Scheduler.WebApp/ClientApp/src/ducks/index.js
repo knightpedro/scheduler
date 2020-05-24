@@ -1,9 +1,9 @@
-import errorsReducer from "./errors";
-import loadingReducer from "./loading";
-import workersReducer from "./workers";
+import errors from "./errors";
+import loading from "./loading";
+import workers from "./workers";
 
 export default {
-  errors: errorsReducer,
-  loading: loadingReducer,
-  workers: workersReducer,
+  errors,
+  loading,
+  workers,
 };
