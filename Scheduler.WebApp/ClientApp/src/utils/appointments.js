@@ -54,10 +54,11 @@ export const generateSchedule = (days, appointments) => {
   });
 };
 
-export const getWeekDays = (startOfWeek) => {
+export const getWeekDays = (date) => {
+  const start = date.clone().startOf("isoWeek");
   let weekDays = [];
   for (let i = 0; i < 7; i++) {
-    weekDays.push(moment(startOfWeek).add(i, "days"));
+    weekDays.push(moment(start).add(i, "days"));
   }
   return weekDays;
 };
