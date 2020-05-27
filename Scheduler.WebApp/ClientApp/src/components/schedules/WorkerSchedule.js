@@ -6,7 +6,6 @@ import { Grid, Header, Loader, ButtonGroup, Button } from "semantic-ui-react";
 import ScheduleTable from "./ScheduleTable";
 import { getWeekDays } from "../../utils/appointments";
 import { useWeekPicker } from "./hooks";
-import moment from "moment";
 import WeekPicker from "./WeekPicker";
 
 const HEADER_FORMAT = "ddd D";
@@ -34,8 +33,6 @@ const WorkerSchedule = () => {
 
   const headers = weekDays.map((d) => d.format(HEADER_FORMAT));
 
-  const selectedDays = { from: weekDays[0].toDate(), to: weekDays[6].toDate() };
-
   useEffect(() => {
     dispatch(fetchCalendar({ start, end }));
   }, [dispatch]);
@@ -51,21 +48,16 @@ const WorkerSchedule = () => {
 
       <Grid.Row columns="equal">
         <Grid.Column>
-          <div>
-            <Button onClick={() => reset()}>Today</Button>{" "}
-            <ButtonGroup>
-              <Button icon="left arrow" onClick={() => previousWeek()} />
-              <Button icon="right arrow" onClick={() => nextWeek()} />
-            </ButtonGroup>
-          </div>
+          <Button onClick={() => reset()}>Today</Button>
         </Grid.Column>
       </Grid.Row>
 
       <Grid.Row>
         <Grid.Column width={16}>
           <WeekPicker
-            selectedDays={selectedDays}
-            onDayClick={(date) => setDate(moment(date))}
+            start={start}
+            end={end}
+            handleDateChange={(startDate) => setDate(startDate)}
           />
           <ScheduleTable calendar={calendar} headers={headers} />
         </Grid.Column>

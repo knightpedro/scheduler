@@ -1,16 +1,13 @@
 import { useState } from "react";
 import moment from "moment";
 
-const getWeekStart = (date) =>
-  moment.isMoment(date)
-    ? date.clone().startOf("isoWeek")
-    : moment().startOf("isoWeek");
+const getWeekStart = (date) => moment(date).startOf("isoWeek");
 
 export const useWeekPicker = (startDate) => {
   const [start, setStart] = useState(getWeekStart(startDate));
-  const end = start.clone().add(1, "week");
+  const end = moment(start).endOf("isoWeek");
 
-  const advanceWeek = (n) => setStart((prev) => prev.clone().add(n, "weeks"));
+  const advanceWeek = (n) => setStart((prev) => moment(prev).add(n, "weeks"));
 
   const nextWeek = () => advanceWeek(1);
 

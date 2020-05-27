@@ -42,8 +42,8 @@ export const generateSchedule = (days, appointments) => {
     let overlapping = appointments.filter((a) => overlapsDay(a, day));
 
     // Adjust start and end times if appointment runs over multiple days.
-    const dayStart = day.clone().startOf("day");
-    const dayEnd = day.clone().endOf("day");
+    const dayStart = moment(day).startOf("day");
+    const dayEnd = moment(day).endOf("day");
     return overlapping
       .map((a) => {
         const start = a.start.isBefore(dayStart) ? dayStart : a.start;
@@ -55,7 +55,7 @@ export const generateSchedule = (days, appointments) => {
 };
 
 export const getWeekDays = (date) => {
-  const start = date.clone().startOf("isoWeek");
+  const start = moment(date).startOf("isoWeek");
   let weekDays = [];
   for (let i = 0; i < 7; i++) {
     weekDays.push(moment(start).add(i, "days"));
@@ -65,16 +65,16 @@ export const getWeekDays = (date) => {
 
 export const getDatesBetween = (start, end) => {
   let days = [];
-  let currentDate = start.clone();
-  while (end.diff(currentDate, "days") > 0) {
-    days.push(currentDate.clone());
+  let currentDate = moment(start);
+  while (currentDate.isSameOrBefore(end)) {
+    days.push(moment(currentDate));
     currentDate.add(1, "days");
   }
   return days;
 };
 
 export const overlapsDay = (appointment, date) => {
-  const start = date.clone().startOf("day");
-  const end = date.clone().endOf("day");
+  const start = moment(date).startOf("day");
+  const end = moment(date).endOf("day");
   return appointment.start.isBefore(end) && appointment.end.isAfter(start);
 };
