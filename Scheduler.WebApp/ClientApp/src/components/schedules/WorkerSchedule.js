@@ -7,7 +7,7 @@ import ScheduleTable from "./ScheduleTable";
 import { getWeekDays } from "../../utils/appointments";
 import { useWeekPicker } from "./hooks";
 import moment from "moment";
-import DayPicker from "react-day-picker";
+import WeekPicker from "./WeekPicker";
 
 const HEADER_FORMAT = "ddd D";
 
@@ -16,7 +16,6 @@ const loadingSelector = createLoadingSelector([fetchCalendar.typePrefix]);
 const WorkerSchedule = () => {
   const dispatch = useDispatch();
   const loading = useSelector(loadingSelector);
-  const [hoverRange, setHoverRange] = useState();
 
   const {
     start,
@@ -36,13 +35,6 @@ const WorkerSchedule = () => {
   const headers = weekDays.map((d) => d.format(HEADER_FORMAT));
 
   const selectedDays = { from: weekDays[0].toDate(), to: weekDays[6].toDate() };
-
-  const handleDayLeave = () => setHoverRange();
-
-  const handleDayEnter = (date) => {
-    const hoverWeek = getWeekDays(moment(date));
-    setHoverRange({ from: hoverWeek[0].toDate(), to: hoverWeek[6].toDate() });
-  };
 
   useEffect(() => {
     dispatch(fetchCalendar({ start, end }));
@@ -71,17 +63,11 @@ const WorkerSchedule = () => {
 
       <Grid.Row>
         <Grid.Column width={16}>
-          <div>
-            <DayPicker
-              onDayMouseEnter={handleDayEnter}
-              onDayMouseLeave={handleDayLeave}
-              modifiers={{ hoverRange }}
-              selectedDays={selectedDays}
-              firstDayOfWeek={1}
-              onDayClick={(date) => setDate(moment(date))}
-            />
-            <ScheduleTable calendar={calendar} headers={headers} />
-          </div>
+          <WeekPicker
+            selectedDays={selectedDays}
+            onDayClick={(date) => setDate(moment(date))}
+          />
+          <ScheduleTable calendar={calendar} headers={headers} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
