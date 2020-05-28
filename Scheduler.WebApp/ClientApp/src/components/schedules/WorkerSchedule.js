@@ -8,8 +8,6 @@ import { getWeekDays } from "../../utils/appointments";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
 
-const HEADER_FORMAT = "ddd D";
-
 const loadingSelector = createLoadingSelector([fetchCalendar.typePrefix]);
 
 const WorkerSchedule = () => {
@@ -29,8 +27,6 @@ const WorkerSchedule = () => {
     workersSelectors.selectCalendar(state, start, end)
   );
 
-  console.log(calendar);
-
   const weekDays = getWeekDays(start);
 
   useEffect(() => {
@@ -48,28 +44,18 @@ const WorkerSchedule = () => {
 
       <Grid.Row columns="equal">
         <Grid.Column>
-          <WeekPicker
-            start={start}
-            end={end}
-            handleDateChange={(startDate) => setDate(startDate)}
-            handlePreviousClick={previousWeek}
-            handleNextClick={nextWeek}
-          />{" "}
-          <Button onClick={reset}>Today</Button>
-          <Dropdown
-            button
-            className="icon right floated"
-            floating
-            labeled
-            icon="add"
-            text="Create"
-          >
-            <Dropdown.Menu>
-              <Dropdown.Item text="Job" />
-              <Dropdown.Item text="Leave" />
-              <Dropdown.Item text="Training" />
-            </Dropdown.Menu>
-          </Dropdown>
+          <Button.Group>
+            <Button basic icon="angle left" onClick={previousWeek} />
+            <WeekPicker
+              start={start}
+              end={end}
+              handleDateChange={(startDate) => setDate(startDate)}
+            />
+            <Button basic icon="angle right" onClick={nextWeek} />
+          </Button.Group>
+          <Button basic floated="right" onClick={reset}>
+            Today
+          </Button>
         </Grid.Column>
       </Grid.Row>
 

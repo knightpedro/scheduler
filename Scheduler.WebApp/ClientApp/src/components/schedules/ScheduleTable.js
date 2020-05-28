@@ -1,8 +1,10 @@
 import React from "react";
-import { Table, Statistic } from "semantic-ui-react";
+import { Table, Statistic, Header } from "semantic-ui-react";
 import { Appointment } from "./Appointment";
+import moment from "moment";
 
 const ScheduleTable = ({ days, calendar }) => {
+  const today = moment();
   return (
     <Table celled columns="8">
       <Table.Header>
@@ -10,7 +12,10 @@ const ScheduleTable = ({ days, calendar }) => {
           <Table.HeaderCell />
           {days.map((day, i) => (
             <Table.HeaderCell key={i} textAlign="center">
-              <Statistic size="tiny">
+              <Statistic
+                size="tiny"
+                color={today.isSame(day, "day") ? "teal" : null}
+              >
                 <Statistic.Label>{day.format("ddd")}</Statistic.Label>
                 <Statistic.Value>{day.format("D")}</Statistic.Value>
               </Statistic>
@@ -21,7 +26,9 @@ const ScheduleTable = ({ days, calendar }) => {
       <Table.Body>
         {calendar.map((resource) => (
           <Table.Row key={resource.id}>
-            <Table.Cell>{resource.name}</Table.Cell>
+            <Table.Cell>
+              <Header as="h4">{resource.name}</Header>
+            </Table.Cell>
             {resource.schedule.map((day, i) => (
               <Table.Cell key={i}>
                 {day.map((d) => (

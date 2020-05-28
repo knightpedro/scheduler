@@ -1,13 +1,7 @@
 import moment from "moment";
 import routes from "../routes";
 import { generatePath } from "react-router-dom";
-
-export const appointmentTypes = {
-  JOB_TASK: "JobTask",
-  LEAVE: "Leave",
-  OUT_OF_SERVICE: "OutOfService",
-  TRAINING: "Training",
-};
+import { appointmentTypes } from "../constants";
 
 export const createAppointment = (appointment) => {
   return {

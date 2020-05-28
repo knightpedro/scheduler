@@ -20,13 +20,7 @@ const Styles = styled.div`
   }
 `;
 
-const WeekPicker = ({
-  start,
-  end,
-  handleDateChange,
-  handlePreviousClick,
-  handleNextClick,
-}) => {
+const WeekPicker = ({ start, end, handleDateChange }) => {
   const [focusedInput, setFocusedInput] = useState(START_DATE);
   const [showCalendar, setShowCalendar] = useState(false);
 
@@ -43,18 +37,15 @@ const WeekPicker = ({
 
   return (
     <Styles>
-      <Button.Group>
-        <Button icon="angle left" onClick={handlePreviousClick} />
-        <Button onClick={() => setShowCalendar(true)}>
-          {start.format("Do MMM")} - {end.format("Do MMM YYYY")}
-        </Button>
-        <Button icon="angle right" onClick={handleNextClick} />
-      </Button.Group>
+      <Button basic onClick={() => setShowCalendar(true)}>
+        {start.format("Do MMM")} - {end.format("Do MMM YYYY")}
+      </Button>
 
       {showCalendar && (
         <Segment className="calendar" compact>
           <DayPickerRangeController
             noBorder
+            hideKeyboardShortcutsPanel
             firstDayOfWeek={1}
             startDateOffset={(date) => date.startOf(WEEK_FORMAT)}
             endDateOffset={(date) => date.endOf(WEEK_FORMAT)}
