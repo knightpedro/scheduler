@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createLoadingSelector } from "../../ducks/loading";
 import { workersSelectors, fetchCalendar } from "../../ducks/workers";
-import { Grid, Header, Loader, ButtonGroup, Button } from "semantic-ui-react";
+import { Grid, Header, Loader, Button, Dropdown } from "semantic-ui-react";
 import ScheduleTable from "./ScheduleTable";
 import { getWeekDays } from "../../utils/appointments";
 import { useWeekPicker } from "./hooks";
@@ -31,8 +31,6 @@ const WorkerSchedule = () => {
 
   const weekDays = getWeekDays(start);
 
-  const headers = weekDays.map((d) => d.format(HEADER_FORMAT));
-
   useEffect(() => {
     dispatch(fetchCalendar({ start, end }));
   }, [dispatch]);
@@ -48,18 +46,34 @@ const WorkerSchedule = () => {
 
       <Grid.Row columns="equal">
         <Grid.Column>
-          <Button onClick={() => reset()}>Today</Button>
+          <WeekPicker
+            start={start}
+            end={end}
+            handleDateChange={(startDate) => setDate(startDate)}
+            handlePreviousClick={previousWeek}
+            handleNextClick={nextWeek}
+          />{" "}
+          <Button onClick={reset}>Today</Button>
+          <Dropdown
+            button
+            className="icon right floated"
+            floating
+            labeled
+            icon="add"
+            text="Create"
+          >
+            <Dropdown.Menu>
+              <Dropdown.Item text="Job" />
+              <Dropdown.Item text="Leave" />
+              <Dropdown.Item text="Training" />
+            </Dropdown.Menu>
+          </Dropdown>
         </Grid.Column>
       </Grid.Row>
 
       <Grid.Row>
         <Grid.Column width={16}>
-          <WeekPicker
-            start={start}
-            end={end}
-            handleDateChange={(startDate) => setDate(startDate)}
-          />
-          <ScheduleTable calendar={calendar} headers={headers} />
+          <ScheduleTable calendar={calendar} days={weekDays} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

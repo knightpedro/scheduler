@@ -1,10 +1,34 @@
 import React, { useState } from "react";
-import moment from "moment";
+import { Button, Segment } from "semantic-ui-react";
 import { DayPickerRangeController } from "react-dates";
 import { START_DATE } from "react-dates/constants";
+import styled from "styled-components";
 
-const WeekPicker = ({ start, end, handleDateChange }) => {
+const WEEK_FORMAT = "isoWeek";
+
+const Styles = styled.div`
+  display: inline;
+
+  .calendar {
+    position: absolute;
+    padding: 1px;
+    z-index: 1;
+
+    table {
+      margin-top: 5px;
+    }
+  }
+`;
+
+const WeekPicker = ({
+  start,
+  end,
+  handleDateChange,
+  handlePreviousClick,
+  handleNextClick,
+}) => {
   const [focusedInput, setFocusedInput] = useState(START_DATE);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   const onDateChange = ({ startDate, endDate }) =>
     handleDateChange(startDate, endDate);
@@ -13,19 +37,39 @@ const WeekPicker = ({ start, end, handleDateChange }) => {
     setFocusedInput(!input ? START_DATE : input);
   };
 
+  const onOutsideCalendarClick = (e) => {
+    setShowCalendar(false);
+  };
+
   return (
-    <DayPickerRangeController
-      startDateOffset={(date) => date.startOf("isoWeek")}
-      endDateOffset={(date) => date.endOf("isoWeek")}
-      startDate={start}
-      endDate={end}
-      enableOutsideDays
-      numberOfMonths={1}
-      focusedInput={focusedInput}
-      onDatesChange={onDateChange}
-      onFocusChange={onFocusChange}
-      initialVisibleMonth={() => moment()}
-    />
+    <Styles>
+      <Button.Group>
+        <Button icon="angle left" onClick={handlePreviousClick} />
+        <Button onClick={() => setShowCalendar(true)}>
+          {start.format("Do MMM")} - {end.format("Do MMM YYYY")}
+        </Button>
+        <Button icon="angle right" onClick={handleNextClick} />
+      </Button.Group>
+
+      {showCalendar && (
+        <Segment className="calendar" compact>
+          <DayPickerRangeController
+            noBorder
+            firstDayOfWeek={1}
+            startDateOffset={(date) => date.startOf(WEEK_FORMAT)}
+            endDateOffset={(date) => date.endOf(WEEK_FORMAT)}
+            startDate={start}
+            endDate={end}
+            numberOfMonths={1}
+            focusedInput={focusedInput}
+            onDatesChange={onDateChange}
+            onFocusChange={onFocusChange}
+            initialVisibleMonth={() => start}
+            onOutsideClick={onOutsideCalendarClick}
+          />
+        </Segment>
+      )}
+    </Styles>
   );
 };
 
