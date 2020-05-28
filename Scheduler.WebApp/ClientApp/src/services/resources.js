@@ -1,4 +1,5 @@
-import api, { apiRoutes, apiConstants } from "../api";
+import api, { apiRoutes } from "../api";
+import { DATE_FORMAT } from "../api/constants";
 import queryString from "query-string";
 
 export const getAll = () =>
@@ -16,16 +17,16 @@ export const edit = (resource) =>
 export const destroy = (id) => api.delete(apiRoutes.RESOURCES + id);
 
 export const getAllCalenders = (start, end) => {
-  const startQuery = start.format(apiConstants.DATE_FORMAT);
-  const endQuery = end.format(apiConstants.DATE_FORMAT);
+  const startQuery = start.format(DATE_FORMAT);
+  const endQuery = end.format(DATE_FORMAT);
   return api
     .get(`${apiRoutes.RESOURCES}calendar/${startQuery}/${endQuery}`)
     .then((res) => res.data.resources);
 };
 
 export const getIndividualCalendar = (id, start, end) => {
-  const startQuery = start ? start.format(apiConstants.DATE_FORMAT) : start;
-  const endQuery = end ? end.format(apiConstants.DATE_FORMAT) : end;
+  const startQuery = start ? start.format(DATE_FORMAT) : start;
+  const endQuery = end ? end.format(DATE_FORMAT) : end;
   const queryUrl = queryString.stringifyUrl({
     url: apiRoutes.RESOURCES + id + "/calendar",
     query: { start: startQuery, end: endQuery },

@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import moment from "moment";
 
 const getWeekStart = (date) => moment(date).startOf("isoWeek");
 
 export const useWeekPicker = (startDate) => {
   const [start, setStart] = useState(getWeekStart(startDate));
-  const end = moment(start).endOf("isoWeek");
+  const end = useMemo(() => moment(start).endOf("isoWeek"), [start]);
 
   const advanceWeek = (n) => setStart((prev) => moment(prev).add(n, "weeks"));
 

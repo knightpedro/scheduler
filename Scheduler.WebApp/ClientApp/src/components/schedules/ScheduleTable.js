@@ -1,5 +1,6 @@
 import React from "react";
 import { Table, Statistic } from "semantic-ui-react";
+import { Appointment } from "./Appointment";
 
 const ScheduleTable = ({ days, calendar }) => {
   return (
@@ -22,7 +23,11 @@ const ScheduleTable = ({ days, calendar }) => {
           <Table.Row key={resource.id}>
             <Table.Cell>{resource.name}</Table.Cell>
             {resource.schedule.map((day, i) => (
-              <Table.Cell key={i}></Table.Cell>
+              <Table.Cell key={i}>
+                {day.map((d) => (
+                  <Appointment key={`${d.id}${d.type}`} {...d} />
+                ))}
+              </Table.Cell>
             ))}
           </Table.Row>
         ))}

@@ -1,10 +1,6 @@
 import axios from "axios";
 import authService from "../components/api-authorization/AuthorizeService";
 
-export const apiConstants = {
-  DATE_FORMAT: "YYYY-MM-DD",
-};
-
 export const apiRoutes = {
   BASE: "api/",
   COORDINATORS: "coordinators/",

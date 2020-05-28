@@ -29,11 +29,13 @@ const WorkerSchedule = () => {
     workersSelectors.selectCalendar(state, start, end)
   );
 
+  console.log(calendar);
+
   const weekDays = getWeekDays(start);
 
   useEffect(() => {
     dispatch(fetchCalendar({ start, end }));
-  }, [dispatch]);
+  }, [dispatch, start, end]);
 
   return (
     <Grid stackable padded relaxed="very">
