@@ -36,7 +36,7 @@ const Header = styled.div`
 const EventsGrid = styled.div`
   display: grid;
   grid-template-columns: ${({ columns }) => `repeat(${columns}, 1fr)`};
-  grid-template-rows: repeat(10, auto);
+  grid-template-rows: repeat(2, 50px) repeat(10, auto);
   grid-auto-flow: dense;
   padding: 0.25em 0;
 `;

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createLoadingSelector } from "../../ducks/loading";
 import { workersSelectors, fetchCalendar } from "../../ducks/workers";
-import { Grid, Header, Loader, Button } from "semantic-ui-react";
+import { Grid, Header, Loader, Button, Input } from "semantic-ui-react";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
 import { GroupSchedule } from "./schedule";
@@ -11,6 +11,7 @@ const loadingSelector = createLoadingSelector([fetchCalendar.typePrefix]);
 
 const WorkerSchedule = () => {
   const dispatch = useDispatch();
+  const [filter, setFilter] = useState();
   const loading = useSelector(loadingSelector);
 
   const {
@@ -23,7 +24,7 @@ const WorkerSchedule = () => {
   } = useWeekPicker();
 
   const calendar = useSelector((state) =>
-    workersSelectors.selectCalendar(state, start, end)
+    workersSelectors.selectFilteredCalendar(state, start, end, filter)
   );
 
   useEffect(() => {
@@ -39,17 +40,25 @@ const WorkerSchedule = () => {
         </Grid.Column>
       </Grid.Row>
 
-      <Grid.Row columns="equal">
+      <Grid.Row columns="equal" verticalAlign="middle">
         <Grid.Column>
-          <Button.Group>
-            <Button basic icon="angle left" onClick={previousWeek} />
-            <WeekPicker
-              start={start}
-              end={end}
-              handleDateChange={(startDate) => setDate(startDate)}
-            />
-            <Button basic icon="angle right" onClick={nextWeek} />
-          </Button.Group>
+          <Input
+            icon="search"
+            placeholder="Search staff"
+            value={filter || ""}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </Grid.Column>
+        <Grid.Column textAlign="center">
+          <WeekPicker
+            start={start}
+            end={end}
+            handleDateChange={(startDate) => setDate(startDate)}
+            handleNext={nextWeek}
+            handlePrevious={previousWeek}
+          />
+        </Grid.Column>
+        <Grid.Column>
           <Button basic floated="right" onClick={reset}>
             Today
           </Button>

@@ -56,9 +56,8 @@ const selectFiltered = (state, filter) => {
   );
 };
 
-const selectCalendar = (state, start, end) => {
-  const workers = adapterSelectors.selectAll(state);
-  return workers.reduce((calendar, worker) => {
+const shapeCalendar = (workers, start, end) =>
+  workers.reduce((calendar, worker) => {
     if (!worker.appointments) return calendar;
     const schedule = worker.appointments
       .map((a) => createAppointment(a))
@@ -71,12 +70,22 @@ const selectCalendar = (state, start, end) => {
     });
     return calendar;
   }, []);
+
+const selectCalendar = (state, start, end) => {
+  const workers = adapterSelectors.selectAll(state);
+  return shapeCalendar(workers, start, end);
+};
+
+const selectFilteredCalendar = (state, start, end, filter) => {
+  const workers = selectFiltered(state, filter);
+  return shapeCalendar(workers, start, end);
 };
 
 export const workersSelectors = {
   ...adapterSelectors,
   selectFiltered,
   selectCalendar,
+  selectFilteredCalendar,
 };
 
 const workersSlice = createSlice({

@@ -13,17 +13,20 @@ const Header = styled.div`
     flex: 1;
   }
 
-  > .day {
-    border-top-left-radius: 0.3rem;
+  > div:first-child {
+    border-top-left-radius: 0.3em;
   }
 
-  > .day ~ .day {
-    border-top-left-radius: 0;
+  > div:last-child {
+    border-width: 1px 1px 0 1px;
+    border-top-right-radius: 0.3em;
   }
 `;
 
 const EmptyCell = styled.div`
-  border-left: 1px solid transparent;
+  border: solid rgba(34, 36, 38, 0.1);
+  border-width: 1px 0 0 1px;
+  background: #f9fafb;
 `;
 
 const Day = styled.div`
@@ -36,11 +39,6 @@ const Day = styled.div`
   border-width: 1px 0 0 1px;
   background: #f9fafb;
   padding: 0.5em 0;
-
-  :last-child {
-    border-width: 1px 1px 0 1px;
-    border-top-right-radius: 0.3rem;
-  }
 
   .display-date {
     font-size: 24px;
