@@ -6,7 +6,6 @@ import { appointmentTypes } from "../constants";
 export const createAppointment = (appointment) => {
   return {
     ...appointment,
-    path: createAppointmentPath(appointment.id, appointment.type),
     start: moment(appointment.start),
     end: moment(appointment.end),
   };
@@ -31,23 +30,6 @@ export const createAppointmentPath = (id, type) => {
   return generatePath(route, { id });
 };
 
-export const generateSchedule = (days, appointments) => {
-  return days.map((day) => {
-    let overlapping = appointments.filter((a) => overlapsDay(a, day));
-
-    // Adjust start and end times if appointment runs over multiple days.
-    const dayStart = moment(day).startOf("day");
-    const dayEnd = moment(day).endOf("day");
-    return overlapping
-      .map((a) => {
-        const start = a.start.isBefore(dayStart) ? dayStart : a.start;
-        const end = a.end.isAfter(dayEnd) ? dayEnd : a.end;
-        return { ...a, start, end };
-      })
-      .sort((a, b) => a.start.unix() - b.start.unix());
-  });
-};
-
 export const getWeekDays = (date) => {
   const start = moment(date).startOf("isoWeek");
   let weekDays = [];
@@ -67,8 +49,11 @@ export const getDatesBetween = (start, end) => {
   return days;
 };
 
+export const overlaps = (appointment, start, end) =>
+  appointment.start.isBefore(end) && appointment.end.isAfter(start);
+
 export const overlapsDay = (appointment, date) => {
   const start = moment(date).startOf("day");
   const end = moment(date).endOf("day");
-  return appointment.start.isBefore(end) && appointment.end.isAfter(start);
+  return overlaps(appointment, start, end);
 };

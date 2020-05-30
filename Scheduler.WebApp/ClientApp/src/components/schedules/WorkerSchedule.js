@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createLoadingSelector } from "../../ducks/loading";
 import { workersSelectors, fetchCalendar } from "../../ducks/workers";
-import { Grid, Header, Loader, Button, Dropdown } from "semantic-ui-react";
-import ScheduleTable from "./ScheduleTable";
-import { getWeekDays } from "../../utils/appointments";
+import { Grid, Header, Loader, Button } from "semantic-ui-react";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
+import { GroupSchedule } from "./schedule";
 
 const loadingSelector = createLoadingSelector([fetchCalendar.typePrefix]);
 
@@ -26,8 +25,6 @@ const WorkerSchedule = () => {
   const calendar = useSelector((state) =>
     workersSelectors.selectCalendar(state, start, end)
   );
-
-  const weekDays = getWeekDays(start);
 
   useEffect(() => {
     dispatch(fetchCalendar({ start, end }));
@@ -61,7 +58,7 @@ const WorkerSchedule = () => {
 
       <Grid.Row>
         <Grid.Column width={16}>
-          <ScheduleTable calendar={calendar} days={weekDays} />
+          <GroupSchedule resources={calendar} start={start} end={end} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

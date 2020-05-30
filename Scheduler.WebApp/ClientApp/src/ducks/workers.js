@@ -4,11 +4,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { workersService } from "../services";
-import {
-  getDatesBetween,
-  generateSchedule,
-  createAppointment,
-} from "../utils/appointments";
+import { createAppointment, overlaps } from "../utils/appointments";
 
 export const fetchWorkers = createAsyncThunk("workers/fetchAll", () =>
   workersService.getAll()
@@ -62,11 +58,12 @@ const selectFiltered = (state, filter) => {
 
 const selectCalendar = (state, start, end) => {
   const workers = adapterSelectors.selectAll(state);
-  const days = getDatesBetween(start, end);
   return workers.reduce((calendar, worker) => {
     if (!worker.appointments) return calendar;
-    const appointments = worker.appointments.map((a) => createAppointment(a));
-    const schedule = generateSchedule(days, appointments);
+    const schedule = worker.appointments
+      .map((a) => createAppointment(a))
+      .filter((a) => overlaps(a, start, end))
+      .sort((a, b) => a.start.unix() - b.start.unix());
     calendar.push({
       id: worker.id,
       name: worker.name,
