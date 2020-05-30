@@ -1,3 +1,4 @@
+import leaveSchema from "./leaveSchema";
 import workerSchema from "./workerSchema";
 
-export { workerSchema };
+export { leaveSchema, workerSchema };

@@ -1,3 +1,4 @@
+import LeaveForm from "./LeaveForm";
 import WorkerForm from "./WorkerForm";
 
-export { WorkerForm };
+export { LeaveForm, WorkerForm };

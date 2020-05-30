@@ -16,7 +16,7 @@ import {
   Button,
 } from "semantic-ui-react";
 import WorkersList from "./WorkersList";
-import { WorkerForm } from "../forms";
+import { LeaveForm, WorkerForm } from "../forms";
 
 const loadingSelector = createLoadingSelector([fetchWorkers.typePrefix]);
 
@@ -94,6 +94,7 @@ const WorkersPage = () => {
         <Grid.Column width={6}>
           <WorkersList workers={workers} handleClick={handleWorkerClick} />
         </Grid.Column>
+        <LeaveForm />
         {showForm && (
           <Grid.Column width={10}>
             <Header>{editing ? "Edit" : "Add"} Worker</Header>
