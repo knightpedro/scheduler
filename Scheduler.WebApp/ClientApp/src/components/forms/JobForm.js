@@ -1,48 +1,58 @@
 import React from "react";
 import { Formik } from "formik";
 import { Form } from "semantic-ui-react";
-import { DateTimeField, DropdownField, TextField } from "./fields";
-import { trainingSchema } from "./schemas";
+import { TextField, DateField, DropdownField } from "./fields";
+import { jobSchema } from "./schemas";
 
 const initialValues = {
+  coordinatorId: undefined,
+  dateReceived: undefined,
+  dateScheduled: undefined,
   description: "",
-  end: undefined,
+  jobNumber: "",
   location: "",
-  start: undefined,
-  workerIds: [],
 };
 
-const TrainingForm = ({
+const DATE_FORMAT = "d/M/yy";
+
+const JobForm = ({
   values,
   handleSubmit,
   handleCancel,
-  workerOptions,
+  coordinatorOptions,
 }) => {
+  const today = new Date();
   return (
     <Formik
       enableReinitialize
       initialValues={{ ...initialValues, ...values }}
-      validationSchema={trainingSchema}
+      validationSchema={jobSchema}
       onSubmit={handleSubmit}
     >
       {(formik) => (
         <Form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
+          <TextField label="Job number" name="jobNumber" />
           <TextField label="Description" name="description" />
           <TextField label="Location" name="location" />
-          <Form.Group>
-            <DateTimeField label="From" name="start" />
-            <DateTimeField label="To" name="end" />
-          </Form.Group>
           <DropdownField
-            label="Staff attending"
-            name="workerIds"
-            options={workerOptions}
-            multiple
+            label="Coordinator"
+            name="coordinatorId"
+            options={coordinatorOptions}
+          />
+          <DateField
+            label="Date received"
+            name="dateReceived"
+            maxDate={today}
+          />
+          <DateField
+            label="Date scheduled"
+            name="dateScheduled"
+            maxDate={today}
           />
           <Form.Group>
             <Form.Button
               type="submit"
-              content="Save training"
+              content="Save job"
               primary
               disabled={formik.isSubmitting}
             />
@@ -58,4 +68,4 @@ const TrainingForm = ({
   );
 };
 
-export default TrainingForm;
+export default JobForm;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik } from "formik";
 import { Form } from "semantic-ui-react";
-import { DateField, DropdownField } from "./fields";
+import { DateTimeField, DropdownField } from "./fields";
 import { leaveSchema } from "./schemas";
 
 const initialValues = {
@@ -39,8 +39,8 @@ const LeaveForm = ({
             search={false}
           />
           <Form.Group>
-            <DateField label="From" name="start" />
-            <DateField label="To" name="end" />
+            <DateTimeField label="From" name="start" />
+            <DateTimeField label="To" name="end" />
           </Form.Group>
 
           <Form.Group>

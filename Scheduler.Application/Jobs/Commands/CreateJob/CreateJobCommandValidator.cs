@@ -8,7 +8,7 @@ namespace Scheduler.Application.Jobs.Commands.CreateJob
         {
             RuleFor(j => j.JobNumber).NotEmpty().MaximumLength(10);
             RuleFor(j => j.Description).NotEmpty().MaximumLength(160);
-            RuleFor(j => j.Location).NotEmpty().MaximumLength(30);
+            RuleFor(j => j.Location).NotEmpty().MaximumLength(50);
         }
     }
 }

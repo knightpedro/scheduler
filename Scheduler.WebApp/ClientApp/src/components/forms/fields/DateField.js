@@ -23,8 +23,7 @@ const DateField = ({ label, ...props }) => {
         {...field}
         todayButton="Today"
         customInput={<DateInput label={label} error={error} />}
-        showTimeSelect
-        dateFormat="h:mm a d/M/yy"
+        dateFormat="d/M/yy"
         selected={field.value || ""}
         onChange={(date) => helpers.setValue(date || "")}
         {...props}
