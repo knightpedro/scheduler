@@ -7,8 +7,8 @@ export default yup.object({
     .required("Leave end is required")
     .test("chronological", "End must be after start", function (value) {
       const { start } = this.parent;
-      if (!start || !value) return true;
-      return moment(value).isAfter(start);
+      if (!(start && value)) return true;
+      return moment(value).isAfter(moment(start));
     }),
   leaveType: yup.string().required("Leave type is required"),
   start: yup.date().required("Leave start is required"),
