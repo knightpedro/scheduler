@@ -14,7 +14,9 @@ describe("errors reducer", () => {
     const error = new Error("Test error");
     const action = { type: "workers/fetchAll/rejected", error };
     const state = errorsReducer(undefined, action);
-    expect(state["workers/fetchAll"]).toEqual(error.message);
+    expect(state["workers/fetchAll"]).toEqual(
+      "Workers fetch all: " + error.message.toLowerCase()
+    );
   });
 
   it("nulls out an error if action does not have error", () => {
