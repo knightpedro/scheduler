@@ -7,16 +7,12 @@ import styled from "styled-components";
 const Styles = styled.div``;
 
 const DateInput = forwardRef((props, ref) => {
-  return (
-    <Form.Input {...props}>
-      <input ref={ref} />
-    </Form.Input>
-  );
+  return <Form.Input {...props} />;
 });
 
 const DateField = ({ label, ...props }) => {
   const [field, meta, helpers] = useField(props);
-  const error = meta.touched && meta.error ? { content: meta.error } : false;
+  const error = meta.touched && meta.error ? meta.error : false;
   return (
     <Styles className="field">
       <DatePicker

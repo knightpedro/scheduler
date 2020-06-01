@@ -1,4 +1,5 @@
+import ErrorMessages from "./ErrorMessages";
 import MainMenu from "./MainMenu";
-import StatusBar from "./StatusBar";
+import PortalManager from "./PortalManager";
 
-export { MainMenu, StatusBar };
+export { ErrorMessages, MainMenu, PortalManager };

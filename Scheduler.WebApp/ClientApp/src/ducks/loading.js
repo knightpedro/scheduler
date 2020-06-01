@@ -1,7 +1,8 @@
-import { createAction } from "@reduxjs/toolkit";
-
 export const createLoadingSelector = (actions) => (state) =>
   actions.some((action) => state.loading[action]);
+
+export const anyLoadingSelector = (state) =>
+  Object.keys(state.loading).some((k) => state.loading[k]);
 
 const loadingReducer = (state = {}, action) => {
   const { type } = action;

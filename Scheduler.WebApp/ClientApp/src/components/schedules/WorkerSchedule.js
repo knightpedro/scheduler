@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createLoadingSelector } from "../../ducks/loading";
 import { workersSelectors, fetchCalendar } from "../../ducks/workers";
-import { Grid, Header, Loader, Button, Input } from "semantic-ui-react";
+import { Grid, Header, Button, Input } from "semantic-ui-react";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
 import { GroupSchedule } from "./schedule";
 
-const loadingSelector = createLoadingSelector([fetchCalendar.typePrefix]);
-
 const WorkerSchedule = () => {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState();
-  const loading = useSelector(loadingSelector);
 
   const {
     start,
@@ -33,7 +29,6 @@ const WorkerSchedule = () => {
 
   return (
     <Grid stackable padded relaxed="very">
-      <Loader active={loading}>Loading</Loader>
       <Grid.Row columns="equal">
         <Grid.Column>
           <Header as="h2">Staff Schedule</Header>

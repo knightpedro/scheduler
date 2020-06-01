@@ -42,7 +42,6 @@ const LeaveForm = ({
             <DateTimeField label="From" name="start" />
             <DateTimeField label="To" name="end" />
           </Form.Group>
-
           <Form.Group>
             <Form.Button
               type="submit"

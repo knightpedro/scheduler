@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { openPortal } from "../../../ducks/portal";
 import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { appointmentTypes } from "../../../constants";
@@ -80,10 +82,17 @@ const Duration = styled.div`
 
 const Event = ({ appointment, ...props }) => {
   const { id, type, description, start, end, isConflicting } = appointment;
+  const dispatch = useDispatch();
+
+  const handleEventClick = () => {
+    dispatch(openPortal("test"));
+  };
+
   return (
     <Container
       appointmentType={type}
       isConflicting={isConflicting}
+      onClick={handleEventClick}
       title={description}
       {...props}
     >

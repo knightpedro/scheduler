@@ -16,7 +16,7 @@ const TrainingForm = ({
   values,
   handleSubmit,
   handleCancel,
-  workerOptions,
+  workerOptions = [],
 }) => {
   return (
     <Formik

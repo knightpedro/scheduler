@@ -1,58 +1,54 @@
 import React from "react";
 import { Formik } from "formik";
 import { Form } from "semantic-ui-react";
-import { TextField, DateField, DropdownField } from "./fields";
-import { jobSchema } from "./schemas";
+import { TextField, DateTimeField, DropdownField } from "./fields";
+import { jobTaskSchema } from "./schemas";
 
 const initialValues = {
-  coordinatorId: undefined,
-  dateReceived: undefined,
-  dateScheduled: undefined,
   description: "",
-  jobNumber: "",
-  location: "",
+  end: undefined,
+  resourceIds: [],
+  start: undefined,
+  workerIds: [],
 };
 
-const DATE_FORMAT = "d/M/yy";
-
-const JobForm = ({
+const JobTaskForm = ({
   values,
   handleSubmit,
   handleCancel,
-  coordinatorOptions = [],
+  resourceOptions = [],
+  workerOptions = [],
 }) => {
-  const today = new Date();
   return (
     <Formik
       enableReinitialize
       initialValues={{ ...initialValues, ...values }}
-      validationSchema={jobSchema}
+      validationSchema={jobTaskSchema}
       onSubmit={handleSubmit}
     >
       {(formik) => (
         <Form noValidate onSubmit={formik.handleSubmit} autoComplete="off">
-          <TextField label="Job number" name="jobNumber" />
           <TextField label="Description" name="description" />
-          <TextField label="Location" name="location" />
+          <Form.Group>
+            <DateTimeField label="Start" name="start" />
+            <DateTimeField label="End" name="end" />
+          </Form.Group>
           <DropdownField
-            label="Coordinator"
-            name="coordinatorId"
-            options={coordinatorOptions}
+            label="Staff"
+            name="workerIds"
+            options={workerOptions}
+            multiple
           />
-          <DateField
-            label="Date received"
-            name="dateReceived"
-            maxDate={today}
-          />
-          <DateField
-            label="Date scheduled"
-            name="dateScheduled"
-            maxDate={today}
+          <DropdownField
+            label="Plant"
+            name="resourceIds"
+            options={resourceOptions}
+            multiple
           />
           <Form.Group>
             <Form.Button
               type="submit"
-              content="Save job"
+              content="Save task"
               primary
               disabled={formik.isSubmitting}
             />
@@ -68,4 +64,4 @@ const JobForm = ({
   );
 };
 
-export default JobForm;
+export default JobTaskForm;
