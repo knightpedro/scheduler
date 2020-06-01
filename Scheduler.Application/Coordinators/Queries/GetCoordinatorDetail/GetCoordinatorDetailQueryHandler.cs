@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler.Application.Coordinators.Queries.GetCoordinatorDetail
 {
-    public class GetCoordinatorDetailQueryHandler : IRequestHandler<GetCoordinatorDetailQuery, CoordinatorDetailVm>
+    public class GetCoordinatorDetailQueryHandler : IRequestHandler<GetCoordinatorDetailQuery, CoordinatorDto>
     {
         private readonly IRepository<Coordinator> _repo;
 
@@ -16,13 +16,13 @@ namespace Scheduler.Application.Coordinators.Queries.GetCoordinatorDetail
             _repo = repo;
         }
 
-        public async Task<CoordinatorDetailVm> Handle(GetCoordinatorDetailQuery request, CancellationToken cancellationToken)
+        public async Task<CoordinatorDto> Handle(GetCoordinatorDetailQuery request, CancellationToken cancellationToken)
         {
             var coordinator = await _repo.GetById(request.Id);
             if (coordinator is null)
                 throw new NotFoundException(nameof(Coordinator), request.Id);
 
-            return new CoordinatorDetailVm(coordinator);
+            return new CoordinatorDto(coordinator);
         }
     }
 }

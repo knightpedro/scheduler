@@ -2,7 +2,7 @@
 
 namespace Scheduler.Application.Coordinators.Queries.GetCoordinatorDetail
 {
-    public class GetCoordinatorDetailQuery : IRequest<CoordinatorDetailVm>
+    public class GetCoordinatorDetailQuery : IRequest<CoordinatorDto>
     {
         public int Id { get; set; }
     }

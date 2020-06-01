@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Scheduler.Application.Coordinators.Commands.CreateCoordinator;
 using Scheduler.Application.Coordinators.Commands.DeleteCoordinator;
 using Scheduler.Application.Coordinators.Commands.EditCoordinator;
+using Scheduler.Application.Coordinators.Queries;
 using Scheduler.Application.Coordinators.Queries.GetCoordinatorDetail;
 using Scheduler.Application.Coordinators.Queries.GetCoordinatorsList;
 
@@ -21,7 +22,7 @@ namespace Scheduler.WebApp.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CoordinatorDetailVm>> Get(int id)
+        public async Task<ActionResult<CoordinatorDto>> Get(int id)
         {
             var vm = await Mediator.Send(new GetCoordinatorDetailQuery { Id = id });
             return Ok(vm);

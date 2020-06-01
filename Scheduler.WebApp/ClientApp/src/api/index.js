@@ -2,6 +2,7 @@ import axios from "axios";
 import authService from "../components/api-authorization/AuthorizeService";
 
 export const apiRoutes = {
+  ALL: "all/",
   BASE: "api/",
   COORDINATORS: "coordinators/",
   JOBS: "jobs/",

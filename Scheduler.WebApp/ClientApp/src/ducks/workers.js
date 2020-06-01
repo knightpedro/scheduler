@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { workersService } from "../services";
 import { createAppointment, overlaps } from "../utils/appointments";
+import { fetchAll } from "./combined";
 
 export const fetchWorkers = createAsyncThunk("workers/fetchAll", () =>
   workersService.getAll()
@@ -110,6 +111,9 @@ const workersSlice = createSlice({
     },
     [deleteWorker.fulfilled]: (state, action) => {
       workersAdapter.removeOne(state, action.payload);
+    },
+    [fetchAll.fulfilled]: (state, action) => {
+      workersAdapter.setAll(state, action.payload.workers);
     },
   },
 });

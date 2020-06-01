@@ -1,15 +1,15 @@
 ﻿using Scheduler.Domain.Entities;
 
-namespace Scheduler.Application.Coordinators.Queries.GetCoordinatorDetail
+namespace Scheduler.Application.Coordinators.Queries
 {
-    public class CoordinatorDetailVm
+    public class CoordinatorDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public bool IsActive { get; set; }
 
-        public CoordinatorDetailVm(Coordinator c)
+        public CoordinatorDto(Coordinator c)
         {
             Id = c.Id;
             Name = c.Name;

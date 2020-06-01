@@ -24,12 +24,12 @@ namespace Scheduler.Application.Tests.Jobs.Queries
         {
             var expectedJobs = GetJobs();
             var query = new GetJobsListQuery();
-            mockRepo.Setup(x => x.GetAll()).ReturnsAsync(expectedJobs);
+            mockRepo.Setup(x => x.GetAll(j => j.JobTasks)).ReturnsAsync(expectedJobs);
             var handler = new GetJobsListQueryHandler(mockRepo.Object);
 
             var vm = await handler.Handle(query, CancellationToken.None);
 
-            mockRepo.Verify(x => x.GetAll(), Times.Once());
+            mockRepo.Verify(x => x.GetAll(j => j.JobTasks), Times.Once());
             Assert.Equal(expectedJobs.Count(), vm.Jobs.Count());
         }
 

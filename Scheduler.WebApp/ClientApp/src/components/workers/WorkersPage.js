@@ -6,6 +6,7 @@ import {
   fetchWorkers,
   workersSelectors,
 } from "../../ducks/workers";
+import { fetchAll } from "../../ducks/combined";
 import { createLoadingSelector } from "../../ducks/loading";
 import {
   Grid,
@@ -37,7 +38,7 @@ const WorkersPage = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchWorkers());
+    dispatch(fetchAll());
   }, [dispatch]);
 
   const closeForm = () => {

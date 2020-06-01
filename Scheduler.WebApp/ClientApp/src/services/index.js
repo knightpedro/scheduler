@@ -1,3 +1,4 @@
+import * as combinedService from "./combined";
 import * as coordinatorsService from "./coordinators";
 import * as jobsService from "./jobs";
 import * as jobTasksService from "./jobTasks";
@@ -8,6 +9,7 @@ import * as trainingService from "./training";
 import * as workersService from "./workers";
 
 export {
+  combinedService,
   coordinatorsService,
   jobsService,
   jobTasksService,
