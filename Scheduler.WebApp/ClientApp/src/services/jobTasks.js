@@ -1,5 +1,8 @@
 import api, { apiRoutes } from "../api";
 
+export const getAll = () =>
+  api.get(apiRoutes.JOB_TASKS).then((res) => res.data.jobTasks);
+
 export const getById = (id) =>
   api.get(apiRoutes.JOB_TASKS + id).then((res) => res.data);
 

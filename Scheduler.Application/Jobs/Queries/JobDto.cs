@@ -1,7 +1,5 @@
 ﻿using Scheduler.Domain.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Scheduler.Application.Jobs.Queries
 {
@@ -14,7 +12,7 @@ namespace Scheduler.Application.Jobs.Queries
         public string Location { get; set; }
         public bool IsComplete { get; set; }
         public DateTime? DateReceived { get; set; }
-        public IEnumerable<int> JobTasks { get; set; }
+        public DateTime? DateScheduled { get; set; }
 
         public JobDto(Job job)
         {
@@ -24,8 +22,8 @@ namespace Scheduler.Application.Jobs.Queries
             Description = job.Description;
             Location = job.Location;
             IsComplete = job.IsComplete;
-            DateReceived = job.DateReceived; 
-            JobTasks = job.JobTasks.Select(t => t.Id);
+            DateReceived = job.DateReceived;
+            DateScheduled = job.DateScheduled;
         }
     }
 }

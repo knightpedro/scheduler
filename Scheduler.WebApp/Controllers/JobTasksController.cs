@@ -10,11 +10,19 @@ using Scheduler.Application.JobTasks.Commands.EditJobTask;
 using Scheduler.Application.JobTasks.Commands.RemoveResources;
 using Scheduler.Application.JobTasks.Commands.RemoveWorkers;
 using Scheduler.Application.JobTasks.Queries.GetJobTaskDetail;
+using Scheduler.Application.JobTasks.Queries.GetJobTasksList;
 
 namespace Scheduler.WebApp.Controllers
 {
     public class JobTasksController : BaseController
     {
+        [HttpGet]
+        public async Task<ActionResult<JobTasksListVm>> Get()
+        {
+            var vm = await Mediator.Send(new GetJobTasksListQuery());
+            return Ok(vm);
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
