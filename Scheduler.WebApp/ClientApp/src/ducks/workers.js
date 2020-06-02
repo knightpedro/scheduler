@@ -2,6 +2,7 @@ import {
   createAsyncThunk,
   createEntityAdapter,
   createSlice,
+  createSelector,
 } from "@reduxjs/toolkit";
 import { workersService } from "../services";
 import { createAppointment, overlaps } from "../utils/appointments";
@@ -18,8 +19,7 @@ export const fetchCalendar = createAsyncThunk(
 
 export const fetchIndividualCalendar = createAsyncThunk(
   "workers/fetchIndividualCalendar",
-  async ({ id, start, end }) =>
-    workersService.getIndividualCalendar(id, start, end)
+  ({ id, start, end }) => workersService.getIndividualCalendar(id, start, end)
 );
 
 export const createWorker = createAsyncThunk(
@@ -49,13 +49,13 @@ const workersAdapter = createEntityAdapter({
 
 const adapterSelectors = workersAdapter.getSelectors((state) => state.workers);
 
-const selectFiltered = (state, filter) => {
-  const workers = adapterSelectors.selectAll(state);
-  if (!filter) return workers;
-  return workers.filter((w) =>
-    w.name.toLowerCase().includes(filter.toLowerCase())
-  );
-};
+const selectFiltered = (filter) =>
+  createSelector([adapterSelectors.selectAll], (workers) => {
+    if (!filter) return workers;
+    return workers.filter((w) =>
+      w.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  });
 
 const shapeCalendar = (workers, start, end) =>
   workers.reduce((calendar, worker) => {

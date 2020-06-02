@@ -2,6 +2,7 @@ import moment from "moment";
 import routes from "../routes";
 import { generatePath } from "react-router-dom";
 import { appointmentTypes } from "../constants";
+import { DATE_FORMAT } from "../api/constants";
 
 export const createAppointment = (appointment) => {
   return {
@@ -57,3 +58,15 @@ export const overlapsDay = (appointment, date) => {
   const end = moment(date).endOf("day");
   return overlaps(appointment, start, end);
 };
+
+export const transformDatesToMoments = (appointment) => ({
+  ...appointment,
+  start: moment(appointment.start),
+  end: moment(appointment.end),
+});
+
+export const transformMomentsToDates = (appointment) => ({
+  ...appointment,
+  start: appointment.start.format(DATE_FORMAT),
+  end: appointment.end.format(DATE_FORMAT),
+});

@@ -1,5 +1,8 @@
 import api, { apiRoutes } from "../api";
 
+export const getAll = () =>
+  api.get(apiRoutes.LEAVE).then((res) => res.data.leave);
+
 export const getById = (id) =>
   api.get(apiRoutes.LEAVE + id).then((res) => res.data);
 

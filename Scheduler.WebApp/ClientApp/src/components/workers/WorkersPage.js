@@ -8,14 +8,7 @@ import {
 } from "../../ducks/workers";
 import { fetchAll } from "../../ducks/combined";
 import { createLoadingSelector } from "../../ducks/loading";
-import {
-  Grid,
-  Input,
-  Loader,
-  Message,
-  Header,
-  Button,
-} from "semantic-ui-react";
+import { Grid, Input, Loader, Header, Button } from "semantic-ui-react";
 import WorkersList from "./WorkersList";
 import {
   JobForm,
@@ -34,7 +27,7 @@ const WorkersPage = () => {
   const dispatch = useDispatch();
   const loading = useSelector(loadingSelector);
   const workers = useSelector((state) =>
-    workersSelectors.selectFiltered(state, filter)
+    workersSelectors.selectFiltered(filter)(state)
   );
 
   useEffect(() => {
