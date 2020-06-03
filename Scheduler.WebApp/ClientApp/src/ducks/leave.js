@@ -59,7 +59,7 @@ export const leaveSelectors = {
 
 const leaveSlice = createSlice({
   name: "leave",
-  initialState: leaveAdapter.getInitialState(),
+  initialState: { ...leaveAdapter.getInitialState(), types: [] },
   reducers: {},
   extraReducers: {
     [createLeave.fulfilled]: (state, action) => {
@@ -78,7 +78,10 @@ const leaveSlice = createSlice({
       leaveAdapter.upsertOne(state, action.payload);
     },
     [fetchAll.fulfilled]: (state, action) => {
-      leaveAdapter.setAll(state, action.payload.leave);
+      const { leave, leaveTypes, workerConflicts } = action.payload;
+      console.log(workerConflicts);
+      leaveAdapter.setAll(state, leave);
+      state.types = leaveTypes.sort();
     },
   },
 });

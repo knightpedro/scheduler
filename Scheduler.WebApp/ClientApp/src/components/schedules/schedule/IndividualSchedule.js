@@ -3,7 +3,6 @@ import ScheduleHeader from "./ScheduleHeader";
 import ScheduleRow from "./ScheduleRow";
 
 const IndividualSchedule = ({ start, end, schedule }) => {
-  console.log(schedule);
   return (
     <div>
       <ScheduleHeader start={start} end={end} schedule={schedule} />
