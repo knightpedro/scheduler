@@ -3,7 +3,7 @@ using System;
 
 namespace Scheduler.Application.Common.Models
 {
-    enum AppointmentTypes {
+    public enum AppointmentTypes {
         JobTask,
         Leave,
         OutOfService,

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Scheduler.Application.Conflicts.Queries.GetAllResourceConflicts;
-using Scheduler.Application.Conflicts.Queries.GetAllWorkerConflicts;
+using Scheduler.Application.Conflicts.Queries.GetResourcesConflicts;
+using Scheduler.Application.Conflicts.Queries.GetWorkersConflicts;
 using Scheduler.Application.Coordinators.Queries.GetCoordinatorsList;
 using Scheduler.Application.Jobs.Queries.GetJobsList;
 using Scheduler.Application.JobTasks.Queries.GetJobTasksList;
@@ -11,8 +11,6 @@ using Scheduler.Application.Workers.Queries.GetLeaveList;
 using Scheduler.Application.Workers.Queries.GetWorkersList;
 using Scheduler.Domain.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,10 +36,10 @@ namespace Scheduler.Application.Combined.Queries
             var outOfServices = await _mediator.Send(new GetOutOfServicesListQuery());
             var outOfServiceTypes = Enum.GetNames(typeof(ResourceOutOfServiceReason));
             var resources = await _mediator.Send(new GetResourcesListQuery());
-            var resourceConflicts = await _mediator.Send(new GetAllResourceConflictsQuery());
+            var resourceConflicts = await _mediator.Send(new GetResourcesConflictsQuery());
             var training = await _mediator.Send(new GetTrainingListQuery());
             var workers = await _mediator.Send(new GetWorkersListQuery());
-            var workerConflicts = await _mediator.Send(new GetAllWorkerConflictsQuery());
+            var workerConflicts = await _mediator.Send(new GetWorkersConflictsQuery());
 
             return new CombinedVm
             {

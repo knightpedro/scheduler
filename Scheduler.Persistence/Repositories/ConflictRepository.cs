@@ -1,15 +1,60 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scheduler.Application.Common.Interfaces;
 using Scheduler.Application.Common.Models;
-using Scheduler.Application.Conflicts.Queries;
+using Scheduler.Application.Conflicts;
+using Scheduler.Domain.Common;
+using Scheduler.Domain.Entities;
 using Scheduler.Domain.ValueObjects;
-using Scheduler.Persistence.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Scheduler.Persistence.Repositories
 {
+    class ScheduleEvent
+    {
+        public int Id { get; set; }
+        public DateTimeRange Period { get; set; }
+        public string Type { get; set; }
+
+        public ScheduleEvent(Leave leave)
+        {
+            Id = leave.Id;
+            Period = leave.LeavePeriod;
+            Type = AppointmentTypes.Leave.ToString();
+        }
+
+        public ScheduleEvent(ResourceOutOfService oos)
+        {
+            Id = oos.Id;
+            Period = oos.Period;
+            Type = AppointmentTypes.OutOfService.ToString();
+        }
+
+        public ScheduleEvent(ResourceShift resourceShift)
+        {
+            Id = resourceShift.JobTaskId;
+            Period = resourceShift.JobTask.TaskPeriod;
+            Type = AppointmentTypes.JobTask.ToString();
+        }
+
+        public ScheduleEvent(WorkerShift workerShift)
+        {
+            Id = workerShift.JobTaskId;
+            Period = workerShift.JobTask.TaskPeriod;
+            Type = AppointmentTypes.JobTask.ToString();
+        }
+
+        public ScheduleEvent(WorkerTraining workerTraining)
+        {
+            Id = workerTraining.TrainingId;
+            Period = workerTraining.Training.TrainingPeriod;
+            Type = AppointmentTypes.Training.ToString();
+        }
+    }
+
+
     public class ConflictRepository : IConflictRepository
     {
         private readonly SchedulerDbContext context;
@@ -18,164 +63,162 @@ namespace Scheduler.Persistence.Repositories
         {
             this.context = context;
         }
-        
-        public async Task<IEnumerable<Appointment>> GetJobTaskConflictsForResource(int resourceId, DateTimeRange period)
-        {
-            var conflicts = await context.ResourceShifts
-                .AsNoTracking()
-                .Where(rs => rs.ResourceId == resourceId && rs.JobTask.TaskPeriod.Start < period.End && period.Start < rs.JobTask.TaskPeriod.End)
-                .Select(rs => new Appointment(rs.JobTask))
-                .ToListAsync();
 
-            conflicts.ForEach(c => c.IsConflicting = true);
-            return conflicts;
+        private IEnumerable<ScheduleEvent> SelectEvents(Entity entity)
+        {
+            Resource resource = entity as Resource;
+            if (resource != null) 
+                return SelectResourceEvents(resource);
+
+            Worker worker = entity as Worker;
+            if (worker != null)
+                return SelectWorkerEvents(worker);
+
+            return null;
         }
 
-        public async Task<IEnumerable<Appointment>> GetJobTaskConflictsForWorker(int workerId, DateTimeRange period)
+        private IEnumerable<EntityConflictsVm> SelectRangeConflicts<T>(List<T> entities, DateTimeRange period) where T: Entity
         {
-            var conflicts = await context.WorkerShifts
-                .AsNoTracking()
-                .Where(ws => ws.WorkerId == workerId && ws.JobTask.TaskPeriod.Start < period.End && period.Start < ws.JobTask.TaskPeriod.End)
-                .Select(ws => new Appointment(ws.JobTask))
-                .ToListAsync();
-
-            conflicts.ForEach(c => c.IsConflicting = true);
-            return conflicts;
-        }
-
-        public async Task<IEnumerable<Appointment>> GetWorkerConflicts(int workerId)
-        {
-            var appointments = new List<Appointment>();
-
-            var leave = await context.Leave
-                .AsNoTracking()
-                .Where(l => l.WorkerId == workerId)
-                .Select(l => new Appointment(l))
-                .ToListAsync();
-
-            var jobTasks = await context.WorkerShifts
-                .AsNoTracking()
-                .Where(ws => ws.WorkerId == workerId)
-                .Select(ws => new Appointment(ws.JobTask))
-                .ToListAsync();
-
-            var training = await context.WorkerTraining
-                .AsNoTracking()
-                .Where(wt => wt.WorkerId == workerId)
-                .Select(wt => new Appointment(wt.Training))
-                .ToListAsync();
-
-            appointments.AddRange(leave);
-            appointments.AddRange(jobTasks);
-            appointments.AddRange(training);
-
-            Conflicts.GetConflicts(appointments);
-            return appointments.Where(a => a.IsConflicting);
-        }
-
-        public async Task<IEnumerable<Appointment>> GetWorkerConflicts(int workerId, DateTimeRange period)
-        {
-            var conflicts = new List<Appointment>();
-            var leaveConflicts = await GetLeaveConflicts(workerId, period);
-            var jobTaskConflicts = await GetJobTaskConflictsForWorker(workerId, period);
-            var trainingConflicts = await GetTrainingConflicts(workerId, period);
-            conflicts.AddRange(leaveConflicts);
-            conflicts.AddRange(jobTaskConflicts);
-            conflicts.AddRange(trainingConflicts);
-            return conflicts;
-        }
-
-        public async Task<IEnumerable<Appointment>> GetLeaveConflicts(int workerId, DateTimeRange period)
-        {
-            var conflicts = await context.Leave
-                .AsNoTracking()
-                .Where(l => l.WorkerId == workerId && l.LeavePeriod.Start < period.End && period.Start < l.LeavePeriod.End)
-                .Select(l => new Appointment(l))
-                .ToListAsync();
-
-            conflicts.ForEach(c => c.IsConflicting = true);
-            return conflicts;
-        }
-
-        public async Task<IEnumerable<Appointment>> GetResourceOutOfServiceConflicts(int resourceId, DateTimeRange period)
-        {
-            var conflicts = await context.ResourceOutOfService
-                .AsNoTracking()
-                .Where(o => o.ResourceId == resourceId && o.Period.Start < period.End && period.Start < o.Period.End)
-                .Select(o => new Appointment(o))
-                .ToListAsync();
-
-            conflicts.ForEach(c => c.IsConflicting = true);
-            return conflicts;
-        }
-
-        public async Task<IEnumerable<Appointment>> GetTrainingConflicts(int workerId, DateTimeRange period)
-        {
-            var conflicts = await context.WorkerTraining
-                .AsNoTracking()
-                .Where(wt => wt.WorkerId == workerId && wt.Training.TrainingPeriod.Start < period.End && period.Start < wt.Training.TrainingPeriod.End)
-                .Select(wt => new Appointment(wt.Training))
-                .ToListAsync();
-
-            conflicts.ForEach(c => c.IsConflicting = true);
-            return conflicts;
-        }
-
-        public async Task<IEnumerable<ResourceConflictsVm>> GetResourceConflicts()
-        {
-            var conflicts = new List<ResourceConflictsVm>();
-            var resourceIds = await context.Resources.Select(r => r.Id).ToListAsync();
-            foreach (var id in resourceIds)
+            var conflictsRange = new List<EntityConflictsVm>();
+            entities.ForEach(e =>
             {
-                var resourceConflicts = await GetResourceConflicts(id);
-                conflicts.Add(new ResourceConflictsVm(id, resourceConflicts));
+                var conflicts = SelectConflicts(e, period);
+                conflictsRange.Add(new EntityConflictsVm
+                {
+                    Id = e.Id,
+                    Conflicts = conflicts
+                });
+            });
+            return conflictsRange;
+        }
+
+        private IEnumerable<ConflictDto> SelectConflicts(Entity entity, DateTimeRange period)
+        {
+            var events = SelectEvents(entity);
+            if (period != null)
+            {
+                events = events.Where(e => e.Period.OverlapsWith(period));
+            }
+
+            var orderedEvents = events.OrderBy(e => e.Period.Start).ToList();
+            var conflicts = new List<ConflictDto>();
+            for (var i = 0; i < orderedEvents.Count(); i++)
+            {
+                for (var j = i + 1; j < orderedEvents.Count(); j++)
+                {
+                    if (orderedEvents[i].Period.OverlapsWith(orderedEvents[j].Period))
+                    {
+                        var eventA = orderedEvents[i];
+                        var eventB = orderedEvents[j];
+                        var conflict = new ConflictDto
+                        {
+                            EventA = new ConflictingEventDto(eventA.Id, eventA.Type),
+                            EventB = new ConflictingEventDto(eventB.Id, eventB.Type),
+                            Start = new DateTime(Math.Max(eventA.Period.Start.Ticks, eventB.Period.Start.Ticks)),
+                            End = new DateTime(Math.Min(eventA.Period.End.Ticks, eventB.Period.End.Ticks)),
+                        };
+                        conflicts.Add(conflict);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
             }
             return conflicts;
         }
 
-        public async Task<IEnumerable<Appointment>> GetResourceConflicts(int resourceId)
+        private IEnumerable<ScheduleEvent> SelectResourceEvents(Resource resource)
         {
-            var appointments = new List<Appointment>();
+            var jobTaskEvents = resource.ResourceShifts.Select(rs => new ScheduleEvent(rs));
+            var oosEvents = resource.OutOfServices.Select(o => new ScheduleEvent(o));
 
-            var oos = await context.ResourceOutOfService
-                .AsNoTracking()
-                .Where(o => o.ResourceId == resourceId)
-                .Select(o => new Appointment(o))
-                .ToListAsync();
-
-            var jobTasks = await context.ResourceShifts
-                .AsNoTracking()
-                .Where(rs => rs.ResourceId == resourceId)
-                .Select(rs => new Appointment(rs.JobTask))
-                .ToListAsync();
-
-            appointments.AddRange(oos);
-            appointments.AddRange(jobTasks);
-
-            Conflicts.GetConflicts(appointments);
-            return appointments;
+            return jobTaskEvents
+                .Concat(oosEvents);
         }
 
-        public async Task<IEnumerable<Appointment>> GetResourceConflicts(int resourceId, DateTimeRange period)
+        private IEnumerable<ScheduleEvent> SelectWorkerEvents(Worker worker)
         {
-            var conflicts = new List<Appointment>();
-            var outOfServiceConflicts = await GetResourceOutOfServiceConflicts(resourceId, period);
-            var jobTaskConflicts = await GetJobTaskConflictsForResource(resourceId, period);
-            conflicts.AddRange(outOfServiceConflicts);
-            conflicts.AddRange(jobTaskConflicts);
-            return conflicts;
+            var jobTaskEvents = worker.WorkerShifts.Select(ws => new ScheduleEvent(ws));
+            var leaveEvents = worker.Leave.Select(l => new ScheduleEvent(l));
+            var trainingEvents = worker.WorkerTraining.Select(wt => new ScheduleEvent(wt));
+
+            return jobTaskEvents
+                .Concat(leaveEvents)
+                .Concat(trainingEvents);
         }
 
-        public async Task<IEnumerable<WorkerConflictsVm>> GetWorkerConflicts()
+        public async Task<IEnumerable<ConflictDto>> GetConflictsForResource(int resourceId)
         {
-            var conflicts = new List<WorkerConflictsVm>();
-            var workerIds = await context.Workers.Select(w => w.Id).ToListAsync();
-            foreach(var id in workerIds)
-            {
-                var workerConflicts = await GetWorkerConflicts(id);
-                conflicts.Add(new WorkerConflictsVm(id, workerConflicts));
-            }
-            return conflicts;
+            return await GetConflictsForResource(resourceId, null);
+        }
+
+        public async Task<IEnumerable<ConflictDto>> GetConflictsForResource(int resourceId, DateTimeRange period)
+        {
+            var resource = await context.Resources
+                .AsNoTracking()
+                .Include(r => r.ResourceShifts)
+                .ThenInclude(rs => rs.JobTask)
+                .Include(r => r.OutOfServices)
+                .SingleOrDefaultAsync(r => r.Id == resourceId);
+
+            return SelectConflicts(resource, period);
+        }
+
+        public async Task<IEnumerable<ConflictDto>> GetConflictsForWorker(int workerId)
+        {
+            return await GetConflictsForWorker(workerId, null);
+        }
+    
+
+        public async Task<IEnumerable<ConflictDto>> GetConflictsForWorker(int workerId, DateTimeRange period)
+        {
+            var worker = await context.Workers
+                .AsNoTracking()
+                .Include(w => w.WorkerShifts)
+                .ThenInclude(ws => ws.JobTask)
+                .Include(w => w.Leave)
+                .Include(w => w.WorkerTraining)
+                .ThenInclude(wt => wt.Training)
+                .SingleOrDefaultAsync(w => w.Id == workerId);
+
+            return SelectConflicts(worker, period);
+        }
+
+        public async Task<IEnumerable<EntityConflictsVm>> GetResourcesConflicts()
+        {
+            return await GetResourcesConflicts(null);
+        }
+
+        public async Task<IEnumerable<EntityConflictsVm>> GetResourcesConflicts(DateTimeRange period)
+        {
+            var resources = await context.Resources
+                .AsNoTracking()
+                .Include(r => r.ResourceShifts)
+                .ThenInclude(rs => rs.JobTask)
+                .Include(r => r.OutOfServices)
+                .ToListAsync();
+
+            return SelectRangeConflicts(resources, period);
+        }
+
+        public async Task<IEnumerable<EntityConflictsVm>> GetWorkersConflicts()
+        {
+            return await GetWorkersConflicts(null);
+        }
+
+        public async Task<IEnumerable<EntityConflictsVm>> GetWorkersConflicts(DateTimeRange period)
+        {
+            var workers = await context.Workers
+                .AsNoTracking()
+                .Include(w => w.WorkerShifts)
+                .ThenInclude(ws => ws.JobTask)
+                .Include(w => w.Leave)
+                .Include(w => w.WorkerTraining)
+                .ThenInclude(wt => wt.Training)
+                .ToListAsync();
+
+            return SelectRangeConflicts(workers, period);
         }
     }
 }

@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Scheduler.Application.Calendar.Queries;
 using Scheduler.Application.Calendar.Queries.GetWorkerCalendar;
 using Scheduler.Application.Calendar.Queries.GetWorkersCalendar;
-using Scheduler.Application.Conflicts.Queries;
-using Scheduler.Application.Conflicts.Queries.GetAllWorkerConflicts;
-using Scheduler.Application.Conflicts.Queries.GetWorkerConflicts;
+using Scheduler.Application.Conflicts;
+using Scheduler.Application.Conflicts.Queries.GetConflictsForWorker;
+using Scheduler.Application.Conflicts.Queries.GetWorkersConflicts;
 using Scheduler.Application.Workers.Commands.CreateWorker;
 using Scheduler.Application.Workers.Commands.DeleteWorker;
 using Scheduler.Application.Workers.Commands.EditWorker;
@@ -88,16 +88,16 @@ namespace Scheduler.WebApp.Controllers
         }
 
         [HttpGet("conflicts")]
-        public async Task<ActionResult<IEnumerable<WorkerConflictsVm>>> GetAllConflicts()
+        public async Task<ActionResult<IEnumerable<EntityConflictsVm>>> GetAllConflicts(DateTime? start, DateTime? end)
         {
-            var vm = await Mediator.Send(new GetAllWorkerConflictsQuery());
+            var vm = await Mediator.Send(new GetWorkersConflictsQuery { Start = start, End = end });
             return Ok(vm);
         }
 
         [HttpGet("{id}/conflicts")]
-        public async Task<ActionResult<WorkerConflictsVm>> GetConflicts(int id , DateTime? start, DateTime? end)
+        public async Task<ActionResult<EntityConflictsVm>> GetConflicts(int id , DateTime? start, DateTime? end)
         {
-            var vm = await Mediator.Send(new GetWorkerConflictsQuery { Id = id, Start = start, End = end });
+            var vm = await Mediator.Send(new GetConflictsForWorkerQuery { Id = id, Start = start, End = end });
             return Ok(vm);
         }
     }

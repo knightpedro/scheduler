@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using System;
 
-namespace Scheduler.Application.Conflicts.Queries.GetResourceConflicts
+namespace Scheduler.Application.Conflicts.Queries.GetConflictsForWorker
 {
-    public class GetResourceConflictsQuery : IRequest<ResourceConflictsVm>
+    public class GetConflictsForWorkerQuery : IRequest<EntityConflictsVm>
     {
         public int Id { get; set; }
         public DateTime? Start { get; set; }
