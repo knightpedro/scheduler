@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { workersSelectors, fetchCalendar } from "../../ducks/workers";
+import { selectWorkersCalendar } from "../../ducks/calendar";
+import { setPeriod } from "../../ducks/ui";
 import { Grid, Header, Button, Input } from "semantic-ui-react";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
@@ -19,12 +20,10 @@ const WorkerSchedule = () => {
     setDate,
   } = useWeekPicker();
 
-  const calendar = useSelector((state) =>
-    workersSelectors.selectFilteredCalendar(state, start, end, filter)
-  );
+  const calendar = useSelector(selectWorkersCalendar);
 
   useEffect(() => {
-    dispatch(fetchCalendar({ start, end }));
+    dispatch(setPeriod({ start, end }));
   }, [dispatch, start, end]);
 
   return (

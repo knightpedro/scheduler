@@ -10,6 +10,7 @@ import {
   transformMomentsToDates,
 } from "../utils/appointments";
 import moment from "moment";
+import { fetchWorkerConflicts } from "./workerConflicts";
 
 export const fetchTraining = createAsyncThunk("training/fetchAll", () =>
   trainingService.getAll()
@@ -30,17 +31,19 @@ export const createTraining = createAsyncThunk(
 
 export const updateTraining = createAsyncThunk(
   "training/update",
-  async (values) => {
+  async (values, { dispatch }) => {
     const training = transformMomentsToDates(values);
     await trainingService.edit(training);
+    dispatch(fetchWorkerConflicts());
     return training;
   }
 );
 
 export const deleteTraining = createAsyncThunk(
   "training/delete",
-  async (id) => {
+  async (id, { dispatch }) => {
     await trainingService.destroy(id);
+    dispatch(fetchWorkerConflicts());
     return id;
   }
 );

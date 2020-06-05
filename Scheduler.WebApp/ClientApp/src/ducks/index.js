@@ -7,10 +7,12 @@ import loading from "./loading";
 import outOfServices from "./outOfServices";
 import portal from "./portal";
 import resources from "./resources";
+import resourceConflicts from "./resourceConflicts";
 import resourceJobTasks from "./resourceJobTasks";
 import training from "./training";
 import ui from "./ui";
 import workers from "./workers";
+import workerConflicts from "./workerConflicts";
 import workerJobTasks from "./workerJobTasks";
 import workerTraining from "./workerTraining";
 
@@ -24,10 +26,12 @@ export default {
   outOfServices,
   portal,
   resources,
+  resourceConflicts,
   resourceJobTasks,
   training,
   ui,
   workers,
+  workerConflicts,
   workerJobTasks,
   workerTraining,
 };

@@ -10,6 +10,7 @@ import {
   transformMomentsToDates,
 } from "../utils/appointments";
 import moment from "moment";
+import { fetchConflictsByWorkerId } from "./workerConflicts";
 
 export const fetchLeave = createAsyncThunk("leave/fetchAll", () =>
   leaveService.getAll()
@@ -19,22 +20,34 @@ export const fetchLeaveById = createAsyncThunk("leave/fetchOne", (id) =>
   leaveService.getById(id)
 );
 
-export const createLeave = createAsyncThunk("leave/create", async (values) => {
-  const leave = transformMomentsToDates(values);
-  const id = await leaveService.create(leave);
-  return { id, ...leave };
-});
+export const createLeave = createAsyncThunk(
+  "leave/create",
+  async (values, { dispatch }) => {
+    const leave = transformMomentsToDates(values);
+    const id = await leaveService.create(leave);
+    dispatch(fetchConflictsByWorkerId(id));
+    return { id, ...leave };
+  }
+);
 
-export const updateLeave = createAsyncThunk("leave/update", async (values) => {
-  const leave = transformMomentsToDates(values);
-  await leaveService.edit(transformMomentsToDates(leave));
-  return leave;
-});
+export const updateLeave = createAsyncThunk(
+  "leave/update",
+  async (values, { dispatch }) => {
+    const leave = transformMomentsToDates(values);
+    await leaveService.edit(transformMomentsToDates(leave));
+    dispatch(fetchConflictsByWorkerId(leave.id));
+    return leave;
+  }
+);
 
-export const deleteLeave = createAsyncThunk("leave/delete", async (id) => {
-  await leaveService.destroy(id);
-  return id;
-});
+export const deleteLeave = createAsyncThunk(
+  "leave/delete",
+  async (id, { dispatch }) => {
+    await leaveService.destroy(id);
+    dispatch(fetchConflictsByWorkerId(id));
+    return id;
+  }
+);
 
 const leaveAdapter = createEntityAdapter({
   sortComparer: (a, b) => moment(a.start).unix() - moment(b.start).unix(),
@@ -50,7 +63,7 @@ export const leaveSelectors = {
     if (entity) return transformDatesToMoments(entity);
     return undefined;
   },
-  selectByWorkerId: (state, workerId) =>
+  selectByWorker: (state, workerId) =>
     adapterSelectors
       .selectAll(state)
       .filter((l) => l.workerId === workerId)
@@ -78,8 +91,7 @@ const leaveSlice = createSlice({
       leaveAdapter.upsertOne(state, action.payload);
     },
     [fetchAll.fulfilled]: (state, action) => {
-      const { leave, leaveTypes, workerConflicts } = action.payload;
-      console.log(workerConflicts);
+      const { leave, leaveTypes } = action.payload;
       leaveAdapter.setAll(state, leave);
       state.types = leaveTypes.sort();
     },

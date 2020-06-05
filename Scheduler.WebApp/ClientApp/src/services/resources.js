@@ -16,6 +16,26 @@ export const edit = (resource) =>
 
 export const destroy = (id) => api.delete(apiRoutes.RESOURCES + id);
 
+export const getAllConflicts = (start, end) => {
+  const startQuery = start ? start.format(DATE_FORMAT) : null;
+  const endQuery = end ? end.format(DATE_FORMAT) : null;
+  const queryUrl = queryString.stringifyUrl({
+    url: apiRoutes.RESOURCES + "conflicts",
+    query: { start: startQuery, end: endQuery },
+  });
+  api.get(queryUrl).then((res) => res.data);
+};
+
+export const getConflictsByResourceId = (id, start, end) => {
+  const startQuery = start ? start.format(DATE_FORMAT) : null;
+  const endQuery = end ? end.format(DATE_FORMAT) : null;
+  const queryUrl = queryString.stringifyUrl({
+    url: apiRoutes.RESOURCES + id + "/conflicts",
+    query: { start: startQuery, end: endQuery },
+  });
+  api.get(queryUrl).then((res) => res.data);
+};
+
 export const getAllCalenders = (start, end) => {
   const startQuery = start.format(DATE_FORMAT);
   const endQuery = end.format(DATE_FORMAT);

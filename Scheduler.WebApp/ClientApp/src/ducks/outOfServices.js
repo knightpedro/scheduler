@@ -10,6 +10,7 @@ import {
   transformMomentsToDates,
 } from "../utils/appointments";
 import moment from "moment";
+import { fetchConflictsByResourceId } from "./resourceConflicts";
 
 export const fetchOutOfServices = createAsyncThunk(
   "outOfServices/fetchAll",
@@ -23,26 +24,29 @@ export const fetchOutOfServiceById = createAsyncThunk(
 
 export const createOutOfService = createAsyncThunk(
   "outOfServices/create",
-  async (values) => {
+  async (values, { dispatch }) => {
     const oos = transformMomentsToDates(values);
     const id = await oosService.create(oos);
+    dispatch(fetchConflictsByResourceId(id));
     return { id, ...oos };
   }
 );
 
 export const updateOutOfService = createAsyncThunk(
   "outOfServices/update",
-  async (values) => {
+  async (values, { dispatch }) => {
     const oos = transformMomentsToDates(values);
     await oosService.edit(transformMomentsToDates(oos));
+    dispatch(fetchConflictsByResourceId(oos.id));
     return oos;
   }
 );
 
 export const deleteOutOfService = createAsyncThunk(
   "outOfServices/delete",
-  async (id) => {
+  async (id, { dispatch }) => {
     await oosService.destroy(id);
+    dispatch(fetchConflictsByResourceId(id));
     return id;
   }
 );

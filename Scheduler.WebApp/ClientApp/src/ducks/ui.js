@@ -2,7 +2,14 @@ import { createReducer, createAction, createSelector } from "@reduxjs/toolkit";
 import moment from "moment";
 
 export const clearPeriod = createAction("app/clearPeriod");
-export const setPeriod = createAction("app/setPeriod");
+export const setPeriod = createAction("app/setPeriod", ({ start, end }) => {
+  return {
+    payload: {
+      start: start.toISOString(),
+      end: end.toISOString(),
+    },
+  };
+});
 
 const initialState = {
   period: {
@@ -25,12 +32,6 @@ export default createReducer(initialState, {
     state.period = { start: undefined, end: undefined };
   },
   [setPeriod]: (state, action) => {
-    const { start, end } = action.payload;
-    if (start && end && end.isAfter(start)) {
-      state.period = {
-        start: start.toDate(),
-        end: start.toDate(),
-      };
-    }
+    state.period = action.payload;
   },
 });

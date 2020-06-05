@@ -5,7 +5,6 @@ import {
   createSelector,
 } from "@reduxjs/toolkit";
 import { workersService } from "../services";
-import { createAppointment, overlaps } from "../utils/appointments";
 import { fetchAll } from "./combined";
 
 export const fetchWorkers = createAsyncThunk("workers/fetchAll", () =>
@@ -57,42 +56,14 @@ const selectFiltered = (filter) =>
     );
   });
 
-const shapeCalendar = (workers, start, end) =>
-  workers.reduce((calendar, worker) => {
-    if (!worker.appointments) return calendar;
-    const schedule = worker.appointments
-      .map((a) => createAppointment(a))
-      .filter((a) => overlaps(a, start, end))
-      .sort((a, b) => a.start.unix() - b.start.unix());
-    calendar.push({
-      id: worker.id,
-      name: worker.name,
-      schedule,
-    });
-    return calendar;
-  }, []);
-
-const selectCalendar = (state, start, end) => {
-  const workers = adapterSelectors.selectAll(state);
-  return shapeCalendar(workers, start, end);
-};
-
-const selectFilteredCalendar = (state, start, end, filter) => {
-  const workers = selectFiltered(state, filter);
-  return shapeCalendar(workers, start, end);
-};
-
 export const workersSelectors = {
   ...adapterSelectors,
   selectFiltered,
-  selectCalendar,
-  selectFilteredCalendar,
 };
 
 const workersSlice = createSlice({
   name: "workers",
   initialState: workersAdapter.getInitialState(),
-  reducers: {},
   extraReducers: {
     [fetchWorkers.fulfilled]: (state, action) => {
       workersAdapter.setAll(state, action.payload);

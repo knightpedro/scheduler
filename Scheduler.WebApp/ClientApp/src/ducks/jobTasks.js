@@ -10,6 +10,8 @@ import {
   transformMomentsToDates,
 } from "../utils/appointments";
 import moment from "moment";
+import { fetchWorkerConflicts } from "./workerConflicts";
+import { fetchResourceConflicts } from "./resourceConflicts";
 
 export const fetchJobTasks = createAsyncThunk("jobTasks/fetchAll", () =>
   jobTasksService.getAll()
@@ -30,17 +32,24 @@ export const createJobTask = createAsyncThunk(
 
 export const updateJobTask = createAsyncThunk(
   "jobTasks/update",
-  async (values) => {
+  async (values, { dispatch }) => {
     const jobTask = transformMomentsToDates(values);
     await jobTasksService.edit(jobTask);
+    dispatch(fetchResourceConflicts());
+    dispatch(fetchWorkerConflicts());
     return jobTask;
   }
 );
 
-export const deleteJobTask = createAsyncThunk("jobTasks/delete", async (id) => {
-  await jobTasksService.destroy(id);
-  return id;
-});
+export const deleteJobTask = createAsyncThunk(
+  "jobTasks/delete",
+  async (id, { dispatch }) => {
+    await jobTasksService.destroy(id);
+    dispatch(fetchResourceConflicts());
+    dispatch(fetchWorkerConflicts());
+    return id;
+  }
+);
 
 const jobTasksAdapter = createEntityAdapter({
   sortComparer: (a, b) => moment(a.start).unix() - moment(b.start).unix(),

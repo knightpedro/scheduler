@@ -15,6 +15,26 @@ export const edit = (worker) => api.put(apiRoutes.WORKERS + worker.id, worker);
 
 export const destroy = (id) => api.delete(apiRoutes.WORKERS + id);
 
+export const getAllConflicts = (start, end) => {
+  const startQuery = start ? start.format(DATE_FORMAT) : null;
+  const endQuery = end ? end.format(DATE_FORMAT) : null;
+  const queryUrl = queryString.stringifyUrl({
+    url: apiRoutes.WORKERS + "conflicts",
+    query: { start: startQuery, end: endQuery },
+  });
+  api.get(queryUrl).then((res) => res.data);
+};
+
+export const getConflictsByWorkerId = (id, start, end) => {
+  const startQuery = start ? start.format(DATE_FORMAT) : null;
+  const endQuery = end ? end.format(DATE_FORMAT) : null;
+  const queryUrl = queryString.stringifyUrl({
+    url: apiRoutes.WORKERS + id + "/conflicts",
+    query: { start: startQuery, end: endQuery },
+  });
+  api.get(queryUrl).then((res) => res.data);
+};
+
 export const getAllCalenders = (start, end) => {
   const startQuery = start.format(DATE_FORMAT);
   const endQuery = end.format(DATE_FORMAT);

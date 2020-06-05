@@ -3,16 +3,18 @@ import { jobTasksService } from "../services";
 import { fetchAll } from "./combined";
 import { deleteJobTask } from "./jobTasks";
 import { deleteResource } from "./resources";
+import { fetchResourceConflicts } from "./resourceConflicts";
 
 export const assignResources = createAsyncThunk(
   "resourceJobTasks/assignResources",
-  async ({ jobTaskId, resources }, { getState }) => {
+  async ({ jobTaskId, resources }, { dispatch, getState }) => {
     const state = getState();
     const oldResources = state.resourceJobTasks.map((task) => task.resourceId);
     const add = resources.filter((r) => !oldResources.includes(r));
     const remove = oldResources.filter((r) => !resources.includes(r));
     const patch = { add, remove };
     await jobTasksService.patchResources(jobTaskId, patch);
+    dispatch(fetchResourceConflicts());
     return { jobTaskId, add, remove };
   }
 );
