@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Event from "./Event";
+import moment from "moment";
 
 const Row = styled.div`
   position: relative;
@@ -51,7 +52,11 @@ const ScheduleRow = ({ start, end, schedule, header }) => {
         return events;
       const startDiff = appointment.start.diff(start, "days");
       const endDiff = appointment.end.diff(start, "days");
-      const daySpan = appointment.end.diff(appointment.start, "day") + 1;
+      const startSpan = moment.max(start, appointment.start);
+      const daySpan = Math.min(
+        days,
+        appointment.end.diff(startSpan, "day") + 1
+      );
       events.push(
         <Event
           header={header ? true : false}

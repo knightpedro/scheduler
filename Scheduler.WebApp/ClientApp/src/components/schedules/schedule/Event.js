@@ -5,7 +5,7 @@ import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { appointmentTypes } from "../../../constants";
 
-const TIME_FORMAT = "h:mm a";
+const TIME_FORMAT = "h:mm a D/M";
 
 const getEventColour = (type) => {
   switch (type) {
