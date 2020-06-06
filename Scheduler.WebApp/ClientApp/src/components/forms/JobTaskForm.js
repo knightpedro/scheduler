@@ -38,12 +38,14 @@ const JobTaskForm = ({
             name="workers"
             options={workerOptions}
             multiple
+            clearable
           />
           <DropdownField
             label="Plant"
             name="resources"
             options={resourceOptions}
             multiple
+            clearable
           />
           <Form.Group>
             <Form.Button

@@ -9,7 +9,7 @@ const Styles = styled.div`
   left: 50%;
   top: 50%;
   position: fixed;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, -50%);
   z-index: 100;
 `;
 
@@ -25,13 +25,11 @@ const PortalManager = () => {
 
   return (
     <Portal open={true} onClose={handleClose}>
-      <Draggable>
-        <Styles>
-          <Segment raised padded>
-            <Component {...props} />
-          </Segment>
-        </Styles>
-      </Draggable>
+      <Styles>
+        <Segment raised padded>
+          <Component {...props} />
+        </Segment>
+      </Styles>
     </Portal>
   );
 };

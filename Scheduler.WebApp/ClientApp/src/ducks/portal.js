@@ -1,16 +1,25 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { JobTaskFormPortal } from "../components/forms/portal";
+import {
+  JobTaskFormPortal,
+  LeaveFormPortal,
+  OutOfServiceFormPortal,
+  TrainingFormPortal,
+} from "../components/forms/portal";
 
 export const components = {
   jobForm: "jobForm",
   jobTaskForm: "jobTaskForm",
   leaveForm: "leaveForm",
+  outOfServiceForm: "outOfServiceForm",
   trainingForm: "trainingForm",
   workerForm: "workerForm",
 };
 
 const componentLookUp = {
   [components.jobTaskForm]: JobTaskFormPortal,
+  [components.leaveForm]: LeaveFormPortal,
+  [components.outOfServiceForm]: OutOfServiceFormPortal,
+  [components.trainingForm]: TrainingFormPortal,
 };
 
 export const openPortal = createAction("portal/open", (component, props) => {

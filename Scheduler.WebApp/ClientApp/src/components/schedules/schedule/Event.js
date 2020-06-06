@@ -85,7 +85,21 @@ const Event = ({ appointment, ...props }) => {
   const dispatch = useDispatch();
 
   const handleEventClick = () => {
-    dispatch(openPortal(components.jobTaskForm, { id }));
+    let portalComponent;
+    switch (type) {
+      case appointmentTypes.LEAVE:
+        portalComponent = components.leaveForm;
+        break;
+      case appointmentTypes.OUT_OF_SERVICE:
+        portalComponent = components.outOfServiceForm;
+        break;
+      case appointmentTypes.TRAINING:
+        portalComponent = components.trainingForm;
+        break;
+      default:
+        portalComponent = components.jobTaskForm;
+    }
+    dispatch(openPortal(portalComponent, { id }));
   };
 
   return (

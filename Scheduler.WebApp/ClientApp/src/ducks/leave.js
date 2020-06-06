@@ -24,7 +24,7 @@ export const createLeave = createAsyncThunk(
   async (values, { dispatch }) => {
     const leave = transformMomentsToDates(values);
     const id = await leaveService.create(leave);
-    dispatch(fetchConflictsByWorkerId(id));
+    dispatch(fetchConflictsByWorkerId(leave.workerId));
     return { id, ...leave };
   }
 );
@@ -33,17 +33,19 @@ export const updateLeave = createAsyncThunk(
   "leave/update",
   async (values, { dispatch }) => {
     const leave = transformMomentsToDates(values);
-    await leaveService.edit(transformMomentsToDates(leave));
-    dispatch(fetchConflictsByWorkerId(leave.id));
+    await leaveService.edit(leave);
+    dispatch(fetchConflictsByWorkerId(leave.workerId));
     return leave;
   }
 );
 
 export const deleteLeave = createAsyncThunk(
   "leave/delete",
-  async (id, { dispatch }) => {
+  async (id, { dispatch, getState }) => {
+    const state = getState();
+    const leave = leaveSelectors.selectById(state, id);
     await leaveService.destroy(id);
-    dispatch(fetchConflictsByWorkerId(id));
+    dispatch(fetchConflictsByWorkerId(leave.workerId));
     return id;
   }
 );
@@ -67,6 +69,7 @@ export const leaveSelectors = {
       .selectAll(state)
       .filter((l) => l.workerId === workerId)
       .map((l) => transformDatesToMoments(l)),
+  selectLeaveTypes: (state) => state.leave.types,
 };
 
 const leaveSlice = createSlice({
