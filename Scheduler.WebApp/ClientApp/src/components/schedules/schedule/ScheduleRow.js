@@ -48,8 +48,6 @@ const ScheduleRow = ({ start, end, schedule, header }) => {
   const events =
     schedule &&
     schedule.reduce((events, appointment) => {
-      if (appointment.end.isBefore(start) || appointment.start.isAfter(end))
-        return events;
       const startDiff = appointment.start.diff(start, "days");
       const endDiff = appointment.end.diff(start, "days");
       const startSpan = moment.max(start, appointment.start);

@@ -1,38 +1,7 @@
-import { createAsyncThunk, createReducer } from "@reduxjs/toolkit";
-import { trainingService } from "../services";
+import { createReducer } from "@reduxjs/toolkit";
 import { fetchAll } from "./sharedActions";
-import { deleteTraining } from "./training";
+import { deleteTraining, assignWorkersToTraining } from "./training";
 import { deleteWorker } from "./workers";
-import { fetchWorkerConflicts } from "./workerConflicts";
-
-export const assignWorkersToTraining = createAsyncThunk(
-  "training/assignWorkers",
-  async ({ trainingId, workers }, { dispatch, getState }) => {
-    const state = getState();
-    const oldWorkers = selectWorkersByTraining(state, trainingId);
-    const remove = oldWorkers.filter((w) => !workers.includes(w));
-    const add = workers.filter((w) => !oldWorkers.includes(w));
-    const patch = { add, remove };
-    await trainingService.patchWorkers(trainingId, patch);
-    dispatch(fetchWorkerConflicts());
-    return { trainingId, add, remove };
-  }
-);
-
-const selectTrainingByWorker = (state, id) =>
-  state.workerTraining
-    .filter((wt) => wt.workerId === id)
-    .map((wt) => wt.trainingId);
-
-const selectWorkersByTraining = (state, id) =>
-  state.workerTraining
-    .filter((wt) => wt.trainingId === id)
-    .map((wt) => wt.workerId);
-
-export const workerTrainingSelectors = {
-  selectTrainingByWorker,
-  selectWorkersByTraining,
-};
 
 export default createReducer([], {
   [assignWorkersToTraining.fulfilled]: (state, action) => {

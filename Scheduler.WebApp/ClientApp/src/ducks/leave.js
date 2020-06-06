@@ -70,6 +70,8 @@ export const leaveSelectors = {
       .filter((l) => l.workerId === workerId)
       .map((l) => transformDatesToMoments(l)),
   selectLeaveTypes: (state) => state.leave.types,
+  selectLeaveTypeOptions: (state) =>
+    state.leave.types.map((l) => ({ text: l, value: l })),
 };
 
 const leaveSlice = createSlice({

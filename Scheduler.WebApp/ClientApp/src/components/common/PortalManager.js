@@ -25,11 +25,13 @@ const PortalManager = () => {
 
   return (
     <Portal open={true} onClose={handleClose}>
-      <Styles>
-        <Segment raised padded>
-          <Component {...props} />
-        </Segment>
-      </Styles>
+      <Draggable cancel=".field">
+        <Styles>
+          <Segment raised padded>
+            <Component {...props} />
+          </Segment>
+        </Styles>
+      </Draggable>
     </Portal>
   );
 };

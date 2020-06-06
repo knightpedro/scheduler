@@ -30,12 +30,12 @@ namespace Scheduler.WebApp.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] CreateLeaveCommand command)
         {
-            await Mediator.Send(command);
-            return NoContent();
+            var id = await Mediator.Send(command);
+            return CreatedAtAction(nameof(Get), new { id }, new { id });
         }
 
         [HttpPut("{id}")]

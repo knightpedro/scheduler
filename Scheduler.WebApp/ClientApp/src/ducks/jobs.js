@@ -50,6 +50,12 @@ const jobsAdapter = createEntityAdapter({
 
 const adapterSelectors = jobsAdapter.getSelectors((state) => state.jobs);
 
+const selectActive = (state) =>
+  adapterSelectors.selectAll(state).filter((j) => !j.isComplete);
+
+const selectOptions = (state) =>
+  selectActive(state).map((j) => ({ text: j.jobNumber, value: j.id }));
+
 export const jobsSelectors = {
   selectAll: (state) =>
     adapterSelectors
@@ -60,6 +66,8 @@ export const jobsSelectors = {
     if (entity) return transformDatesToMoments(entity);
     return undefined;
   },
+  selectActive,
+  selectOptions,
 };
 
 const jobsSlice = createSlice({

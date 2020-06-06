@@ -7,6 +7,7 @@ import { jobTaskSchema } from "./schemas";
 const initialValues = {
   description: "",
   end: undefined,
+  jobId: undefined,
   resources: [],
   start: undefined,
   workers: [],
@@ -16,6 +17,7 @@ const JobTaskForm = ({
   values,
   handleSubmit,
   handleCancel,
+  jobOptions = [],
   resourceOptions = [],
   workerOptions = [],
 }) => {
@@ -28,6 +30,9 @@ const JobTaskForm = ({
     >
       {(formik) => (
         <Form noValidate onSubmit={formik.handleSubmit} autoComplete="off">
+          {!values && (
+            <DropdownField label="Job" name="jobId" options={jobOptions} />
+          )}
           <TextField label="Description" name="description" />
           <Form.Group>
             <DateTimeField label="Start" name="start" />

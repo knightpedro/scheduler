@@ -7,10 +7,10 @@ import {
   workerJobTaskSelectors,
 } from "./jobTasks";
 import { uiSelectors } from "./ui";
-import { trainingSelectors } from "./training";
-import { workerTrainingSelectors } from "./workerTraining";
+import { trainingSelectors, workerTrainingSelectors } from "./training";
 import { workersSelectors } from "./workers";
 import { workerConflictsSelectors } from "./workerConflicts";
+import { jobsSelectors } from "./jobs";
 
 const selectEventsForWorker = (state, worker, conflicts, start, end) => {
   const jobTaskEvents = workerJobTaskSelectors
@@ -86,10 +86,18 @@ export const selectWorkersCalendar = (state, filter) => {
 export const selectJobTaskWithEntities = (state, id) => {
   if (!id) return undefined;
   const jobTask = jobTaskSelectors.selectById(state, id);
+  const job = jobsSelectors.selectById(state, jobTask.jobId);
   const workers = workerJobTaskSelectors.selectWorkersByJobTask(state, id);
   const resources = resourceJobTaskSelectors.selectResourcesByJobTask(
     state,
     id
   );
-  return { ...jobTask, workers, resources };
+  return { ...jobTask, job, workers, resources };
+};
+
+export const selectTrainingWithWorkers = (state, id) => {
+  if (!id) return undefined;
+  const training = trainingSelectors.selectById(state, id);
+  const workers = workerTrainingSelectors.selectWorkersByTraining(state, id);
+  return { ...training, workers };
 };

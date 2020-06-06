@@ -35,7 +35,7 @@ const TrainingForm = ({
           </Form.Group>
           <DropdownField
             label="Staff attending"
-            name="workerIds"
+            name="workers"
             options={workerOptions}
             multiple
           />

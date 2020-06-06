@@ -27,11 +27,13 @@ const LeaveForm = ({
     >
       {(formik) => (
         <Form noValidate onSubmit={formik.handleSubmit} autoComplete="off">
-          <DropdownField
-            label="Staff member"
-            name="workerId"
-            options={workerOptions}
-          />
+          {!values && (
+            <DropdownField
+              label="Staff member"
+              name="workerId"
+              options={workerOptions}
+            />
+          )}
           <DropdownField
             label="Leave type"
             name="leaveType"

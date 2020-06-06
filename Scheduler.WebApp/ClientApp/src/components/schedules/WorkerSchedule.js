@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectWorkersCalendar } from "../../ducks/globalSelectors";
 import { setPeriod, uiSelectors } from "../../ducks/ui";
-import { Grid, Header, Button, Input } from "semantic-ui-react";
+import { Grid, Header, Button, Input, Dropdown, Menu } from "semantic-ui-react";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
 import { GroupSchedule } from "./schedule";
 import { fetchAll } from "../../ducks/sharedActions";
+import { appointmentTypes } from "../../constants";
+import { openPortal, components } from "../../ducks/portal";
 
 const WorkerSchedule = () => {
   const dispatch = useDispatch();
@@ -18,6 +20,12 @@ const WorkerSchedule = () => {
     period.start
   );
 
+  const createOptions = [
+    { text: "Job task", value: appointmentTypes.JOB_TASK },
+    { text: "Leave", value: appointmentTypes.LEAVE },
+    { text: "Training", value: appointmentTypes.TRAINING },
+  ];
+
   useEffect(() => {
     dispatch(fetchAll());
   }, [dispatch]);
@@ -25,6 +33,16 @@ const WorkerSchedule = () => {
   useEffect(() => {
     dispatch(setPeriod({ start, end }));
   }, [dispatch, start, end]);
+
+  const handleCreate = (_, { value }) => {
+    if (value === appointmentTypes.JOB_TASK) {
+      dispatch(openPortal(components.jobTaskForm));
+    } else if (value === appointmentTypes.LEAVE) {
+      dispatch(openPortal(components.leaveForm));
+    } else if (value === appointmentTypes.TRAINING) {
+      dispatch(openPortal(components.trainingForm));
+    }
+  };
 
   return (
     <Grid stackable padded relaxed="very">
@@ -52,8 +70,16 @@ const WorkerSchedule = () => {
             handlePrevious={previousWeek}
           />
         </Grid.Column>
-        <Grid.Column>
-          <Button basic floated="right" onClick={reset}>
+        <Grid.Column textAlign="right">
+          <Dropdown
+            text="Create"
+            button
+            basic
+            options={createOptions}
+            value=""
+            onChange={handleCreate}
+          />
+          <Button basic onClick={reset}>
             Today
           </Button>
         </Grid.Column>

@@ -1,5 +1,5 @@
-import reducer, { assignWorkers } from "../workerTraining";
-import { deleteTraining } from "../training";
+import reducer from "../workerTraining";
+import { deleteTraining, assignWorkersToTraining } from "../training";
 import { deleteWorker } from "../workers";
 
 describe("workerTraining reducer", () => {
@@ -9,7 +9,7 @@ describe("workerTraining reducer", () => {
   });
 
   it("adds worker training", () => {
-    const action = assignWorkers.fulfilled({
+    const action = assignWorkersToTraining.fulfilled({
       trainingId: 1,
       add: [2],
       remove: [],
@@ -20,7 +20,7 @@ describe("workerTraining reducer", () => {
   });
 
   it("removes worker training", () => {
-    const action = assignWorkers.fulfilled({
+    const action = assignWorkersToTraining.fulfilled({
       trainingId: 1,
       add: [],
       remove: [2],

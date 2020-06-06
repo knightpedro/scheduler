@@ -45,9 +45,13 @@ const selectFiltered = (state, filter) => {
   );
 };
 
+const selectOptions = (state) =>
+  adapterSelectors.selectAll(state).map((w) => ({ text: w.name, value: w.id }));
+
 export const workersSelectors = {
   ...adapterSelectors,
   selectFiltered,
+  selectOptions,
 };
 
 const workersSlice = createSlice({

@@ -46,8 +46,13 @@ const adapterSelectors = resourcesAdapter.getSelectors(
   (state) => state.resources
 );
 
+const selectOptions = (state) => {
+  adapterSelectors.selectAll(state).map((r) => ({ text: r.name, value: r.id }));
+};
+
 export const resourceSelectors = {
   ...adapterSelectors,
+  selectOptions,
 };
 
 const resourcesSlice = createSlice({

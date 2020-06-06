@@ -5,21 +5,21 @@ import JobTaskForm from "../JobTaskForm";
 import { selectJobTaskWithEntities } from "../../../ducks/globalSelectors";
 import { workersSelectors } from "../../../ducks/workers";
 import { resourceSelectors } from "../../../ducks/resources";
-import { Button, Header, Grid } from "semantic-ui-react";
+import { Icon, Header, Grid } from "semantic-ui-react";
 import {
   createJobTask,
   updateJobTask,
   deleteJobTask,
 } from "../../../ducks/jobTasks";
+import { jobsSelectors } from "../../../ducks/jobs";
+import { Link } from "react-router-dom";
 
 const JobTaskFormPortal = ({ id, ...props }) => {
   const dispatch = useDispatch();
   const jobTask = useSelector((state) => selectJobTaskWithEntities(state, id));
-  const workers = useSelector(workersSelectors.selectAll);
-  const resources = useSelector(resourceSelectors.selectAll);
-
-  const workerOptions = workers.map((w) => ({ text: w.name, value: w.id }));
-  const resourceOptions = resources.map((r) => ({ text: r.name, value: r.id }));
+  const workerOptions = useSelector(workersSelectors.selectOptions);
+  const resourceOptions = useSelector(resourceSelectors.selectOptions);
+  const jobOptions = useSelector(jobsSelectors.selectOptions);
 
   const handleCancel = () => {
     dispatch(closePortal());
@@ -45,8 +45,12 @@ const JobTaskFormPortal = ({ id, ...props }) => {
       <Grid.Row columns="equal" verticalAlign="middle">
         <Grid.Column>
           <Header>{id ? "Edit " : "Create "} Task</Header>
+          {jobTask && <Link>Job {jobTask.job.jobNumber}</Link>}
         </Grid.Column>
-        {id && <Button icon="trash" onClick={handleDelete} />}
+        <Grid.Column textAlign="right">
+          {!id && <Link>Jobs</Link>}
+          {id && <Icon link name="trash" onClick={handleDelete} />}
+        </Grid.Column>
       </Grid.Row>
       <Grid.Row columns="equal">
         <Grid.Column>
@@ -54,6 +58,7 @@ const JobTaskFormPortal = ({ id, ...props }) => {
             values={jobTask}
             handleSubmit={handleSubmit}
             handleCancel={handleCancel}
+            jobOptions={jobOptions}
             resourceOptions={resourceOptions}
             workerOptions={workerOptions}
             {...props}
