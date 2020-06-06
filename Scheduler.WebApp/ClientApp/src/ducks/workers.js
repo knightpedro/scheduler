@@ -2,23 +2,12 @@ import {
   createAsyncThunk,
   createEntityAdapter,
   createSlice,
-  createSelector,
 } from "@reduxjs/toolkit";
 import { workersService } from "../services";
-import { fetchAll } from "./combined";
+import { fetchAll } from "./sharedActions";
 
 export const fetchWorkers = createAsyncThunk("workers/fetchAll", () =>
   workersService.getAll()
-);
-
-export const fetchCalendar = createAsyncThunk(
-  "workers/fetchCalendar",
-  ({ start, end }) => workersService.getAllCalenders(start, end)
-);
-
-export const fetchIndividualCalendar = createAsyncThunk(
-  "workers/fetchIndividualCalendar",
-  ({ id, start, end }) => workersService.getIndividualCalendar(id, start, end)
 );
 
 export const createWorker = createAsyncThunk(
@@ -48,13 +37,13 @@ const workersAdapter = createEntityAdapter({
 
 const adapterSelectors = workersAdapter.getSelectors((state) => state.workers);
 
-const selectFiltered = (filter) =>
-  createSelector([adapterSelectors.selectAll], (workers) => {
-    if (!filter) return workers;
-    return workers.filter((w) =>
-      w.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  });
+const selectFiltered = (state, filter) => {
+  const workers = adapterSelectors.selectAll(state);
+  if (!filter) return workers;
+  return workers.filter((w) =>
+    w.name.toLowerCase().includes(filter.toLowerCase())
+  );
+};
 
 export const workersSelectors = {
   ...adapterSelectors,
@@ -67,12 +56,6 @@ const workersSlice = createSlice({
   extraReducers: {
     [fetchWorkers.fulfilled]: (state, action) => {
       workersAdapter.setAll(state, action.payload);
-    },
-    [fetchCalendar.fulfilled]: (state, action) => {
-      workersAdapter.setAll(state, action.payload);
-    },
-    [fetchIndividualCalendar.fulfilled]: (state, action) => {
-      workersAdapter.upsertOne(state, action.payload);
     },
     [createWorker.fulfilled]: (state, action) => {
       workersAdapter.addOne(state, action.payload);

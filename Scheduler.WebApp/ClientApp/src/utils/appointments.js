@@ -2,7 +2,6 @@ import moment from "moment";
 import routes from "../routes";
 import { generatePath } from "react-router-dom";
 import { appointmentTypes } from "../constants";
-import { DATE_FORMAT } from "../api/constants";
 
 export const createAppointment = (appointment) => {
   return {
@@ -67,6 +66,6 @@ export const transformDatesToMoments = (appointment) => ({
 
 export const transformMomentsToDates = (appointment) => ({
   ...appointment,
-  start: appointment.start.format(DATE_FORMAT),
-  end: appointment.end.format(DATE_FORMAT),
+  start: appointment.start.format(),
+  end: appointment.end.format(),
 });

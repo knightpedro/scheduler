@@ -15,8 +15,8 @@ const DropdownField = ({ label, options, ...props }) => {
       search
       options={options}
       onBlur={() => helpers.setTouched(true)}
-      onChange={(_, { value }) => helpers.setValue(value || null)}
-      value={field.value}
+      onChange={(_, { value }) => helpers.setValue(value || "")}
+      value={field.value || ""}
       {...props}
     />
   );

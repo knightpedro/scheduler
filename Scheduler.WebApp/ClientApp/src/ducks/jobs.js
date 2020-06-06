@@ -4,9 +4,8 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { jobsService } from "../services";
-import { fetchAll } from "./combined";
+import { fetchAll } from "./sharedActions";
 import moment from "moment";
-import { DATE_FORMAT } from "../api/constants";
 
 const transformDatesToMoments = (job) => ({
   ...job,
@@ -16,10 +15,8 @@ const transformDatesToMoments = (job) => ({
 
 const transformMomentsToDates = (job) => ({
   ...job,
-  dateReceived: job.dateReceived ? job.dateReceived.format(DATE_FORMAT) : null,
-  dateScheduled: job.dateScheduled
-    ? job.dateScheduled.format(DATE_FORMAT)
-    : null,
+  dateReceived: job.dateReceived ? job.dateReceived.format() : null,
+  dateScheduled: job.dateScheduled ? job.dateScheduled.format() : null,
 });
 
 export const fetchJobs = createAsyncThunk("jobs/fetchAll", () =>

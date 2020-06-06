@@ -11,26 +11,26 @@ export default yup.object({
       if (!(start && value)) return true;
       return moment(value).isAfter(moment(start));
     }),
-  resourceIds: yup
+  resources: yup
     .array()
     .test(
       "workers-or-resources-assigned",
       "At least one staff member or plant item must be assigned to the task",
       function (value) {
-        const { workerIds } = this.parent;
-        if (workerIds.length > 0) return true;
+        const { workers } = this.parent;
+        if (workers.length > 0) return true;
         return value.length > 0;
       }
     ),
   start: yup.date().required("Start is required"),
-  workerIds: yup
+  workers: yup
     .array()
     .test(
       "workers-or-resources-assigned",
       "At least one staff member or plant item must be assigned to the task",
       function (value) {
-        const { resourceIds } = this.parent;
-        if (resourceIds.length > 0) return true;
+        const { resources } = this.parent;
+        if (resources.length > 0) return true;
         return value.length > 0;
       }
     ),

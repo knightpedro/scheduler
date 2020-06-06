@@ -19,21 +19,27 @@ export const destroy = (id) => api.delete(apiRoutes.RESOURCES + id);
 export const getAllConflicts = (start, end) => {
   const startQuery = start ? start.format(DATE_FORMAT) : null;
   const endQuery = end ? end.format(DATE_FORMAT) : null;
-  const queryUrl = queryString.stringifyUrl({
-    url: apiRoutes.RESOURCES + "conflicts",
-    query: { start: startQuery, end: endQuery },
-  });
-  api.get(queryUrl).then((res) => res.data);
+  const queryUrl = queryString.stringifyUrl(
+    {
+      url: apiRoutes.RESOURCES + "conflicts",
+      query: { start: startQuery, end: endQuery },
+    },
+    { skipNull: true }
+  );
+  return api.get(queryUrl).then((res) => res.data);
 };
 
 export const getConflictsByResourceId = (id, start, end) => {
   const startQuery = start ? start.format(DATE_FORMAT) : null;
   const endQuery = end ? end.format(DATE_FORMAT) : null;
-  const queryUrl = queryString.stringifyUrl({
-    url: apiRoutes.RESOURCES + id + "/conflicts",
-    query: { start: startQuery, end: endQuery },
-  });
-  api.get(queryUrl).then((res) => res.data);
+  const queryUrl = queryString.stringifyUrl(
+    {
+      url: apiRoutes.RESOURCES + id + "/conflicts",
+      query: { start: startQuery, end: endQuery },
+    },
+    { skipNull: true }
+  );
+  return api.get(queryUrl).then((res) => res.data);
 };
 
 export const getAllCalenders = (start, end) => {
@@ -45,11 +51,14 @@ export const getAllCalenders = (start, end) => {
 };
 
 export const getIndividualCalendar = (id, start, end) => {
-  const startQuery = start ? start.format(DATE_FORMAT) : start;
-  const endQuery = end ? end.format(DATE_FORMAT) : end;
-  const queryUrl = queryString.stringifyUrl({
-    url: apiRoutes.RESOURCES + id + "/calendar",
-    query: { start: startQuery, end: endQuery },
-  });
+  const startQuery = start ? start.format(DATE_FORMAT) : null;
+  const endQuery = end ? end.format(DATE_FORMAT) : null;
+  const queryUrl = queryString.stringifyUrl(
+    {
+      url: apiRoutes.RESOURCES + id + "/calendar",
+      query: { start: startQuery, end: endQuery },
+    },
+    { skipNull: true }
+  );
   return api.get(queryUrl).then((res) => res.data);
 };

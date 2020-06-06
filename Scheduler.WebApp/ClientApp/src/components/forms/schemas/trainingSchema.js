@@ -13,5 +13,5 @@ export default yup.object({
       if (!(start && value)) return true;
       return moment(value).isAfter(moment(start));
     }),
-  workerIds: yup.array().required("Assign at least one staff member"),
+  workers: yup.array().required("Assign at least one staff member"),
 });

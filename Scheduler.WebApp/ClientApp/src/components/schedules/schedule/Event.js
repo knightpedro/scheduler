@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { openPortal } from "../../../ducks/portal";
+import { openPortal, components } from "../../../ducks/portal";
 import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { appointmentTypes } from "../../../constants";
@@ -85,7 +85,7 @@ const Event = ({ appointment, ...props }) => {
   const dispatch = useDispatch();
 
   const handleEventClick = () => {
-    dispatch(openPortal("test"));
+    dispatch(openPortal(components.jobTaskForm, { id }));
   };
 
   return (

@@ -4,7 +4,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { resourcesService } from "../services";
-import { fetchAll } from "./combined";
+import { fetchAll } from "./sharedActions";
 
 export const fetchResources = createAsyncThunk("resources/fetchAll", () =>
   resourcesService.getAll()
@@ -14,19 +14,19 @@ export const fetchResourceById = createAsyncThunk("resources/fetchOne", (id) =>
   resourcesService.getById(id)
 );
 
-export const createResource = createAsyncThunk(
-  "resources/create",
-  async (values) => {
-    const id = await resourcesService.create(values);
-    return { id, ...values };
-  }
-);
-
 export const updateResource = createAsyncThunk(
   "resources/update",
   async (values) => {
     await resourcesService.edit(values);
     return values;
+  }
+);
+
+export const createResource = createAsyncThunk(
+  "resources/create",
+  async (values) => {
+    const id = await resourcesService.create(values);
+    return { id, ...values };
   }
 );
 
@@ -42,9 +42,13 @@ const resourcesAdapter = createEntityAdapter({
   sortComparer: (a, b) => a.name.localeCompare(b.name),
 });
 
-export const adapterSelectors = resourcesAdapter.getSelectors(
+const adapterSelectors = resourcesAdapter.getSelectors(
   (state) => state.resources
 );
+
+export const resourceSelectors = {
+  ...adapterSelectors,
+};
 
 const resourcesSlice = createSlice({
   name: "resources",

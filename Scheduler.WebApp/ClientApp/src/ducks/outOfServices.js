@@ -4,13 +4,13 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { oosService } from "../services";
-import { fetchAll } from "./combined";
+import { fetchAll } from "./sharedActions";
+import { fetchConflictsByResourceId } from "./resourceConflicts";
 import {
   transformDatesToMoments,
   transformMomentsToDates,
 } from "../utils/appointments";
 import moment from "moment";
-import { fetchConflictsByResourceId } from "./resourceConflicts";
 
 export const fetchOutOfServices = createAsyncThunk(
   "outOfServices/fetchAll",

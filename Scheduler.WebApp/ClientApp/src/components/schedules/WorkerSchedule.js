@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectWorkersCalendar } from "../../ducks/calendar";
-import { setPeriod } from "../../ducks/ui";
+import { selectWorkersCalendar } from "../../ducks/globalSelectors";
+import { setPeriod, uiSelectors } from "../../ducks/ui";
 import { Grid, Header, Button, Input } from "semantic-ui-react";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
 import { GroupSchedule } from "./schedule";
+import { fetchAll } from "../../ducks/sharedActions";
 
 const WorkerSchedule = () => {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState();
+  const calendar = useSelector((state) => selectWorkersCalendar(state, filter));
+  const period = useSelector(uiSelectors.selectPeriod);
 
-  const {
-    start,
-    end,
-    nextWeek,
-    previousWeek,
-    reset,
-    setDate,
-  } = useWeekPicker();
+  const { start, end, nextWeek, previousWeek, reset, setDate } = useWeekPicker(
+    period.start
+  );
 
-  const calendar = useSelector(selectWorkersCalendar);
+  useEffect(() => {
+    dispatch(fetchAll());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(setPeriod({ start, end }));

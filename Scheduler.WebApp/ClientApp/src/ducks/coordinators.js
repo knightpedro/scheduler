@@ -4,7 +4,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { coordinatorsService } from "../services";
-import { fetchAll } from "./combined";
+import { fetchAll } from "./sharedActions";
 
 export const fetchCoordinators = createAsyncThunk("coordinators/fetchAll", () =>
   coordinatorsService.getAll()

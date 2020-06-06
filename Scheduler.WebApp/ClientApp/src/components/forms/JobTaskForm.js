@@ -7,9 +7,9 @@ import { jobTaskSchema } from "./schemas";
 const initialValues = {
   description: "",
   end: undefined,
-  resourceIds: [],
+  resources: [],
   start: undefined,
-  workerIds: [],
+  workers: [],
 };
 
 const JobTaskForm = ({
@@ -35,13 +35,13 @@ const JobTaskForm = ({
           </Form.Group>
           <DropdownField
             label="Staff"
-            name="workerIds"
+            name="workers"
             options={workerOptions}
             multiple
           />
           <DropdownField
             label="Plant"
-            name="resourceIds"
+            name="resources"
             options={resourceOptions}
             multiple
           />

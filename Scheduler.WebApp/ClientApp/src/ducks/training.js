@@ -4,13 +4,13 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { trainingService } from "../services";
-import { fetchAll } from "./combined";
+import { fetchAll } from "./sharedActions";
+import { fetchWorkerConflicts } from "./workerConflicts";
 import {
   transformDatesToMoments,
   transformMomentsToDates,
 } from "../utils/appointments";
 import moment from "moment";
-import { fetchWorkerConflicts } from "./workerConflicts";
 
 export const fetchTraining = createAsyncThunk("training/fetchAll", () =>
   trainingService.getAll()

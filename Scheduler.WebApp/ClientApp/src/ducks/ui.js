@@ -22,8 +22,8 @@ const selectPeriod = (state) => state.ui.period;
 
 export const uiSelectors = {
   selectPeriod: createSelector(selectPeriod, ({ start, end }) => ({
-    start: start ? moment(start) : null,
-    end: end ? moment(end) : null,
+    start: start ? moment(start) : undefined,
+    end: end ? moment(end) : undefined,
   })),
 };
 

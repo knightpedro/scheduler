@@ -3,8 +3,8 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { fetchAll } from "./combined";
 import { resourcesService } from "../services";
+import { fetchAll } from "./sharedActions";
 import { createResource, deleteResource } from "./resources";
 
 export const fetchResourceConflicts = createAsyncThunk(

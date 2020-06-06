@@ -4,13 +4,13 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { leaveService } from "../services";
-import { fetchAll } from "./combined";
+import { fetchAll } from "./sharedActions";
+import { fetchConflictsByWorkerId } from "./workerConflicts";
 import {
   transformDatesToMoments,
   transformMomentsToDates,
 } from "../utils/appointments";
 import moment from "moment";
-import { fetchConflictsByWorkerId } from "./workerConflicts";
 
 export const fetchLeave = createAsyncThunk("leave/fetchAll", () =>
   leaveService.getAll()
@@ -19,7 +19,6 @@ export const fetchLeave = createAsyncThunk("leave/fetchAll", () =>
 export const fetchLeaveById = createAsyncThunk("leave/fetchOne", (id) =>
   leaveService.getById(id)
 );
-
 export const createLeave = createAsyncThunk(
   "leave/create",
   async (values, { dispatch }) => {

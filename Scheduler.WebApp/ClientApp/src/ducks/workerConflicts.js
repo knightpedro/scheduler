@@ -3,9 +3,9 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { fetchAll } from "./combined";
-import { deleteWorker, createWorker } from "./workers";
 import { workersService } from "../services";
+import { fetchAll } from "./sharedActions";
+import { deleteWorker, createWorker } from "./workers";
 import { appointmentTypes } from "../constants";
 
 export const fetchWorkerConflicts = createAsyncThunk(
@@ -24,32 +24,40 @@ const adapterSelectors = workerConflictsAdapter.getSelectors(
   (state) => state.workerConflicts
 );
 
-const selectConflictEventMap = (state) => {
-  const conflicts = adapterSelectors.selectAll(state);
+const shapeConflictsByType = (worker) =>
+  worker.conflicts.reduce(
+    (eventMap, conflict) => {
+      const events = [conflict.eventA, conflict.eventB];
+      events.forEach((e) => {
+        const { id, type } = e;
+        eventMap[type].push(id);
+      });
+      return eventMap;
+    },
+    {
+      [appointmentTypes.JOB_TASK]: [],
+      [appointmentTypes.LEAVE]: [],
+      [appointmentTypes.TRAINING]: [],
+    }
+  );
 
+export const selectConflictMapForWorker = (state, id) => {
+  const worker = adapterSelectors.selectById(state, id);
+  return shapeConflictsByType(worker);
+};
+
+const selectWorkersConflictMap = (state) => {
+  const conflicts = adapterSelectors.selectAll(state);
   return conflicts.reduce((workerMap, worker) => {
-    workerMap[worker.id] = worker.conflicts.reduce(
-      (eventMap, conflict) => {
-        const events = [conflict.eventA, conflict.eventB];
-        events.forEach((e) => {
-          const { id, type } = e;
-          eventMap[type].push(id);
-        });
-        return eventMap;
-      },
-      {
-        [appointmentTypes.JOB_TASK]: [],
-        [appointmentTypes.LEAVE]: [],
-        [appointmentTypes.TRAINING]: [],
-      }
-    );
+    workerMap[worker.id] = shapeConflictsByType(worker);
     return workerMap;
   }, {});
 };
 
 export const workerConflictsSelectors = {
   ...adapterSelectors,
-  selectConflictEventMap,
+  selectConflictMapForWorker,
+  selectWorkersConflictMap,
 };
 
 const workerConflictsSlice = createSlice({

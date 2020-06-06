@@ -9,7 +9,7 @@ const initialValues = {
   end: undefined,
   location: "",
   start: undefined,
-  workerIds: [],
+  workers: [],
 };
 
 const TrainingForm = ({

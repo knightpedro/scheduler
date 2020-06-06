@@ -3,6 +3,7 @@ import { useField } from "formik";
 import { Form } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import styled from "styled-components";
+import moment from "moment";
 
 const Styles = styled.div``;
 
@@ -20,8 +21,8 @@ const DateField = ({ label, ...props }) => {
         todayButton="Today"
         customInput={<DateInput label={label} error={error} />}
         dateFormat="d/M/yy"
-        selected={field.value || ""}
-        onChange={(date) => helpers.setValue(date || "")}
+        selected={field.value ? field.value.toDate() : ""}
+        onChange={(date) => helpers.setValue(moment(date) || "")}
         {...props}
       />
     </Styles>

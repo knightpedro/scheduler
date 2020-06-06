@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closePortal } from "../../ducks/portal";
+import { closePortal, portalSelectors } from "../../ducks/portal";
 import { Portal, Segment } from "semantic-ui-react";
 import Draggable from "react-draggable";
 import styled from "styled-components";
@@ -15,9 +15,11 @@ const Styles = styled.div`
 
 const PortalManager = () => {
   const dispatch = useDispatch();
-  const content = useSelector((state) => state.portal);
+  const portal = useSelector(portalSelectors.selectComponent);
 
-  if (!content) return null;
+  if (!portal) return null;
+
+  const { Component, props } = portal;
 
   const handleClose = () => dispatch(closePortal());
 
@@ -26,7 +28,7 @@ const PortalManager = () => {
       <Draggable>
         <Styles>
           <Segment raised padded>
-            {content}
+            <Component {...props} />
           </Segment>
         </Styles>
       </Draggable>
