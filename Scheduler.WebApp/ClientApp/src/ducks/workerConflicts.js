@@ -41,7 +41,7 @@ const shapeConflictsByType = (worker) =>
     }
   );
 
-export const selectConflictMapForWorker = (state, id) => {
+const selectConflictMapForWorker = (state, id) => {
   const worker = adapterSelectors.selectById(state, id);
   return shapeConflictsByType(worker);
 };

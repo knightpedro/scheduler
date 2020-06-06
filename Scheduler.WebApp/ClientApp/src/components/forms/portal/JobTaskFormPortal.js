@@ -4,7 +4,7 @@ import { closePortal } from "../../../ducks/portal";
 import JobTaskForm from "../JobTaskForm";
 import { selectJobTaskWithEntities } from "../../../ducks/globalSelectors";
 import { workersSelectors } from "../../../ducks/workers";
-import { resourceSelectors } from "../../../ducks/resources";
+import { resourcesSelectors } from "../../../ducks/resources";
 import { Icon, Header, Grid } from "semantic-ui-react";
 import {
   createJobTask,
@@ -18,7 +18,7 @@ const JobTaskFormPortal = ({ id, ...props }) => {
   const dispatch = useDispatch();
   const jobTask = useSelector((state) => selectJobTaskWithEntities(state, id));
   const workerOptions = useSelector(workersSelectors.selectOptions);
-  const resourceOptions = useSelector(resourceSelectors.selectOptions);
+  const resourceOptions = useSelector(resourcesSelectors.selectOptions);
   const jobOptions = useSelector(jobsSelectors.selectOptions);
 
   const handleCancel = () => {

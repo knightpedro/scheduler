@@ -11,6 +11,7 @@ import {
   transformMomentsToDates,
 } from "../utils/appointments";
 import moment from "moment";
+import { appointmentTypes } from "../constants";
 
 export const fetchLeave = createAsyncThunk("leave/fetchAll", () =>
   leaveService.getAll()
@@ -56,22 +57,43 @@ const leaveAdapter = createEntityAdapter({
 
 const adapterSelectors = leaveAdapter.getSelectors((state) => state.leave);
 
+const selectAll = (state) =>
+  adapterSelectors.selectAll(state).map((l) => transformDatesToMoments(l));
+
+const selectById = (state, id) => {
+  const entity = adapterSelectors.selectById(state, id);
+  if (entity) return transformDatesToMoments(entity);
+  return undefined;
+};
+
+const selectByWorker = (state, workerId) =>
+  adapterSelectors
+    .selectAll(state)
+    .filter((l) => l.workerId === workerId)
+    .map((l) => transformDatesToMoments(l));
+
+const selectEventsForWorker = (state, workerId, conflicts) =>
+  selectByWorker(state, workerId).map((l) => ({
+    id: l.id,
+    type: appointmentTypes.LEAVE,
+    description: l.leaveType + " Leave",
+    start: l.start,
+    end: l.end,
+    isConflicting: conflicts[appointmentTypes.LEAVE].includes(l.id),
+  }));
+
+const selectLeaveTypes = (state) => state.leave.types;
+
+const selectLeaveTypeOptions = (state) =>
+  selectLeaveTypes(state).map((l) => ({ text: l, value: l }));
+
 export const leaveSelectors = {
-  selectAll: (state) =>
-    adapterSelectors.selectAll(state).map((l) => transformDatesToMoments(l)),
-  selectById: (state, id) => {
-    const entity = adapterSelectors.selectById(state, id);
-    if (entity) return transformDatesToMoments(entity);
-    return undefined;
-  },
-  selectByWorker: (state, workerId) =>
-    adapterSelectors
-      .selectAll(state)
-      .filter((l) => l.workerId === workerId)
-      .map((l) => transformDatesToMoments(l)),
-  selectLeaveTypes: (state) => state.leave.types,
-  selectLeaveTypeOptions: (state) =>
-    state.leave.types.map((l) => ({ text: l, value: l })),
+  selectAll,
+  selectById,
+  selectByWorker,
+  selectEventsForWorker,
+  selectLeaveTypes,
+  selectLeaveTypeOptions,
 };
 
 const leaveSlice = createSlice({

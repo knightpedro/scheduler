@@ -12,6 +12,7 @@ import moment from "moment";
 import { fetchAll } from "./sharedActions";
 import { fetchResourceConflicts } from "./resourceConflicts";
 import { fetchWorkerConflicts } from "./workerConflicts";
+import { appointmentTypes } from "../constants";
 
 export const fetchJobTasks = createAsyncThunk("jobTasks/fetchAll", () =>
   jobTasksService.getAll()
@@ -82,6 +83,37 @@ export const assignWorkersToJobTask = createAsyncThunk(
   }
 );
 
+const jobTasksAdapter = createEntityAdapter({
+  sortComparer: (a, b) => moment(a.start).unix() - moment(b.start).unix(),
+});
+
+const adapterSelectors = jobTasksAdapter.getSelectors(
+  (state) => state.jobTasks
+);
+
+const selectAll = (state) =>
+  adapterSelectors.selectAll(state).map((j) => transformDatesToMoments(j));
+
+const selectById = (state, id) => {
+  const entity = adapterSelectors.selectById(state, id);
+  if (entity) return transformDatesToMoments(entity);
+  return undefined;
+};
+
+export const jobTaskSelectors = {
+  selectAll,
+  selectById,
+};
+
+const shapeJobTaskToEvent = (jobTask, conflicts) => ({
+  id: jobTask.id,
+  type: appointmentTypes.JOB_TASK,
+  description: jobTask.description,
+  start: jobTask.start,
+  end: jobTask.end,
+  isConflicting: conflicts[appointmentTypes.JOB_TASK].includes(jobTask.id),
+});
+
 const selectJobTasksByResource = (state, id) =>
   state.resourceJobTasks
     .filter((j) => j.resourceId === id)
@@ -92,9 +124,15 @@ const selectResourcesByJobTask = (state, id) =>
     .filter((j) => j.jobTaskId === id)
     .map((j) => j.resourceId);
 
+const selectEventsForResource = (state, resourceId, conflicts) =>
+  selectJobTasksByResource(state, resourceId)
+    .map((jobTaskId) => selectById(state, jobTaskId))
+    .map((j) => shapeJobTaskToEvent(j, conflicts));
+
 export const resourceJobTaskSelectors = {
   selectJobTasksByResource,
   selectResourcesByJobTask,
+  selectEventsForResource,
 };
 
 const selectJobTasksByWorker = (state, id) =>
@@ -103,27 +141,15 @@ const selectJobTasksByWorker = (state, id) =>
 const selectWorkersByJobTask = (state, id) =>
   state.workerJobTasks.filter((j) => j.jobTaskId === id).map((j) => j.workerId);
 
+const selectEventsForWorker = (state, workerId, conflicts) =>
+  selectJobTasksByWorker(state, workerId)
+    .map((jobTaskId) => selectById(state, jobTaskId))
+    .map((j) => shapeJobTaskToEvent(j, conflicts));
+
 export const workerJobTaskSelectors = {
   selectJobTasksByWorker,
+  selectEventsForWorker,
   selectWorkersByJobTask,
-};
-
-const jobTasksAdapter = createEntityAdapter({
-  sortComparer: (a, b) => moment(a.start).unix() - moment(b.start).unix(),
-});
-
-const adapterSelectors = jobTasksAdapter.getSelectors(
-  (state) => state.jobTasks
-);
-
-export const jobTaskSelectors = {
-  selectAll: (state) =>
-    adapterSelectors.selectAll(state).map((j) => transformDatesToMoments(j)),
-  selectById: (state, id) => {
-    const entity = adapterSelectors.selectById(state, id);
-    if (entity) return transformDatesToMoments(entity);
-    return undefined;
-  },
 };
 
 const jobTasksSlice = createSlice({

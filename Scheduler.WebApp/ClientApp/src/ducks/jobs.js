@@ -54,7 +54,10 @@ const selectActive = (state) =>
   adapterSelectors.selectAll(state).filter((j) => !j.isComplete);
 
 const selectOptions = (state) =>
-  selectActive(state).map((j) => ({ text: j.jobNumber, value: j.id }));
+  selectActive(state).map((j) => ({
+    text: `${j.jobNumber} - ${j.description}`,
+    value: j.id,
+  }));
 
 export const jobsSelectors = {
   selectAll: (state) =>

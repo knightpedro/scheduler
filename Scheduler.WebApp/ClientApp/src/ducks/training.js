@@ -11,6 +11,7 @@ import {
   transformMomentsToDates,
 } from "../utils/appointments";
 import moment from "moment";
+import { appointmentTypes } from "../constants";
 
 export const fetchTraining = createAsyncThunk("training/fetchAll", () =>
   trainingService.getAll()
@@ -73,14 +74,18 @@ const adapterSelectors = trainingAdapter.getSelectors(
   (state) => state.training
 );
 
+const selectAll = (state) =>
+  adapterSelectors.selectAll(state).map((t) => transformDatesToMoments(t));
+
+const selectById = (state, id) => {
+  const entity = adapterSelectors.selectById(state, id);
+  if (entity) return transformDatesToMoments(entity);
+  return undefined;
+};
+
 export const trainingSelectors = {
-  selectAll: (state) =>
-    adapterSelectors.selectAll(state).map((t) => transformDatesToMoments(t)),
-  selectById: (state, id) => {
-    const entity = adapterSelectors.selectById(state, id);
-    if (entity) return transformDatesToMoments(entity);
-    return undefined;
-  },
+  selectAll,
+  selectById,
 };
 
 const selectTrainingByWorker = (state, id) =>
@@ -93,8 +98,21 @@ const selectWorkersByTraining = (state, id) =>
     .filter((wt) => wt.trainingId === id)
     .map((wt) => wt.workerId);
 
+const selectEventsForWorker = (state, workerId, conflicts) =>
+  selectTrainingByWorker(state, workerId)
+    .map((trainingId) => selectById(state, trainingId))
+    .map((t) => ({
+      id: t.id,
+      type: appointmentTypes.TRAINING,
+      description: t.description,
+      start: t.start,
+      end: t.end,
+      isConflicting: conflicts[appointmentTypes.TRAINING].includes(t.id),
+    }));
+
 export const workerTrainingSelectors = {
   selectTrainingByWorker,
+  selectEventsForWorker,
   selectWorkersByTraining,
 };
 

@@ -1,4 +1,3 @@
-import { appointmentTypes } from "../constants";
 import { overlaps } from "../utils/appointments";
 import { leaveSelectors } from "./leave";
 import {
@@ -11,49 +10,61 @@ import { trainingSelectors, workerTrainingSelectors } from "./training";
 import { workersSelectors } from "./workers";
 import { workerConflictsSelectors } from "./workerConflicts";
 import { jobsSelectors } from "./jobs";
+import { outOfServiceSelectors } from "./outOfServices";
+import { resourcesSelectors } from "./resources";
+import { resourceConflictsSelectors } from "./resourceConflicts";
 
-const selectEventsForWorker = (state, worker, conflicts, start, end) => {
-  const jobTaskEvents = workerJobTaskSelectors
-    .selectJobTasksByWorker(state, worker.id)
-    .map((jobTaskId) => jobTaskSelectors.selectById(state, jobTaskId))
-    .map((j) => ({
-      id: j.id,
-      type: appointmentTypes.JOB_TASK,
-      description: j.description,
-      start: j.start,
-      end: j.end,
-      isConflicting: conflicts[appointmentTypes.JOB_TASK].includes(j.id),
-    }));
-
-  const leaveEvents = leaveSelectors
-    .selectByWorker(state, worker.id)
-    .map((l) => ({
-      id: l.id,
-      type: appointmentTypes.LEAVE,
-      description: l.leaveType + " Leave",
-      start: l.start,
-      end: l.end,
-      isConflicting: conflicts[appointmentTypes.LEAVE].includes(l.id),
-    }));
-
-  const trainingEvents = workerTrainingSelectors
-    .selectTrainingByWorker(state, worker.id)
-    .map((trainingId) => trainingSelectors.selectById(state, trainingId))
-    .map((t) => ({
-      id: t.id,
-      type: appointmentTypes.TRAINING,
-      description: t.description,
-      start: t.start,
-      end: t.end,
-      isConflicting: conflicts[appointmentTypes.TRAINING].includes(t.id),
-    }));
-
-  const events = [...jobTaskEvents, ...leaveEvents, ...trainingEvents];
-  const filteredEvents = events.filter((e) => {
+const filterEvents = (events, start, end) =>
+  events.filter((e) => {
     if (!(start && end)) return true;
     return overlaps(e, start, end);
   });
+
+const selectEventsForResource = (state, resource, conflicts, start, end) => {
+  const jobTaskEvents = resourceJobTaskSelectors.selectEventsForResource(
+    state,
+    resource.id,
+    conflicts
+  );
+  const outOfServiceEvents = outOfServiceSelectors.selectEventsForResource(
+    state,
+    resource.id,
+    conflicts
+  );
+  const events = [...jobTaskEvents, ...outOfServiceEvents];
+  const filteredEvents = filterEvents(events, start, end);
+  return { ...resource, schedule: filteredEvents };
+};
+
+const selectEventsForWorker = (state, worker, conflicts, start, end) => {
+  const jobTaskEvents = workerJobTaskSelectors.selectEventsForWorker(
+    state,
+    worker.id,
+    conflicts
+  );
+  const leaveEvents = leaveSelectors.selectEventsForWorker(
+    state,
+    worker.id,
+    conflicts
+  );
+  const trainingEvents = workerTrainingSelectors.selectEventsForWorker(
+    state,
+    worker.id,
+    conflicts
+  );
+  const events = [...jobTaskEvents, ...leaveEvents, ...trainingEvents];
+  const filteredEvents = filterEvents(events, start, end);
   return { ...worker, schedule: filteredEvents };
+};
+
+export const selectCalendarForResource = (state, id) => {
+  const resource = resourcesSelectors.selectById(state, id);
+  const conflicts = resourceConflictsSelectors.selectConflictMapForResource(
+    state,
+    id
+  );
+  const { start, end } = uiSelectors.selectPeriod(state);
+  return selectEventsForResource(state, resource, conflicts, start, end);
 };
 
 export const selectCalendarForWorker = (state, id) => {
@@ -64,6 +75,25 @@ export const selectCalendarForWorker = (state, id) => {
   );
   const { start, end } = uiSelectors.selectPeriod(state);
   return selectEventsForWorker(state, worker, conflicts, start, end);
+};
+
+export const selectResourcesCalendar = (state, filter) => {
+  let resources;
+  if (filter) {
+    resources = resourcesSelectors.selectFiltered(state, filter);
+  } else {
+    resources = resourcesSelectors.selectAll(state);
+  }
+
+  const conflictsMap = resourceConflictsSelectors.selectResourcesConflictMap(
+    state
+  );
+  const { start, end } = uiSelectors.selectPeriod(state);
+
+  return resources.map((resource) => {
+    const conflicts = conflictsMap[resource.id];
+    return selectEventsForResource(state, resource, conflicts, start, end);
+  });
 };
 
 export const selectWorkersCalendar = (state, filter) => {

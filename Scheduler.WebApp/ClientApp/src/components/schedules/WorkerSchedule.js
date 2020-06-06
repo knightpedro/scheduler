@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectWorkersCalendar } from "../../ducks/globalSelectors";
 import { setPeriod, uiSelectors } from "../../ducks/ui";
-import { Grid, Header, Button, Input, Dropdown, Menu } from "semantic-ui-react";
+import { Grid, Header, Button, Input, Dropdown } from "semantic-ui-react";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
 import { GroupSchedule } from "./schedule";

@@ -46,12 +46,20 @@ const adapterSelectors = resourcesAdapter.getSelectors(
   (state) => state.resources
 );
 
-const selectOptions = (state) => {
-  adapterSelectors.selectAll(state).map((r) => ({ text: r.name, value: r.id }));
+const selectFiltered = (state, filter) => {
+  const resources = adapterSelectors.selectAll(state);
+  if (!filter) return resources;
+  return resources.filter((r) =>
+    r.name.toLowerCase().includes(filter.toLowerCase())
+  );
 };
 
-export const resourceSelectors = {
+const selectOptions = (state) =>
+  adapterSelectors.selectAll(state).map((r) => ({ text: r.name, value: r.id }));
+
+export const resourcesSelectors = {
   ...adapterSelectors,
+  selectFiltered,
   selectOptions,
 };
 
