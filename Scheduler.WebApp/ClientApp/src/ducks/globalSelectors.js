@@ -57,6 +57,7 @@ const selectEventsForWorker = (state, worker, conflicts, start, end) => {
 
 export const selectCalendarForResource = (state, id) => {
   const resource = resourcesSelectors.selectById(state, id);
+  if (!resource) return;
   const conflicts = resourceConflictsSelectors.selectConflictMapForResource(
     state,
     id
@@ -67,6 +68,7 @@ export const selectCalendarForResource = (state, id) => {
 
 export const selectCalendarForWorker = (state, id) => {
   const worker = workersSelectors.selectById(state, id);
+  if (!worker) return;
   const conflicts = workerConflictsSelectors.selectConflictMapForWorker(
     state,
     id
@@ -112,8 +114,8 @@ export const selectWorkersCalendar = (state, filter) => {
 };
 
 export const selectJobTaskWithEntities = (state, id) => {
-  if (!id) return undefined;
   const jobTask = jobTaskSelectors.selectById(state, id);
+  if (!jobTask) return;
   const workers = workerJobTaskSelectors.selectWorkersByJobTask(state, id);
   const resources = resourceJobTaskSelectors.selectResourcesByJobTask(
     state,
@@ -123,8 +125,8 @@ export const selectJobTaskWithEntities = (state, id) => {
 };
 
 export const selectTrainingWithWorkers = (state, id) => {
-  if (!id) return undefined;
   const training = trainingSelectors.selectById(state, id);
+  if (!training) return;
   const workers = workerTrainingSelectors.selectWorkersByTraining(state, id);
   return { ...training, workers };
 };

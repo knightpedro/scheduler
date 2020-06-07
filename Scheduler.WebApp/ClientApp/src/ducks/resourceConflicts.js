@@ -24,21 +24,22 @@ const adapterSelectors = resourceConflictsAdapter.getSelectors(
   (state) => state.resourceConflicts
 );
 
-const shapeConflictsByType = (resource) =>
-  resource.conflicts.reduce(
-    (eventMap, conflict) => {
-      const events = [conflict.eventA, conflict.eventB];
-      events.forEach((e) => {
-        const { id, type } = e;
-        eventMap[type].push(id);
-      });
-      return eventMap;
-    },
-    {
-      [appointmentTypes.JOB_TASK]: [],
-      [appointmentTypes.OUT_OF_SERVICE]: [],
-    }
-  );
+const conflictMapTemplate = {
+  [appointmentTypes.JOB_TASK]: [],
+  [appointmentTypes.OUT_OF_SERVICE]: [],
+};
+
+const shapeConflictsByType = (resource) => {
+  if (!resource) return conflictMapTemplate;
+  return resource.conflicts.reduce((eventMap, conflict) => {
+    const events = [conflict.eventA, conflict.eventB];
+    events.forEach((e) => {
+      const { id, type } = e;
+      eventMap[type].push(id);
+    });
+    return eventMap;
+  }, conflictMapTemplate);
+};
 
 const selectConflictMapForResource = (state, id) => {
   const resource = adapterSelectors.selectById(id);

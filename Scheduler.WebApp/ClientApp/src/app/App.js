@@ -13,13 +13,14 @@ import { ErrorMessages, MainMenu, PortalManager } from "../components/common";
 import Schedules from "../components/schedules";
 import Workers from "../components/workers";
 import PageNotFound from "../components/pageNotFound";
-import { Grid } from "semantic-ui-react";
+import { Grid, Divider } from "semantic-ui-react";
 
 function App() {
   return (
     <Router>
       <PortalManager />
       <MainMenu />
+      <Divider hidden />
       <Grid container>
         <Grid.Row columns="equal">
           <Grid.Column>

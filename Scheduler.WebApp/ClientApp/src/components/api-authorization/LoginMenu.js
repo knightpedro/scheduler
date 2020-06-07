@@ -54,7 +54,7 @@ export class LoginMenu extends Component {
     return (
       <>
         <Menu.Item as={Link} to={profilePath}>
-          <Icon name="user circle" size="large" />
+          <Icon name="user circle" />
           {userName}
         </Menu.Item>
         <Menu.Item as={Link} to={logoutPath}>

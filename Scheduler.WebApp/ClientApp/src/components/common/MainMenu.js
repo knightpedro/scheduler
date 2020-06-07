@@ -7,12 +7,17 @@ import routes from "../../routes";
 import { useActiveRoute } from "../../utils/hooks";
 import { anyLoadingSelector } from "../../ducks/loading";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
+
+const LoadingStyles = styled.div`
+  height: 1rem;
+`;
 
 const MainMenu = () => {
   const loading = useSelector(anyLoadingSelector);
   return (
     <>
-      <Menu stackable attached={loading ? "top" : undefined}>
+      <Menu stackable borderless attached="top">
         <Menu.Item
           as={Dropdown}
           text="Planner"
@@ -73,13 +78,15 @@ const MainMenu = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Icon name="github" size="large" />
-            Source
+            <Icon name="github" />
+            GitHub
           </Menu.Item>
           <LoginMenu />
         </Menu.Menu>
       </Menu>
-      {loading && <LoadingIndicator attached="bottom" />}
+      <LoadingStyles>
+        {loading && <LoadingIndicator attached="bottom" />}
+      </LoadingStyles>
     </>
   );
 };
