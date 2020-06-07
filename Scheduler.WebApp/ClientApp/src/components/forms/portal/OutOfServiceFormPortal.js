@@ -45,7 +45,9 @@ const OutOfServiceFormPortal = ({ id }) => {
         <Grid.Column>
           <Header>{id ? "Edit " : "Add "}Out Of Service</Header>
         </Grid.Column>
-        {id && <Icon link name="trash" onClick={handleDelete} />}
+        <Grid.Column textAlign="right">
+          {id && <Icon link name="trash" onClick={handleDelete} />}
+        </Grid.Column>
       </Grid.Row>
       <Grid.Row columns="equal">
         <Grid.Column>

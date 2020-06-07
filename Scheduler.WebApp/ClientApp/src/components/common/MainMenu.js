@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Menu, Dropdown } from "semantic-ui-react";
+import { Menu, Dropdown, Icon } from "semantic-ui-react";
 import LoadingIndicator from "./LoadingIndicator";
 import { LoginMenu } from "../api-authorization/LoginMenu";
 import routes from "../../routes";
@@ -68,11 +68,13 @@ const MainMenu = () => {
         </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item
-            as={Link}
-            to={routes.about}
-            active={useActiveRoute(routes.about)}
+            as="a"
+            href="https://github.com/knightpedro/scheduler"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            About
+            <Icon name="github" size="large" />
+            Source
           </Menu.Item>
           <LoginMenu />
         </Menu.Menu>

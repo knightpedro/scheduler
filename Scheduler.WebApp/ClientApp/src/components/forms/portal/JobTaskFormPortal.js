@@ -47,7 +47,7 @@ const JobTaskFormPortal = ({ id }) => {
     <Grid>
       <Grid.Row columns="equal" verticalAlign="middle">
         <Grid.Column>
-          <Header>{id ? "Edit " : "Create "} Task</Header>
+          <Header>{id ? "Edit " : "Add "} Task</Header>
           {job && <Link>Job {job.jobNumber}</Link>}
         </Grid.Column>
         <Grid.Column textAlign="right">
