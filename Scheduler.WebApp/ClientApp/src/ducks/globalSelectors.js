@@ -1,4 +1,3 @@
-import { overlaps } from "../utils/appointments";
 import { leaveSelectors } from "./leave";
 import {
   jobTaskSelectors,
@@ -16,7 +15,7 @@ import { resourceConflictsSelectors } from "./resourceConflicts";
 const filterEvents = (events, start, end) =>
   events.filter((e) => {
     if (!(start && end)) return true;
-    return overlaps(e, start, end);
+    return e.start.isSameOrBefore(end) && e.end.isSameOrAfter(start);
   });
 
 const selectEventsForResource = (state, resource, conflicts, start, end) => {

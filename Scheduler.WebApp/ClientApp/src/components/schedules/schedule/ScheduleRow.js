@@ -50,7 +50,10 @@ const ScheduleRow = ({ start, end, schedule, header }) => {
     schedule.reduce((events, appointment) => {
       const startDiff = appointment.start.diff(start, "days");
       const endDiff = appointment.end.diff(start, "days");
-      const startSpan = moment.max(start, appointment.start);
+      const startSpan = moment
+        .max(start, appointment.start)
+        .clone()
+        .startOf("day");
       const daySpan = Math.min(
         days,
         appointment.end.diff(startSpan, "day") + 1
