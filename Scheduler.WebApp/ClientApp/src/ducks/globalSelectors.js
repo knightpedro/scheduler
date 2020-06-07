@@ -9,7 +9,6 @@ import { uiSelectors } from "./ui";
 import { trainingSelectors, workerTrainingSelectors } from "./training";
 import { workersSelectors } from "./workers";
 import { workerConflictsSelectors } from "./workerConflicts";
-import { jobsSelectors } from "./jobs";
 import { outOfServiceSelectors } from "./outOfServices";
 import { resourcesSelectors } from "./resources";
 import { resourceConflictsSelectors } from "./resourceConflicts";
@@ -116,13 +115,12 @@ export const selectWorkersCalendar = (state, filter) => {
 export const selectJobTaskWithEntities = (state, id) => {
   if (!id) return undefined;
   const jobTask = jobTaskSelectors.selectById(state, id);
-  const job = jobsSelectors.selectById(state, jobTask.jobId);
   const workers = workerJobTaskSelectors.selectWorkersByJobTask(state, id);
   const resources = resourceJobTaskSelectors.selectResourcesByJobTask(
     state,
     id
   );
-  return { ...jobTask, job, workers, resources };
+  return { ...jobTask, workers, resources };
 };
 
 export const selectTrainingWithWorkers = (state, id) => {

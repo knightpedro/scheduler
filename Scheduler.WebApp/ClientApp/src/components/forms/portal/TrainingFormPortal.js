@@ -11,7 +11,7 @@ import { Grid, Header, Icon } from "semantic-ui-react";
 import { workersSelectors } from "../../../ducks/workers";
 import { selectTrainingWithWorkers } from "../../../ducks/globalSelectors";
 
-const TrainingFormPortal = ({ id, ...props }) => {
+const TrainingFormPortal = ({ id }) => {
   const dispatch = useDispatch();
   const training = useSelector((state) => selectTrainingWithWorkers(state, id));
   const workerOptions = useSelector(workersSelectors.selectOptions);
@@ -49,7 +49,6 @@ const TrainingFormPortal = ({ id, ...props }) => {
             workerOptions={workerOptions}
             handleCancel={handleCancel}
             handleSubmit={handleSubmit}
-            {...props}
           />
         </Grid.Column>
       </Grid.Row>

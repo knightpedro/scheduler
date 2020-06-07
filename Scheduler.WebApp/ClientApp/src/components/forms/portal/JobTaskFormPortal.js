@@ -14,9 +14,12 @@ import {
 import { jobsSelectors } from "../../../ducks/jobs";
 import { Link } from "react-router-dom";
 
-const JobTaskFormPortal = ({ id, ...props }) => {
+const JobTaskFormPortal = ({ id }) => {
   const dispatch = useDispatch();
   const jobTask = useSelector((state) => selectJobTaskWithEntities(state, id));
+  const job = useSelector((state) =>
+    jobsSelectors.selectById(state, jobTask ? jobTask.jobId : undefined)
+  );
   const workerOptions = useSelector(workersSelectors.selectOptions);
   const resourceOptions = useSelector(resourcesSelectors.selectOptions);
   const jobOptions = useSelector(jobsSelectors.selectOptions);
@@ -45,7 +48,7 @@ const JobTaskFormPortal = ({ id, ...props }) => {
       <Grid.Row columns="equal" verticalAlign="middle">
         <Grid.Column>
           <Header>{id ? "Edit " : "Create "} Task</Header>
-          {jobTask && <Link>Job {jobTask.job.jobNumber}</Link>}
+          {job && <Link>Job {job.jobNumber}</Link>}
         </Grid.Column>
         <Grid.Column textAlign="right">
           {!id && <Link>Jobs</Link>}
@@ -61,7 +64,6 @@ const JobTaskFormPortal = ({ id, ...props }) => {
             jobOptions={jobOptions}
             resourceOptions={resourceOptions}
             workerOptions={workerOptions}
-            {...props}
           />
         </Grid.Column>
       </Grid.Row>

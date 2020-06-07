@@ -13,12 +13,25 @@ const MainMenu = () => {
   return (
     <>
       <Menu stackable attached={loading ? "top" : undefined}>
-        <Menu.Item as={Dropdown} text="Planner" className="link item">
+        <Menu.Item
+          as={Dropdown}
+          text="Planner"
+          className="link item"
+          active={useActiveRoute(routes.schedules.base)}
+        >
           <Dropdown.Menu>
-            <Dropdown.Item as={Link} to={routes.schedules.workers}>
+            <Dropdown.Item
+              as={Link}
+              to={routes.schedules.workers}
+              active={useActiveRoute(routes.schedules.workers)}
+            >
               Staff
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to={routes.schedules.resources}>
+            <Dropdown.Item
+              as={Link}
+              to={routes.schedules.resources}
+              active={useActiveRoute(routes.schedules.resources)}
+            >
               Plant
             </Dropdown.Item>
           </Dropdown.Menu>

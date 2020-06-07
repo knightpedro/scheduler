@@ -11,7 +11,7 @@ import {
 } from "../../../ducks/leave";
 import { workersSelectors } from "../../../ducks/workers";
 
-const LeaveFormPortal = ({ id, ...props }) => {
+const LeaveFormPortal = ({ id }) => {
   const dispatch = useDispatch();
   const leave = useSelector((state) => leaveSelectors.selectById(state, id));
   const leaveTypeOptions = useSelector(leaveSelectors.selectLeaveTypeOptions);
@@ -51,7 +51,6 @@ const LeaveFormPortal = ({ id, ...props }) => {
             workerOptions={workerOptions}
             handleCancel={handleCancel}
             handleSubmit={handleSubmit}
-            {...props}
           />
         </Grid.Column>
       </Grid.Row>

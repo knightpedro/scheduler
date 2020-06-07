@@ -28,7 +28,7 @@ export const createOutOfService = createAsyncThunk(
   async (values, { dispatch }) => {
     const oos = transformMomentsToDates(values);
     const id = await oosService.create(oos);
-    dispatch(fetchConflictsByResourceId(id));
+    dispatch(fetchConflictsByResourceId(oos.resourceId));
     return { id, ...oos };
   }
 );
@@ -37,17 +37,19 @@ export const updateOutOfService = createAsyncThunk(
   "outOfServices/update",
   async (values, { dispatch }) => {
     const oos = transformMomentsToDates(values);
-    await oosService.edit(transformMomentsToDates(oos));
-    dispatch(fetchConflictsByResourceId(oos.id));
+    await oosService.edit(oos);
+    dispatch(fetchConflictsByResourceId(oos.resourceId));
     return oos;
   }
 );
 
 export const deleteOutOfService = createAsyncThunk(
   "outOfServices/delete",
-  async (id, { dispatch }) => {
+  async (id, { getState, dispatch }) => {
+    const state = getState();
+    const oos = outOfServiceSelectors.selectById(state, id);
     await oosService.destroy(id);
-    dispatch(fetchConflictsByResourceId(id));
+    dispatch(fetchConflictsByResourceId(oos.resourceId));
     return id;
   }
 );
