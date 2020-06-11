@@ -9,11 +9,13 @@ import {
 import TrainingForm from "../TrainingForm";
 import { Grid, Header, Icon } from "semantic-ui-react";
 import { workersSelectors } from "../../../ducks/workers";
-import { selectTrainingWithWorkers } from "../../../ducks/globalSelectors";
+import { trainingSelectors } from "../../../ducks/training";
 
 const TrainingFormPortal = ({ id }) => {
   const dispatch = useDispatch();
-  const training = useSelector((state) => selectTrainingWithWorkers(state, id));
+  const training = useSelector((state) =>
+    trainingSelectors.selectTrainingWithWorkerIds(state, id)
+  );
   const workerOptions = useSelector(workersSelectors.selectOptions);
 
   const handleCancel = () => {

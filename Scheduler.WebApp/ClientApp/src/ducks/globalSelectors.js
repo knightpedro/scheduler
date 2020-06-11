@@ -112,21 +112,3 @@ export const selectWorkersCalendar = (state, filter) => {
     return selectEventsForWorker(state, worker, conflicts, start, end);
   });
 };
-
-export const selectJobTaskWithEntities = (state, id) => {
-  const jobTask = jobTaskSelectors.selectById(state, id);
-  if (!jobTask) return;
-  const workers = workerJobTaskSelectors.selectWorkersByJobTask(state, id);
-  const resources = resourceJobTaskSelectors.selectResourcesByJobTask(
-    state,
-    id
-  );
-  return { ...jobTask, workers, resources };
-};
-
-export const selectTrainingWithWorkers = (state, id) => {
-  const training = trainingSelectors.selectById(state, id);
-  if (!training) return;
-  const workers = workerTrainingSelectors.selectWorkersByTraining(state, id);
-  return { ...training, workers };
-};

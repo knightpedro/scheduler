@@ -1,17 +1,23 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Header, Grid, Button } from "semantic-ui-react";
+import { Header, Grid, Button, Divider } from "semantic-ui-react";
 import { IndividualSchedule } from "../schedules/schedule";
 import { uiSelectors, setPeriod } from "../../ducks/ui";
 import { useWeekPicker } from "../schedules/hooks";
 import WeekPicker from "../schedules/WeekPicker";
 import { selectCalendarForWorker } from "../../ducks/globalSelectors";
+import WorkerEventsView from "./WorkerEventsView";
 
 const WorkerDetail = () => {
   const { id } = useParams();
+  const workerId = parseInt(id);
+
   const dispatch = useDispatch();
-  const worker = useSelector((state) => selectCalendarForWorker(state, id));
+  const worker = useSelector((state) =>
+    selectCalendarForWorker(state, workerId)
+  );
+
   const period = useSelector(uiSelectors.selectPeriod);
   const { start, end, nextWeek, previousWeek, reset, setDate } = useWeekPicker(
     period.start
@@ -47,13 +53,19 @@ const WorkerDetail = () => {
           </Button>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row>
+      <Grid.Row columns="equal">
         <Grid.Column>
           <IndividualSchedule
             schedule={worker.schedule}
             start={start}
             end={end}
           />
+        </Grid.Column>
+      </Grid.Row>
+      <Divider hidden />
+      <Grid.Row columns="equal">
+        <Grid.Column>
+          <WorkerEventsView id={workerId} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

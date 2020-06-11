@@ -59,7 +59,7 @@ export const assignResourcesToJobTask = createAsyncThunk(
   "jobTasks/assignResources",
   async ({ jobTaskId, resources }, { dispatch, getState }) => {
     const state = getState();
-    const oldResources = selectResourcesByJobTask(state, jobTaskId);
+    const oldResources = selectResourceIdsByJobTask(state, jobTaskId);
     const add = resources.filter((r) => !oldResources.includes(r));
     const remove = oldResources.filter((r) => !resources.includes(r));
     const patch = { add, remove };
@@ -73,7 +73,7 @@ export const assignWorkersToJobTask = createAsyncThunk(
   "jobTasks/assignWorkers",
   async ({ jobTaskId, workers }, { dispatch, getState }) => {
     const state = getState();
-    const oldWorkers = selectWorkersByJobTask(state, jobTaskId);
+    const oldWorkers = selectWorkerIdsByJobTask(state, jobTaskId);
     const add = workers.filter((w) => !oldWorkers.includes(w));
     const remove = oldWorkers.filter((w) => !workers.includes(w));
     const patch = { add, remove };
@@ -100,9 +100,18 @@ const selectById = (state, id) => {
   return undefined;
 };
 
+const selectJobTaskWithEntities = (state, id) => {
+  const jobTask = jobTaskSelectors.selectById(state, id);
+  if (!jobTask) return;
+  const workers = selectWorkerIdsByJobTask(state, id);
+  const resources = selectResourceIdsByJobTask(state, id);
+  return { ...jobTask, workers, resources };
+};
+
 export const jobTaskSelectors = {
   selectAll,
   selectById,
+  selectJobTaskWithEntities,
 };
 
 const shapeJobTaskToEvent = (jobTask, conflicts) => ({
@@ -114,42 +123,53 @@ const shapeJobTaskToEvent = (jobTask, conflicts) => ({
   isConflicting: conflicts[appointmentTypes.JOB_TASK].includes(jobTask.id),
 });
 
-const selectJobTasksByResource = (state, id) =>
+const selectJobTaskIdsByResource = (state, id) =>
   state.resourceJobTasks
     .filter((j) => j.resourceId === id)
     .map((j) => j.jobTaskId);
 
-const selectResourcesByJobTask = (state, id) =>
+const selectResourceIdsByJobTask = (state, id) =>
   state.resourceJobTasks
     .filter((j) => j.jobTaskId === id)
     .map((j) => j.resourceId);
 
+const selectJobTasksForResource = (state, id) =>
+  selectJobTaskIdsByResource(state, id).map((jobTaskId) =>
+    selectById(state, jobTaskId)
+  );
+
 const selectEventsForResource = (state, resourceId, conflicts) =>
-  selectJobTasksByResource(state, resourceId)
-    .map((jobTaskId) => selectById(state, jobTaskId))
-    .map((j) => shapeJobTaskToEvent(j, conflicts));
+  selectJobTasksForResource(state, resourceId).map((j) =>
+    shapeJobTaskToEvent(j, conflicts)
+  );
 
 export const resourceJobTaskSelectors = {
-  selectJobTasksByResource,
-  selectResourcesByJobTask,
+  selectJobTaskIdsByResource,
+  selectResourceIdsByJobTask,
   selectEventsForResource,
 };
 
-const selectJobTasksByWorker = (state, id) =>
+const selectJobTaskIdsByWorker = (state, id) =>
   state.workerJobTasks.filter((j) => j.workerId === id).map((j) => j.jobTaskId);
 
-const selectWorkersByJobTask = (state, id) =>
+const selectWorkerIdsByJobTask = (state, id) =>
   state.workerJobTasks.filter((j) => j.jobTaskId === id).map((j) => j.workerId);
 
+const selectJobTasksForWorker = (state, workerId) =>
+  selectJobTaskIdsByWorker(state, workerId).map((jobTaskId) =>
+    selectById(state, jobTaskId)
+  );
+
 const selectEventsForWorker = (state, workerId, conflicts) =>
-  selectJobTasksByWorker(state, workerId)
-    .map((jobTaskId) => selectById(state, jobTaskId))
-    .map((j) => shapeJobTaskToEvent(j, conflicts));
+  selectJobTasksForWorker(state, workerId).map((j) =>
+    shapeJobTaskToEvent(j, conflicts)
+  );
 
 export const workerJobTaskSelectors = {
-  selectJobTasksByWorker,
+  selectJobTasksForWorker,
+  selectJobTaskIdsByWorker,
   selectEventsForWorker,
-  selectWorkersByJobTask,
+  selectWorkerIdsByJobTask,
 };
 
 const jobTasksSlice = createSlice({

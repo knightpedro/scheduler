@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closePortal } from "../../../ducks/portal";
 import JobTaskForm from "../JobTaskForm";
-import { selectJobTaskWithEntities } from "../../../ducks/globalSelectors";
+import { jobTaskSelectors } from "../../../ducks/jobTasks";
 import { workersSelectors } from "../../../ducks/workers";
 import { resourcesSelectors } from "../../../ducks/resources";
 import { Icon, Header, Grid } from "semantic-ui-react";
@@ -16,7 +16,9 @@ import { Link } from "react-router-dom";
 
 const JobTaskFormPortal = ({ id }) => {
   const dispatch = useDispatch();
-  const jobTask = useSelector((state) => selectJobTaskWithEntities(state, id));
+  const jobTask = useSelector((state) =>
+    jobTaskSelectors.selectJobTaskWithEntities(state, id)
+  );
   const job = useSelector((state) =>
     jobsSelectors.selectById(state, jobTask ? jobTask.jobId : undefined)
   );
@@ -48,13 +50,13 @@ const JobTaskFormPortal = ({ id }) => {
       <Grid.Row columns="equal" verticalAlign="middle">
         <Grid.Column>
           <Header>{id ? "Edit " : "Add "} Task</Header>
-          {job && <Link>Job {job.jobNumber}</Link>}
         </Grid.Column>
         <Grid.Column textAlign="right">
           {!id && <Link>Jobs</Link>}
           {id && <Icon link name="trash" onClick={handleDelete} />}
         </Grid.Column>
       </Grid.Row>
+      {job && <Link>Job {job.jobNumber}</Link>}
       <Grid.Row columns="equal">
         <Grid.Column>
           <JobTaskForm

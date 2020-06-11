@@ -56,7 +56,7 @@ export const assignWorkersToTraining = createAsyncThunk(
   "training/assignWorkers",
   async ({ trainingId, workers }, { dispatch, getState }) => {
     const state = getState();
-    const oldWorkers = selectWorkersByTraining(state, trainingId);
+    const oldWorkers = selectWorkerIdsByTraining(state, trainingId);
     const remove = oldWorkers.filter((w) => !workers.includes(w));
     const add = workers.filter((w) => !oldWorkers.includes(w));
     const patch = { add, remove };
@@ -80,40 +80,51 @@ const selectAll = (state) =>
 const selectById = (state, id) => {
   const entity = adapterSelectors.selectById(state, id);
   if (entity) return transformDatesToMoments(entity);
-  return undefined;
+};
+
+const selectTrainingWithWorkerIds = (state, id) => {
+  const training = selectById(state, id);
+  if (!training) return;
+  const workers = selectWorkerIdsByTraining(state, id);
+  return { ...training, workers };
 };
 
 export const trainingSelectors = {
   selectAll,
   selectById,
+  selectTrainingWithWorkerIds,
 };
 
-const selectTrainingByWorker = (state, id) =>
+const selectTrainingIdsByWorker = (state, id) =>
   state.workerTraining
     .filter((wt) => wt.workerId === id)
     .map((wt) => wt.trainingId);
 
-const selectWorkersByTraining = (state, id) =>
+const selectWorkerIdsByTraining = (state, id) =>
   state.workerTraining
     .filter((wt) => wt.trainingId === id)
     .map((wt) => wt.workerId);
 
+const selectTrainingForWorker = (state, workerId) =>
+  selectTrainingIdsByWorker(state, workerId).map((trainingId) =>
+    selectById(state, trainingId)
+  );
+
 const selectEventsForWorker = (state, workerId, conflicts) =>
-  selectTrainingByWorker(state, workerId)
-    .map((trainingId) => selectById(state, trainingId))
-    .map((t) => ({
-      id: t.id,
-      type: appointmentTypes.TRAINING,
-      description: t.description,
-      start: t.start,
-      end: t.end,
-      isConflicting: conflicts[appointmentTypes.TRAINING].includes(t.id),
-    }));
+  selectTrainingForWorker(state, workerId).map((t) => ({
+    id: t.id,
+    type: appointmentTypes.TRAINING,
+    description: t.description,
+    start: t.start,
+    end: t.end,
+    isConflicting: conflicts[appointmentTypes.TRAINING].includes(t.id),
+  }));
 
 export const workerTrainingSelectors = {
-  selectTrainingByWorker,
+  selectTrainingIdsByWorker,
+  selectTrainingForWorker,
   selectEventsForWorker,
-  selectWorkersByTraining,
+  selectWorkerIdsByTraining,
 };
 
 const trainingSlice = createSlice({

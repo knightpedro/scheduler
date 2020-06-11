@@ -42,7 +42,7 @@ const shapeConflictsByType = (resource) => {
 };
 
 const selectConflictMapForResource = (state, id) => {
-  const resource = adapterSelectors.selectById(id);
+  const resource = adapterSelectors.selectById(state, id);
   return shapeConflictsByType(resource);
 };
 

@@ -43,9 +43,13 @@ const coordinatorsAdapter = createEntityAdapter({
   sortComparer: (a, b) => a.name.localeCompare(b.name),
 });
 
-export const coordinatorsSelectors = coordinatorsAdapter.getSelectors(
+const adapterSelectors = coordinatorsAdapter.getSelectors(
   (state) => state.coordinators
 );
+
+export const coordinatorSelectors = {
+  ...adapterSelectors,
+};
 
 const coordinatorsSlice = createSlice({
   name: "coordinators",
