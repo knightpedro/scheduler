@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Event from "./Event";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const Row = styled.div`
   position: relative;
@@ -42,7 +43,7 @@ const EventsGrid = styled.div`
   padding: 0.25em 0;
 `;
 
-const ScheduleRow = ({ start, end, schedule, header }) => {
+const ScheduleRow = ({ start, end, schedule, header, path }) => {
   const days = end.diff(start, "days") + 1;
   const cells = header ? days + 1 : days;
   const events =
@@ -81,7 +82,11 @@ const ScheduleRow = ({ start, end, schedule, header }) => {
           ))}
       </Cells>
       <EventsGrid columns={cells}>
-        {header && <Header>{header}</Header>}
+        {header && (
+          <Header>
+            <Link to={path}>{header}</Link>
+          </Header>
+        )}
         {events}
       </EventsGrid>
     </Row>

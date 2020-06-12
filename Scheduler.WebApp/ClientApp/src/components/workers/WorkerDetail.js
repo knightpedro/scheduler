@@ -1,19 +1,32 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Header, Grid, Button, Divider } from "semantic-ui-react";
+import {
+  Header,
+  Grid,
+  Button,
+  Divider,
+  Segment,
+  Modal,
+} from "semantic-ui-react";
 import { IndividualSchedule } from "../schedules/schedule";
 import { uiSelectors, setPeriod } from "../../ducks/ui";
 import { useWeekPicker } from "../schedules/hooks";
 import WeekPicker from "../schedules/WeekPicker";
 import { selectCalendarForWorker } from "../../ducks/globalSelectors";
 import WorkerEventsView from "./WorkerEventsView";
+import WorkerForm from "../forms/WorkerForm";
+import { updateWorker, deleteWorker } from "../../ducks/workers";
+import routes from "../../routes";
 
 const WorkerDetail = () => {
   const { id } = useParams();
+  const [editing, setEditing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const workerId = parseInt(id);
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const worker = useSelector((state) =>
     selectCalendarForWorker(state, workerId)
   );
@@ -27,6 +40,24 @@ const WorkerDetail = () => {
     dispatch(setPeriod({ start, end }));
   }, [dispatch, start, end]);
 
+  const handleSubmit = (values) => {
+    setEditing(false);
+    dispatch(updateWorker(values));
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteWorker(id));
+    history.push(routes.workers.list);
+  };
+
+  const handleDeleteClick = () => {
+    setShowModal(true);
+  };
+
+  const handleEditClick = () => {
+    setEditing(true);
+  };
+
   if (!worker) return "Not found";
 
   return (
@@ -35,7 +66,26 @@ const WorkerDetail = () => {
         <Grid.Column>
           <Header as="h2">{worker.name}</Header>
         </Grid.Column>
+        <Grid.Column textAlign="right">
+          <Button.Group>
+            <Button icon="edit" onClick={handleEditClick} />
+            <Button icon="trash" onClick={handleDeleteClick} />
+          </Button.Group>
+        </Grid.Column>
       </Grid.Row>
+      {editing && (
+        <Grid.Row columns="equal">
+          <Grid.Column>
+            <Segment padded>
+              <WorkerForm
+                values={worker}
+                handleCancel={() => setEditing(false)}
+                handleSubmit={handleSubmit}
+              />
+            </Segment>
+          </Grid.Column>
+        </Grid.Row>
+      )}
       <Grid.Row columns="equal">
         <Grid.Column></Grid.Column>
         <Grid.Column textAlign="center" width={10}>
@@ -68,6 +118,18 @@ const WorkerDetail = () => {
           <WorkerEventsView id={workerId} />
         </Grid.Column>
       </Grid.Row>
+      {showModal && (
+        <Modal open={showModal} onClose={() => setShowModal(false)}>
+          <Header content="Delete Staff Member" />
+          <Modal.Content>
+            Are you sure you want to delete {worker.name}?
+          </Modal.Content>
+          <Modal.Actions>
+            <Button onClick={() => setShowModal(false)} content="Cancel" />
+            <Button onClick={handleDelete} content="Delete" negative />
+          </Modal.Actions>
+        </Modal>
+      )}
     </Grid>
   );
 };

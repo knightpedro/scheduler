@@ -12,8 +12,8 @@ import { momentSort } from "../tables/sorters";
 
 const TIME_FORMAT = "DD/MM/YY";
 
-const JobTasksTable = ({ jobTasks }) => {
-  const data = jobTasks;
+const LeaveTable = ({ leave }) => {
+  const data = leave;
 
   const defaultColumn = useMemo(
     () => ({
@@ -25,8 +25,8 @@ const JobTasksTable = ({ jobTasks }) => {
   const columns = useMemo(
     () => [
       {
-        Header: "Description",
-        accessor: "description",
+        Header: "Type",
+        accessor: "leaveType",
       },
       {
         Header: "Start",
@@ -135,4 +135,4 @@ const JobTasksTable = ({ jobTasks }) => {
   );
 };
 
-export default JobTasksTable;
+export default LeaveTable;

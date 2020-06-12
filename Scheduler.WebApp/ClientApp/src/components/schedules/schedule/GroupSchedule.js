@@ -3,6 +3,7 @@ import ScheduleHeader from "./ScheduleHeader";
 import ScheduleRow from "./ScheduleRow";
 import styled from "styled-components";
 import { Segment, Header } from "semantic-ui-react";
+import { generatePath } from "react-router-dom";
 
 const HeaderWrapper = styled.div`
   position: -webkit-sticky;
@@ -11,7 +12,7 @@ const HeaderWrapper = styled.div`
   z-index: 1;
 `;
 
-const GroupSchedule = ({ start, end, resources }) => {
+const GroupSchedule = ({ start, end, resources, detailPath }) => {
   if (!resources || resources.length === 0) {
     return (
       <Segment placeholder basic textAlign="center">
@@ -28,6 +29,7 @@ const GroupSchedule = ({ start, end, resources }) => {
         <ScheduleRow
           key={resource.id}
           header={resource.name}
+          path={generatePath(detailPath, { id: resource.id })}
           schedule={resource.schedule}
           start={start}
           end={end}

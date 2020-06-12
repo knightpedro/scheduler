@@ -9,6 +9,7 @@ import { GroupSchedule } from "./schedule";
 import { fetchAll } from "../../ducks/sharedActions";
 import { appointmentTypes } from "../../constants";
 import { openPortal, components } from "../../ducks/portal";
+import routes from "../../routes";
 
 const ResourceSchedule = () => {
   const dispatch = useDispatch();
@@ -86,7 +87,12 @@ const ResourceSchedule = () => {
 
       <Grid.Row>
         <Grid.Column width={16}>
-          <GroupSchedule resources={calendar} start={start} end={end} />
+          <GroupSchedule
+            resources={calendar}
+            start={start}
+            end={end}
+            detailPath={routes.resources.detail}
+          />
         </Grid.Column>
       </Grid.Row>
     </Grid>
