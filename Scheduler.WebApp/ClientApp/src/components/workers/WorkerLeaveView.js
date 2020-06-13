@@ -1,26 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { leaveSelectors } from "../../ducks/leave";
 import { LeaveTable } from "../leave";
+import { LeaveFormContainer } from "../forms/containers";
 import { Empty } from "../common";
+import { Grid, Button } from "semantic-ui-react";
 
 const WorkerLeaveView = ({ id }) => {
+  const [showLeaveForm, setShowLeaveForm] = useState(false);
+  const [selectedLeaveId, setSelectedLeaveId] = useState();
+
   const leave = useSelector((state) =>
     leaveSelectors.selectByWorker(state, id)
   );
 
+  const handleAddLeaveClick = () => {
+    setSelectedLeaveId();
+    setShowLeaveForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowLeaveForm(false);
+    setSelectedLeaveId();
+  };
+
   const handleLeaveClick = ({ id }) => {
-    console.log(id);
+    setSelectedLeaveId(id);
+    setShowLeaveForm(true);
   };
 
   return (
-    <>
-      {leave && leave.length > 0 ? (
-        <LeaveTable leave={leave} handleClick={handleLeaveClick} />
-      ) : (
-        <Empty message="No leave found" />
+    <Grid>
+      <Grid.Row columns="equal">
+        <Grid.Column textAlign="right">
+          <Button color="teal" content="Add" onClick={handleAddLeaveClick} />
+        </Grid.Column>
+      </Grid.Row>
+      {showLeaveForm && (
+        <Grid.Row columns="equal">
+          <Grid.Column>
+            <LeaveFormContainer
+              id={selectedLeaveId}
+              workerId={id}
+              closeForm={handleCloseForm}
+            />
+          </Grid.Column>
+        </Grid.Row>
       )}
-    </>
+      <Grid.Row columns="equal">
+        <Grid.Column>
+          {leave && leave.length > 0 ? (
+            <LeaveTable leave={leave} handleClick={handleLeaveClick} />
+          ) : (
+            <Empty message="No leave found" />
+          )}
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   );
 };
 

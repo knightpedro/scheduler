@@ -1,26 +1,20 @@
 import React from "react";
-import { JobTaskForm } from "../";
+import { LeaveForm } from "../";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  jobTaskSelectors,
-  updateJobTask,
-  createJobTask,
-  deleteJobTask,
-} from "../../../ducks/jobTasks";
+  leaveSelectors,
+  deleteLeave,
+  createLeave,
+  updateLeave,
+} from "../../../ducks/leave";
+import { Segment, Grid, Header, Icon } from "semantic-ui-react";
 import { workersSelectors } from "../../../ducks/workers";
-import { resourcesSelectors } from "../../../ducks/resources";
-import { Segment, Header, Icon, Grid } from "semantic-ui-react";
 
-const JobTaskFormContainer = ({ id, jobId, closeForm }) => {
+const LeaveFormContainer = ({ id, workerId, closeForm }) => {
   const dispatch = useDispatch();
-
-  const jobTask = useSelector((state) =>
-    jobTaskSelectors.selectJobTaskWithEntities(state, id)
-  );
-
-  const values = { ...jobTask, jobId };
-
-  const resourceOptions = useSelector(resourcesSelectors.selectOptions);
+  const leave = useSelector((state) => leaveSelectors.selectById(state, id));
+  const values = { workerId, ...leave };
+  const leaveTypeOptions = useSelector(leaveSelectors.selectLeaveTypeOptions);
   const workerOptions = useSelector(workersSelectors.selectOptions);
 
   const handleCancel = () => {
@@ -28,16 +22,13 @@ const JobTaskFormContainer = ({ id, jobId, closeForm }) => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteJobTask(id));
+    dispatch(deleteLeave(id));
     closeForm();
   };
 
   const handleSubmit = (values) => {
-    if (id) {
-      dispatch(updateJobTask(values));
-    } else {
-      dispatch(createJobTask(values));
-    }
+    if (id) dispatch(updateLeave(values));
+    else dispatch(createLeave(values));
     closeForm();
   };
 
@@ -46,7 +37,7 @@ const JobTaskFormContainer = ({ id, jobId, closeForm }) => {
       <Grid>
         <Grid.Row columns="equal">
           <Grid.Column>
-            <Header>{id ? "Edit " : "Add "}Task</Header>
+            <Header>{id ? "Edit" : "Add"} Leave</Header>
           </Grid.Column>
           {id && (
             <Grid.Column textAlign="right">
@@ -56,11 +47,11 @@ const JobTaskFormContainer = ({ id, jobId, closeForm }) => {
         </Grid.Row>
         <Grid.Row columns="equal">
           <Grid.Column>
-            <JobTaskForm
+            <LeaveForm
               values={values}
               handleCancel={handleCancel}
               handleSubmit={handleSubmit}
-              resourceOptions={resourceOptions}
+              leaveTypeOptions={leaveTypeOptions}
               workerOptions={workerOptions}
             />
           </Grid.Column>
@@ -70,4 +61,4 @@ const JobTaskFormContainer = ({ id, jobId, closeForm }) => {
   );
 };
 
-export default JobTaskFormContainer;
+export default LeaveFormContainer;

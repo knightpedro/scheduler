@@ -59,6 +59,11 @@ const JobDetail = () => {
     setShowTaskForm(true);
   };
 
+  const handleTaskFormClose = () => {
+    setShowTaskForm(false);
+    setSelectedTaskId();
+  };
+
   if (!job) return <Empty message="Job not found" />;
 
   return (
@@ -118,8 +123,7 @@ const JobDetail = () => {
             <JobTaskFormContainer
               id={selectedTaskId}
               jobId={jobId}
-              setShowForm={setShowTaskForm}
-              clearEditing={() => setSelectedTaskId()}
+              closeForm={handleTaskFormClose}
             />
           </Grid.Column>
         </Grid.Row>
