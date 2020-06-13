@@ -12,7 +12,7 @@ import { momentSort } from "../tables/sorters";
 
 const TIME_FORMAT = "DD/MM/YY";
 
-const TrainingTable = ({ training }) => {
+const TrainingTable = ({ training, handleClick }) => {
   const data = training;
 
   const defaultColumn = useMemo(
@@ -50,6 +50,10 @@ const TrainingTable = ({ training }) => {
     []
   );
 
+  const handleRowClick = (row) => {
+    handleClick(row.original);
+  };
+
   const initialState = {
     pageSize: 10,
     sortBy: [{ id: "start", desc: true }],
@@ -78,11 +82,12 @@ const TrainingTable = ({ training }) => {
     <>
       <GlobalSearchFilter
         fluid
+        placeholder="Search training"
         preGlobalFilteredRows={preGlobalFilteredRows}
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <Table {...getTableProps()}>
+      <Table {...getTableProps()} selectable>
         <Table.Header>
           {headerGroups.map((headerGroup) => (
             <Table.Row {...headerGroup.getHeaderGroupProps()}>
@@ -115,7 +120,10 @@ const TrainingTable = ({ training }) => {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <Table.Row {...row.getRowProps()}>
+              <Table.Row
+                {...row.getRowProps()}
+                onClick={() => handleRowClick(row)}
+              >
                 {row.cells.map((cell) => (
                   <TableCell {...cell.getCellProps()}>
                     {cell.render("Cell")}

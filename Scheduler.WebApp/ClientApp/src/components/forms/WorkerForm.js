@@ -20,7 +20,7 @@ const WorkerForm = ({ handleSubmit, handleCancel, values, ...props }) => {
       {(formik) => (
         <Form noValidate onSubmit={formik.handleSubmit} {...props}>
           <TextField label="Name" name="name" />
-          <CheckField label="Active" name="isActive" />
+          {values && <CheckField label="Active" name="isActive" />}
           <Form.Group>
             <Form.Button
               type="submit"

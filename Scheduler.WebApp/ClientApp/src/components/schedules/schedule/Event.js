@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { openPortal, components } from "../../../ducks/portal";
+import { openPortal, portalComponents } from "../../../ducks/portal";
 import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { appointmentTypes } from "../../../constants";
@@ -88,16 +88,16 @@ const Event = ({ appointment, ...props }) => {
     let portalComponent;
     switch (type) {
       case appointmentTypes.LEAVE:
-        portalComponent = components.leaveForm;
+        portalComponent = portalComponents.leaveForm;
         break;
       case appointmentTypes.OUT_OF_SERVICE:
-        portalComponent = components.outOfServiceForm;
+        portalComponent = portalComponents.outOfServiceForm;
         break;
       case appointmentTypes.TRAINING:
-        portalComponent = components.trainingForm;
+        portalComponent = portalComponents.trainingForm;
         break;
       default:
-        portalComponent = components.jobTaskForm;
+        portalComponent = portalComponents.jobTaskForm;
     }
     dispatch(openPortal(portalComponent, { id }));
   };

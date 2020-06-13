@@ -1,20 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { Grid, Header, Button, Modal, Segment } from "semantic-ui-react";
+import {
+  Grid,
+  Header,
+  Button,
+  Modal,
+  Segment,
+  Divider,
+} from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
 import { jobsSelectors, deleteJob, updateJob } from "../../ducks/jobs";
 import routes from "../../routes";
 import { JobTasksTable } from "../jobTasks";
 import { JobForm } from "../forms";
 import { coordinatorSelectors } from "../../ducks/coordinators";
+import JobDetailTable from "./JobDetailTable";
+import { Empty } from "../common";
+import { JobTaskFormContainer } from "../forms/containers";
 
 const JobDetail = () => {
-  const [showForm, setShowForm] = useState(false);
+  const [showJobForm, setShowJobForm] = useState(false);
+  const [showTaskForm, setShowTaskForm] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState();
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const { id } = useParams();
   const jobId = parseInt(id);
+
+  useEffect(() => {
+    setSelectedTaskId();
+    setShowTaskForm(false);
+  }, [jobId]);
 
   const job = useSelector((state) =>
     jobsSelectors.selectJobWithEntities(state, jobId)
@@ -28,52 +45,99 @@ const JobDetail = () => {
 
   const handleJobSubmit = (values) => {
     const { coordinator, jobTasks, ...job } = values;
-    setShowForm(false);
+    setShowJobForm(false);
     dispatch(updateJob(job));
   };
 
-  if (!job) return "Job not found";
+  const handleAddTaskClick = () => {
+    setSelectedTaskId();
+    setShowTaskForm(true);
+  };
+
+  const handleTaskClick = ({ id }) => {
+    setSelectedTaskId(id);
+    setShowTaskForm(true);
+  };
+
+  if (!job) return <Empty message="Job not found" />;
 
   return (
     <Grid>
       <Grid.Row columns="equal" verticalAlign="middle">
         <Grid.Column>
-          <Header as="h2">{job.jobNumber}</Header>
+          <Header as="h2" content={job.jobNumber} subheader={job.description} />
         </Grid.Column>
         <Grid.Column textAlign="right">
           <Button.Group>
-            <Button icon="edit" onClick={() => setShowForm(true)} />
+            <Button icon="edit" onClick={() => setShowJobForm(true)} />
             <Button icon="trash" onClick={() => setShowModal(true)} />
           </Button.Group>
         </Grid.Column>
       </Grid.Row>
-      {showForm && (
+
+      {showJobForm && (
         <Grid.Row columns="equal">
           <Grid.Column>
             <Segment padded>
               <JobForm
                 values={job}
                 coordinatorOptions={coordinatorOptions}
-                handleCancel={() => setShowForm(false)}
+                handleCancel={() => setShowJobForm(false)}
                 handleSubmit={handleJobSubmit}
               />
             </Segment>
           </Grid.Column>
         </Grid.Row>
       )}
+
       <Grid.Row columns="equal">
+        <Grid.Column>
+          <JobDetailTable job={job} />
+        </Grid.Column>
+      </Grid.Row>
+
+      <Divider hidden />
+
+      <Grid.Row columns="equal" verticalAlign="middle">
         <Grid.Column>
           <Header>Tasks</Header>
         </Grid.Column>
         <Grid.Column textAlign="right">
-          <Button floated="right" color="teal" content="Add" />
+          <Button
+            floated="right"
+            color="teal"
+            content="Add"
+            onClick={handleAddTaskClick}
+          />
         </Grid.Column>
       </Grid.Row>
+
+      {showTaskForm && (
+        <Grid.Row>
+          <Grid.Column>
+            <JobTaskFormContainer
+              id={selectedTaskId}
+              jobId={jobId}
+              setShowForm={setShowTaskForm}
+              clearEditing={() => setSelectedTaskId()}
+            />
+          </Grid.Column>
+        </Grid.Row>
+      )}
+
       <Grid.Row columns="equal">
         <Grid.Column>
-          <JobTasksTable jobTasks={job.jobTasks} />
+          {job.jobTasks && job.jobTasks.length > 0 ? (
+            <JobTasksTable
+              jobTasks={job.jobTasks}
+              handleClick={handleTaskClick}
+            />
+          ) : (
+            <Empty message="No tasks found" />
+          )}
         </Grid.Column>
       </Grid.Row>
+
       {showModal && (
         <Modal open={showModal} onClose={() => setShowModal(false)}>
           <Header content="Delete Job" />

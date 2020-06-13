@@ -12,7 +12,7 @@ import { momentSort } from "../tables/sorters";
 
 const TIME_FORMAT = "DD/MM/YY";
 
-const JobTasksTable = ({ jobTasks }) => {
+const JobTasksTable = ({ jobTasks, handleClick }) => {
   const data = jobTasks;
 
   const defaultColumn = useMemo(
@@ -46,6 +46,10 @@ const JobTasksTable = ({ jobTasks }) => {
     []
   );
 
+  const handleRowClick = (row) => {
+    handleClick(row.original);
+  };
+
   const initialState = {
     pageSize: 10,
     sortBy: [{ id: "start", desc: true }],
@@ -74,11 +78,12 @@ const JobTasksTable = ({ jobTasks }) => {
     <>
       <GlobalSearchFilter
         fluid
+        placeholder="Search tasks"
         preGlobalFilteredRows={preGlobalFilteredRows}
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <Table {...getTableProps()}>
+      <Table {...getTableProps()} selectable>
         <Table.Header>
           {headerGroups.map((headerGroup) => (
             <Table.Row {...headerGroup.getHeaderGroupProps()}>
@@ -111,7 +116,10 @@ const JobTasksTable = ({ jobTasks }) => {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <Table.Row {...row.getRowProps()}>
+              <Table.Row
+                {...row.getRowProps()}
+                onClick={() => handleRowClick(row)}
+              >
                 {row.cells.map((cell) => (
                   <TableCell {...cell.getCellProps()}>
                     {cell.render("Cell")}

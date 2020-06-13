@@ -6,7 +6,7 @@ import {
   TrainingFormPortal,
 } from "../components/forms/portal";
 
-export const components = {
+export const portalComponents = {
   jobForm: "jobForm",
   jobTaskForm: "jobTaskForm",
   leaveForm: "leaveForm",
@@ -16,10 +16,10 @@ export const components = {
 };
 
 const componentLookUp = {
-  [components.jobTaskForm]: JobTaskFormPortal,
-  [components.leaveForm]: LeaveFormPortal,
-  [components.outOfServiceForm]: OutOfServiceFormPortal,
-  [components.trainingForm]: TrainingFormPortal,
+  [portalComponents.jobTaskForm]: JobTaskFormPortal,
+  [portalComponents.leaveForm]: LeaveFormPortal,
+  [portalComponents.outOfServiceForm]: OutOfServiceFormPortal,
+  [portalComponents.trainingForm]: TrainingFormPortal,
 };
 
 export const openPortal = createAction("portal/open", (component, props) => {

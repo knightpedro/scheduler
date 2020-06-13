@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik } from "formik";
 import { Form } from "semantic-ui-react";
-import { TextField, DateField, DropdownField } from "./fields";
+import { CheckField, TextField, DateField, DropdownField } from "./fields";
 import { jobSchema } from "./schemas";
 
 const initialValues = {
@@ -9,11 +9,10 @@ const initialValues = {
   dateReceived: undefined,
   dateScheduled: undefined,
   description: "",
+  isComplete: false,
   jobNumber: "",
   location: "",
 };
-
-const DATE_FORMAT = "d/M/yy";
 
 const JobForm = ({
   values,
@@ -49,6 +48,7 @@ const JobForm = ({
             name="dateScheduled"
             maxDate={today}
           />
+          {values && <CheckField label="Complete" name="isComplete" />}
           <Form.Group>
             <Form.Button
               type="submit"

@@ -6,7 +6,7 @@ import {
   useSortBy,
   usePagination,
 } from "react-table";
-import { Table, TableCell, Icon, Pagination } from "semantic-ui-react";
+import { Table, TableCell, Icon, Pagination, Header } from "semantic-ui-react";
 import { GlobalSearchFilter, SelectFilter } from "../tables/filters";
 import { momentSort } from "../tables/sorters";
 import { jobStatus } from "../../constants";
@@ -39,6 +39,7 @@ const JobsTable = ({ jobs }) => {
       {
         Header: "Job #",
         accessor: "jobNumber",
+        Cell: ({ value }) => <Header as="h5">{value}</Header>,
       },
       {
         Header: "Description",
@@ -53,8 +54,8 @@ const JobsTable = ({ jobs }) => {
         accessor: "status",
         Cell: ({ value }) => (
           <Icon
-            name={value === jobStatus.COMPLETE ? "check" : "spinner"}
-            color={value === jobStatus.COMPLETE ? "green" : undefined}
+            name={value === jobStatus.COMPLETE ? "check" : "refresh"}
+            color={value === jobStatus.COMPLETE ? "green" : "blue"}
           />
         ),
         Filter: SelectFilter,
@@ -120,6 +121,7 @@ const JobsTable = ({ jobs }) => {
     <>
       <GlobalSearchFilter
         fluid
+        placeholder="Search jobs"
         preGlobalFilteredRows={preGlobalFilteredRows}
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
@@ -130,7 +132,6 @@ const JobsTable = ({ jobs }) => {
             <Table.Row {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <Table.HeaderCell
-                  width={1}
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   title={null}
                 >

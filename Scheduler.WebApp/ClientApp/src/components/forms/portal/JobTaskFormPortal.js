@@ -12,7 +12,8 @@ import {
   deleteJobTask,
 } from "../../../ducks/jobTasks";
 import { jobsSelectors } from "../../../ducks/jobs";
-import { Link } from "react-router-dom";
+import { Link, generatePath } from "react-router-dom";
+import routes from "../../../routes";
 
 const JobTaskFormPortal = ({ id }) => {
   const dispatch = useDispatch();
@@ -56,7 +57,11 @@ const JobTaskFormPortal = ({ id }) => {
           {id && <Icon link name="trash" onClick={handleDelete} />}
         </Grid.Column>
       </Grid.Row>
-      {job && <Link>Job {job.jobNumber}</Link>}
+      {job && (
+        <Link to={generatePath(routes.jobs.detail, { id: job.id })}>
+          Job {job.jobNumber}
+        </Link>
+      )}
       <Grid.Row columns="equal">
         <Grid.Column>
           <JobTaskForm

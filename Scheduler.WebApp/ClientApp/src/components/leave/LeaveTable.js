@@ -12,7 +12,7 @@ import { momentSort } from "../tables/sorters";
 
 const TIME_FORMAT = "DD/MM/YY";
 
-const LeaveTable = ({ leave }) => {
+const LeaveTable = ({ leave, handleClick }) => {
   const data = leave;
 
   const defaultColumn = useMemo(
@@ -53,6 +53,10 @@ const LeaveTable = ({ leave }) => {
     sortBy: [{ id: "start", desc: true }],
   };
 
+  const handleRowClick = (row) => {
+    handleClick(row.original);
+  };
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -76,11 +80,12 @@ const LeaveTable = ({ leave }) => {
     <>
       <GlobalSearchFilter
         fluid
+        placeholder="Search leave"
         preGlobalFilteredRows={preGlobalFilteredRows}
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <Table {...getTableProps()}>
+      <Table {...getTableProps()} selectable>
         <Table.Header>
           {headerGroups.map((headerGroup) => (
             <Table.Row {...headerGroup.getHeaderGroupProps()}>
@@ -113,7 +118,10 @@ const LeaveTable = ({ leave }) => {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <Table.Row {...row.getRowProps()}>
+              <Table.Row
+                {...row.getRowProps()}
+                onClick={() => handleRowClick(row)}
+              >
                 {row.cells.map((cell) => (
                   <TableCell {...cell.getCellProps()}>
                     {cell.render("Cell")}

@@ -18,6 +18,7 @@ import WorkerEventsView from "./WorkerEventsView";
 import WorkerForm from "../forms/WorkerForm";
 import { updateWorker, deleteWorker } from "../../ducks/workers";
 import routes from "../../routes";
+import { Empty } from "../common";
 
 const WorkerDetail = () => {
   const { id } = useParams();
@@ -59,7 +60,7 @@ const WorkerDetail = () => {
     setEditing(true);
   };
 
-  if (!worker) return "Not found";
+  if (!worker) return <Empty message="Staff member not found" />;
 
   return (
     <Grid>

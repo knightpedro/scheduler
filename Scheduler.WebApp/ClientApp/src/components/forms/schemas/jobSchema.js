@@ -17,6 +17,7 @@ export default yup.object({
       }
     ),
   description: yup.string().required("Description is required").max(160),
+  isComplete: yup.bool(),
   jobNumber: yup.string().required("Job number is required").max(10),
   location: yup.string().required("Location is required").max(50),
 });

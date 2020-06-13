@@ -8,7 +8,7 @@ import WeekPicker from "./WeekPicker";
 import { GroupSchedule } from "./schedule";
 import { fetchAll } from "../../ducks/sharedActions";
 import { appointmentTypes } from "../../constants";
-import { openPortal, components } from "../../ducks/portal";
+import { openPortal, portalComponents } from "../../ducks/portal";
 import routes from "../../routes";
 
 const WorkerSchedule = () => {
@@ -37,11 +37,11 @@ const WorkerSchedule = () => {
 
   const handleCreate = (_, { value }) => {
     if (value === appointmentTypes.JOB_TASK) {
-      dispatch(openPortal(components.jobTaskForm));
+      dispatch(openPortal(portalComponents.jobTaskForm));
     } else if (value === appointmentTypes.LEAVE) {
-      dispatch(openPortal(components.leaveForm));
+      dispatch(openPortal(portalComponents.leaveForm));
     } else if (value === appointmentTypes.TRAINING) {
-      dispatch(openPortal(components.trainingForm));
+      dispatch(openPortal(portalComponents.trainingForm));
     }
   };
 

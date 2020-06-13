@@ -55,6 +55,16 @@ const adapterSelectors = jobsAdapter.getSelectors((state) => state.jobs);
 const selectAll = (state) =>
   adapterSelectors.selectAll(state).map((job) => transformDatesToMoments(job));
 
+const selectFiltered = (state, filter) => {
+  const jobs = selectAll(state);
+  if (!filter) return jobs;
+  return jobs.filter(
+    (j) =>
+      j.description.toLowerCase().includes(filter.toLowerCase()) ||
+      j.jobNumber.toLowerCase().includes(filter.toLowerCase())
+  );
+};
+
 const selectById = (state, id) => {
   const entity = adapterSelectors.selectById(state, id);
   if (entity) return transformDatesToMoments(entity);
@@ -88,6 +98,7 @@ export const jobsSelectors = {
   selectAll,
   selectAllWithCoordinator,
   selectById,
+  selectFiltered,
   selectJobWithEntities,
   selectActive,
   selectOptions,
