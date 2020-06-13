@@ -100,6 +100,9 @@ const selectById = (state, id) => {
   return undefined;
 };
 
+const selectByJob = (state, jobId) =>
+  selectAll(state).filter((j) => j.jobId === jobId);
+
 const selectJobTaskWithEntities = (state, id) => {
   const jobTask = jobTaskSelectors.selectById(state, id);
   if (!jobTask) return;
@@ -111,6 +114,7 @@ const selectJobTaskWithEntities = (state, id) => {
 export const jobTaskSelectors = {
   selectAll,
   selectById,
+  selectByJob,
   selectJobTaskWithEntities,
 };
 

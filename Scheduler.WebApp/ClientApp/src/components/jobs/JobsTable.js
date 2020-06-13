@@ -9,11 +9,23 @@ import {
 import { Table, TableCell, Icon, Pagination } from "semantic-ui-react";
 import { GlobalSearchFilter, SelectFilter } from "../tables/filters";
 import { momentSort } from "../tables/sorters";
+import { jobStatus } from "../../constants";
+import routes from "../../routes";
+import { useHistory, generatePath } from "react-router-dom";
 
 const TIME_FORMAT = "DD/MM/YY";
 
-const LeaveTable = ({ leave }) => {
-  const data = leave;
+const JobsTable = ({ jobs }) => {
+  const history = useHistory();
+  const data = useMemo(
+    () =>
+      jobs.map((j) => ({
+        ...j,
+        coordinator: j.coordinator ? j.coordinator.name : "",
+        status: j.isComplete ? jobStatus.COMPLETE : jobStatus.IN_PROGRESS,
+      })),
+    [jobs]
+  );
 
   const defaultColumn = useMemo(
     () => ({
@@ -25,22 +37,47 @@ const LeaveTable = ({ leave }) => {
   const columns = useMemo(
     () => [
       {
-        Header: "Type",
-        accessor: "leaveType",
+        Header: "Job #",
+        accessor: "jobNumber",
+      },
+      {
+        Header: "Description",
+        accessor: "description",
+      },
+      {
+        Header: "Location",
+        accessor: "location",
+      },
+      {
+        Header: "Status",
+        accessor: "status",
+        Cell: ({ value }) => (
+          <Icon
+            name={value === jobStatus.COMPLETE ? "check" : "spinner"}
+            color={value === jobStatus.COMPLETE ? "green" : undefined}
+          />
+        ),
+        Filter: SelectFilter,
+        filter: "exactText",
+        disableGlobalFilter: true,
+      },
+      {
+        Header: "Coordinator",
+        accessor: "coordinator",
         Filter: SelectFilter,
         filter: "exactText",
       },
       {
-        Header: "Start",
-        accessor: "start",
-        Cell: ({ value }) => value.format(TIME_FORMAT),
+        Header: "Received",
+        accessor: "dateReceived",
+        Cell: ({ value }) => (value ? value.format(TIME_FORMAT) : ""),
         disableGlobalFilter: true,
         sortType: momentSort,
       },
       {
-        Header: "End",
-        accessor: "end",
-        Cell: ({ value }) => value.format(TIME_FORMAT),
+        Header: "Scheduled",
+        accessor: "dateScheduled",
+        Cell: ({ value }) => (value ? value.format(TIME_FORMAT) : ""),
         disableGlobalFilter: true,
         sortType: momentSort,
       },
@@ -48,9 +85,16 @@ const LeaveTable = ({ leave }) => {
     []
   );
 
+  const handleRowClick = (row) => {
+    const path = generatePath(routes.jobs.detail, {
+      id: row.original.id,
+    });
+    history.push(path);
+  };
+
   const initialState = {
-    pageSize: 10,
-    sortBy: [{ id: "start", desc: true }],
+    pageSize: 20,
+    sortBy: [{ id: "dateReceived", desc: true }],
   };
 
   const {
@@ -80,7 +124,7 @@ const LeaveTable = ({ leave }) => {
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
       />
-      <Table {...getTableProps()}>
+      <Table {...getTableProps()} selectable>
         <Table.Header>
           {headerGroups.map((headerGroup) => (
             <Table.Row {...headerGroup.getHeaderGroupProps()}>
@@ -113,7 +157,10 @@ const LeaveTable = ({ leave }) => {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <Table.Row {...row.getRowProps()}>
+              <Table.Row
+                {...row.getRowProps()}
+                onClick={() => handleRowClick(row)}
+              >
                 {row.cells.map((cell) => (
                   <TableCell {...cell.getCellProps()}>
                     {cell.render("Cell")}
@@ -137,4 +184,4 @@ const LeaveTable = ({ leave }) => {
   );
 };
 
-export default LeaveTable;
+export default JobsTable;

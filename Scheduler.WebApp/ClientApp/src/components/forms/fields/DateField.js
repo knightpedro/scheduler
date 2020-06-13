@@ -22,7 +22,7 @@ const DateField = ({ label, ...props }) => {
         customInput={<DateInput label={label} error={error} />}
         dateFormat="d/M/yy"
         selected={field.value ? field.value.toDate() : ""}
-        onChange={(date) => helpers.setValue(moment(date) || "")}
+        onChange={(date) => (date ? helpers.setValue(moment(date)) : "")}
         {...props}
       />
     </Styles>

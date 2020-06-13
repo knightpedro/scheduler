@@ -41,8 +41,9 @@ const WorkerDetail = () => {
   }, [dispatch, start, end]);
 
   const handleSubmit = (values) => {
+    const { schedule, ...worker } = values;
     setEditing(false);
-    dispatch(updateWorker(values));
+    dispatch(updateWorker(worker));
   };
 
   const handleDelete = () => {

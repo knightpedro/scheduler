@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAll } from "../../ducks/sharedActions";
-import { Grid, Input, Header, Button, Segment } from "semantic-ui-react";
+import { Grid, Input, Header, Button } from "semantic-ui-react";
 import { workersSelectors, createWorker } from "../../ducks/workers";
 import WorkersList from "./WorkersList";
 import {
@@ -10,8 +10,6 @@ import {
   useHistory,
   Switch,
   Redirect,
-  useParams,
-  useRouteMatch,
   useLocation,
 } from "react-router-dom";
 import routes from "../../routes";
@@ -56,7 +54,7 @@ const WorkersPage = () => {
   };
 
   return (
-    <Grid stackable relaxed="very" celled="internally">
+    <Grid stackable padded relaxed="very" celled="internally">
       <Grid.Row>
         <Grid.Column width={4}>
           <Grid>

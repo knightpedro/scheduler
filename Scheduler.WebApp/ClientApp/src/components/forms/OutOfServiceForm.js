@@ -16,8 +16,8 @@ const OutOfServiceForm = ({
   values,
   handleSubmit,
   handleCancel,
-  outOfServiceTypeOptions,
-  resourceOptions,
+  outOfServiceTypeOptions = [],
+  resourceOptions = [],
 }) => {
   return (
     <Formik

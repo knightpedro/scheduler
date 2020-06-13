@@ -11,7 +11,7 @@ export default yup.object({
       if (!(start && value)) return true;
       return moment(value).isAfter(moment(start));
     }),
-  jobId: yup.number().required("Job is required"),
+  jobId: yup.number().nullable().required("Job is required"),
   resources: yup
     .array()
     .test(

@@ -47,8 +47,14 @@ const adapterSelectors = coordinatorsAdapter.getSelectors(
   (state) => state.coordinators
 );
 
+const selectOptions = (state) =>
+  adapterSelectors
+    .selectAll(state)
+    .map((coordinator) => ({ text: coordinator.name, value: coordinator.id }));
+
 export const coordinatorSelectors = {
   ...adapterSelectors,
+  selectOptions,
 };
 
 const coordinatorsSlice = createSlice({

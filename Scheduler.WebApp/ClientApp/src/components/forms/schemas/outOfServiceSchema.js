@@ -17,5 +17,5 @@ export default yup.object({
     }),
   start: yup.date().required("Start is required"),
   reason: yup.string().required("Reason is required"),
-  resourceId: yup.number().required("Plant item is required"),
+  resourceId: yup.number().nullable().required("Plant item is required"),
 });

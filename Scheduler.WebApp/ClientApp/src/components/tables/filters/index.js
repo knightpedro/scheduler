@@ -1,3 +1,4 @@
 import GlobalSearchFilter from "./GlobalSearchFilter";
+import SelectFilter from "./SelectFilter";
 
-export { GlobalSearchFilter };
+export { GlobalSearchFilter, SelectFilter };

@@ -12,5 +12,5 @@ export default yup.object({
     }),
   leaveType: yup.string().required("Leave type is required"),
   start: yup.date().required("Leave start is required"),
-  workerId: yup.number().required("Staff member is required"),
+  workerId: yup.number().nullable().required("Staff member is required"),
 });

@@ -6,6 +6,8 @@ import {
 import { jobsService } from "../services";
 import { fetchAll } from "./sharedActions";
 import moment from "moment";
+import { coordinatorSelectors } from "./coordinators";
+import { jobTaskSelectors } from "./jobTasks";
 
 const transformDatesToMoments = (job) => ({
   ...job,
@@ -50,8 +52,31 @@ const jobsAdapter = createEntityAdapter({
 
 const adapterSelectors = jobsAdapter.getSelectors((state) => state.jobs);
 
-const selectActive = (state) =>
-  adapterSelectors.selectAll(state).filter((j) => !j.isComplete);
+const selectAll = (state) =>
+  adapterSelectors.selectAll(state).map((job) => transformDatesToMoments(job));
+
+const selectById = (state, id) => {
+  const entity = adapterSelectors.selectById(state, id);
+  if (entity) return transformDatesToMoments(entity);
+  return undefined;
+};
+
+const selectActive = (state) => selectAll(state).filter((j) => !j.isComplete);
+
+const selectAllWithCoordinator = (state) =>
+  selectAll(state).map((job) => ({
+    ...job,
+    coordinator: coordinatorSelectors.selectById(state, job.coordinatorId),
+  }));
+
+const selectJobWithEntities = (state, id) => {
+  const job = selectById(state, id);
+  if (job) {
+    job.coordinator = coordinatorSelectors.selectById(state, job.coordinatorId);
+    job.jobTasks = jobTaskSelectors.selectByJob(state, job.id);
+  }
+  return job;
+};
 
 const selectOptions = (state) =>
   selectActive(state).map((j) => ({
@@ -60,15 +85,10 @@ const selectOptions = (state) =>
   }));
 
 export const jobsSelectors = {
-  selectAll: (state) =>
-    adapterSelectors
-      .selectAll(state)
-      .map((job) => transformDatesToMoments(job)),
-  selectById: (state, id) => {
-    const entity = adapterSelectors.selectById(state, id);
-    if (entity) return transformDatesToMoments(entity);
-    return undefined;
-  },
+  selectAll,
+  selectAllWithCoordinator,
+  selectById,
+  selectJobWithEntities,
   selectActive,
   selectOptions,
 };

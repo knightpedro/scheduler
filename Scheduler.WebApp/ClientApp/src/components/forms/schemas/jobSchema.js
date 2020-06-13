@@ -2,10 +2,11 @@ import * as yup from "yup";
 import moment from "moment";
 
 export default yup.object({
-  coordinatorId: yup.number(),
-  dateReceived: yup.date().required("Date received is required"),
+  coordinatorId: yup.number().nullable(),
+  dateReceived: yup.date().nullable().required("Date received is required"),
   dateScheduled: yup
     .date()
+    .nullable()
     .test(
       "chronological",
       "Date scheduled can't be before date received",
