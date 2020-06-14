@@ -14,7 +14,7 @@ const TrainingList = ({ activeId, filter, handleClick }) => {
   if (training.length === 0) return <Empty message="No training found" />;
 
   return (
-    <List divided selection relaxed>
+    <List selection>
       {training.map((t) => (
         <List.Item
           key={t.id}

@@ -35,7 +35,7 @@ const TrainingPage = () => {
 
   const handleFormClose = (id) => {
     if (id) goToTrainingDetail(id);
-    else history.push(routes.training.list);
+    else history.push(routes.training.base);
   };
 
   const goToTrainingDetail = (id) => {

@@ -32,7 +32,7 @@ const ResourceDetail = ({ id }) => {
 
   const handleDelete = () => {
     dispatch(deleteResource(id)).then(() => {
-      history.push(routes.resources.list);
+      history.push(routes.resources.base);
     });
   };
 

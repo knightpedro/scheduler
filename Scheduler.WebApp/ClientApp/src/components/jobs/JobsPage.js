@@ -5,7 +5,7 @@ import { jobsSelectors, createJob } from "../../ducks/jobs";
 import { fetchAll } from "../../ducks/sharedActions";
 import { Grid, Header, Button, Segment } from "semantic-ui-react";
 import { JobForm } from "../forms";
-import { coordinatorSelectors } from "../../ducks/coordinators";
+import { coordinatorsSelectors } from "../../ducks/coordinators";
 import { useHistory, generatePath } from "react-router-dom";
 import routes from "../../routes";
 
@@ -14,7 +14,7 @@ const JobsPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const jobs = useSelector(jobsSelectors.selectAllWithCoordinator);
-  const coordinatorOptions = useSelector(coordinatorSelectors.selectOptions);
+  const coordinatorOptions = useSelector(coordinatorsSelectors.selectOptions);
 
   useEffect(() => {
     dispatch(fetchAll());

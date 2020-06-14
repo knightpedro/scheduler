@@ -31,7 +31,7 @@ const WorkerDetail = ({ id }) => {
 
   const handleDelete = () => {
     dispatch(deleteWorker(id)).then(() => {
-      history.push(routes.workers.list);
+      history.push(routes.workers.base);
     });
   };
 

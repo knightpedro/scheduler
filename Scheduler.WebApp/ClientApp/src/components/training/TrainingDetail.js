@@ -15,12 +15,12 @@ const TrainingDetail = ({ id }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const training = useSelector((state) =>
-    trainingSelectors.selectTrainingWithWorkerIds(state, id)
+    trainingSelectors.selectById(state, id)
   );
 
   const handleDelete = () => {
     dispatch(deleteTraining(id)).then(() => {
-      history.push(routes.training.list);
+      history.push(routes.training.base);
     });
   };
 

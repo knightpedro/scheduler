@@ -1,9 +1,9 @@
 const createCrudRoutes = (base) => {
   return {
-    list: `/${base}`,
+    base: `/${base}`,
+    list: `/${base}/:id?`,
     detail: `/${base}/:id`,
     create: `/${base}/create`,
-    edit: `/${base}/edit/:id`,
   };
 };
 
@@ -12,9 +12,6 @@ const routes = {
   about: "/about",
   coordinators: createCrudRoutes("coordinators"),
   jobs: createCrudRoutes("jobs"),
-  jobTasks: createCrudRoutes("tasks"),
-  leave: createCrudRoutes("leave"),
-  outOfServices: createCrudRoutes("outofservices"),
   plant: createCrudRoutes("plant"),
   reports: "/reports",
   resources: createCrudRoutes("resources"),

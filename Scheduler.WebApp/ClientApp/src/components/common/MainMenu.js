@@ -43,8 +43,8 @@ const MainMenu = () => {
         </Menu.Item>
         <Menu.Item
           as={Link}
-          to={routes.jobs.list}
-          active={useActiveRoute(routes.jobs.list)}
+          to={routes.jobs.base}
+          active={useActiveRoute(routes.jobs.base)}
         >
           Jobs
         </Menu.Item>
@@ -57,16 +57,16 @@ const MainMenu = () => {
         </Menu.Item>
         <Menu.Item as={Dropdown} text="Administration" className="link item">
           <Dropdown.Menu>
-            <Dropdown.Item as={Link} to={routes.coordinators.list}>
+            <Dropdown.Item as={Link} to={routes.coordinators.base}>
               Coordinators
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to={routes.resources.list}>
+            <Dropdown.Item as={Link} to={routes.resources.base}>
               Plant
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to={routes.workers.list}>
+            <Dropdown.Item as={Link} to={routes.workers.base}>
               Staff
             </Dropdown.Item>
-            <Dropdown.Item as={Link} to={routes.training.list}>
+            <Dropdown.Item as={Link} to={routes.training.base}>
               Training
             </Dropdown.Item>
           </Dropdown.Menu>

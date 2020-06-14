@@ -13,7 +13,7 @@ import { jobsSelectors, deleteJob, updateJob } from "../../ducks/jobs";
 import routes from "../../routes";
 import { JobTasksTable } from "../jobTasks";
 import { JobForm } from "../forms";
-import { coordinatorSelectors } from "../../ducks/coordinators";
+import { coordinatorsSelectors } from "../../ducks/coordinators";
 import JobDetailTable from "./JobDetailTable";
 import { Empty } from "../common";
 import { JobTaskFormContainer } from "../forms/containers";
@@ -45,11 +45,11 @@ const JobDetail = ({ id }) => {
   const job = useSelector((state) =>
     jobsSelectors.selectJobWithEntities(state, id)
   );
-  const coordinatorOptions = useSelector(coordinatorSelectors.selectOptions);
+  const coordinatorOptions = useSelector(coordinatorsSelectors.selectOptions);
 
   const handleDelete = () => {
     dispatch(deleteJob(id));
-    history.push(routes.jobs.list);
+    history.push(routes.jobs.base);
   };
 
   const handleJobSubmit = (values) => {

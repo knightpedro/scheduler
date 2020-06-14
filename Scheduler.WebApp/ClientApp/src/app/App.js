@@ -10,6 +10,7 @@ import AuthorizeRoute from "../components/api-authorization/AuthorizeRoute";
 import ApiAuthorizationRoutes from "../components/api-authorization/ApiAuthorizationRoutes";
 import { ApplicationPaths } from "../components/api-authorization/ApiAuthorizationConstants";
 import { ErrorMessages, MainMenu, PortalManager } from "../components/common";
+import Coordinators from "../components/coordinators";
 import Jobs from "../components/jobs";
 import Resources from "../components/resources";
 import Schedules from "../components/schedules";
@@ -38,6 +39,10 @@ function App() {
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}
+        />
+        <AuthorizeRoute
+          path={routes.coordinators.list}
+          component={Coordinators}
         />
         <AuthorizeRoute path={routes.jobs.list} component={Jobs} />
         <AuthorizeRoute path={routes.resources.list} component={Resources} />

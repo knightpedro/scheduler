@@ -1,7 +1,4 @@
 import moment from "moment";
-import routes from "../routes";
-import { generatePath } from "react-router-dom";
-import { appointmentTypes } from "../constants";
 
 export const createAppointment = (appointment) => {
   return {
@@ -9,25 +6,6 @@ export const createAppointment = (appointment) => {
     start: moment(appointment.start),
     end: moment(appointment.end),
   };
-};
-
-export const createAppointmentPath = (id, type) => {
-  let route;
-  switch (type) {
-    case appointmentTypes.LEAVE:
-      route = routes.leave.EDIT;
-      break;
-    case appointmentTypes.OUT_OF_SERVICE:
-      route = routes.outOfServices.EDIT;
-      break;
-    case appointmentTypes.TRAINING:
-      route = routes.training.DETAIL;
-      break;
-    default:
-      route = routes.jobTasks.DETAIL;
-      break;
-  }
-  return generatePath(route, { id });
 };
 
 export const getWeekDays = (date) => {

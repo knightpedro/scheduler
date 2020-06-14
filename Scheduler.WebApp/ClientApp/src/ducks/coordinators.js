@@ -47,13 +47,22 @@ const adapterSelectors = coordinatorsAdapter.getSelectors(
   (state) => state.coordinators
 );
 
+const selectFiltered = (state, filter) => {
+  const coordinators = adapterSelectors.selectAll(state);
+  if (!filter) return coordinators;
+  return coordinators.filter((coordinator) =>
+    coordinator.name.toLowerCase().includes(filter.toLowerCase())
+  );
+};
+
 const selectOptions = (state) =>
   adapterSelectors
     .selectAll(state)
     .map((coordinator) => ({ text: coordinator.name, value: coordinator.id }));
 
-export const coordinatorSelectors = {
+export const coordinatorsSelectors = {
   ...adapterSelectors,
+  selectFiltered,
   selectOptions,
 };
 

@@ -36,7 +36,7 @@ const WorkersPage = () => {
 
   const handleFormClose = (id) => {
     if (id) goToWorkerDetail(id);
-    else history.push(routes.workers.list);
+    else history.push(routes.workers.base);
   };
 
   const goToWorkerDetail = (id) => {

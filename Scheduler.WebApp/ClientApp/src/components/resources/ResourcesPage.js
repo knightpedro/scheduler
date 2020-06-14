@@ -36,7 +36,7 @@ const ResourcesPage = () => {
 
   const handleFormClose = (id) => {
     if (id) goToResourceDetail(id);
-    else history.push(routes.resources.list);
+    else history.push(routes.resources.base);
   };
 
   const goToResourceDetail = (id) => {
