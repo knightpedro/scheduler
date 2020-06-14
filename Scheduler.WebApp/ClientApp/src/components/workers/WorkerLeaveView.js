@@ -31,11 +31,6 @@ const WorkerLeaveView = ({ id }) => {
 
   return (
     <Grid>
-      <Grid.Row columns="equal">
-        <Grid.Column>
-          <Button color="teal" content="Add" onClick={handleAddLeaveClick} />
-        </Grid.Column>
-      </Grid.Row>
       {showLeaveForm && (
         <Grid.Row columns="equal">
           <Grid.Column>
@@ -49,6 +44,12 @@ const WorkerLeaveView = ({ id }) => {
       )}
       <Grid.Row columns="equal">
         <Grid.Column>
+          <Button
+            color="teal"
+            content="Add"
+            onClick={handleAddLeaveClick}
+            floated="right"
+          />
           {leave && leave.length > 0 ? (
             <LeaveTable leave={leave} handleClick={handleLeaveClick} />
           ) : (

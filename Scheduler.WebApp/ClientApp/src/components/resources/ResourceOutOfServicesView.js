@@ -31,11 +31,6 @@ const ResourceOutOfServicesView = ({ id }) => {
 
   return (
     <Grid>
-      <Grid.Row columns="equal">
-        <Grid.Column>
-          <Button color="teal" content="Add" onClick={handleAddClick} />
-        </Grid.Column>
-      </Grid.Row>
       {showForm && (
         <Grid.Row columns="equal">
           <Grid.Column>
@@ -50,6 +45,12 @@ const ResourceOutOfServicesView = ({ id }) => {
       )}
       <Grid.Row columns="equal">
         <Grid.Column>
+          <Button
+            color="teal"
+            content="Add"
+            onClick={handleAddClick}
+            floated="right"
+          />
           {outOfServices && outOfServices.length > 0 ? (
             <OutOfServicesTable
               outOfServices={outOfServices}
