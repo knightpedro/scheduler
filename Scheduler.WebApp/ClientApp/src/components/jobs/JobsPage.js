@@ -6,10 +6,13 @@ import { fetchAll } from "../../ducks/sharedActions";
 import { Grid, Header, Button, Segment } from "semantic-ui-react";
 import { JobForm } from "../forms";
 import { coordinatorSelectors } from "../../ducks/coordinators";
+import { useHistory, generatePath } from "react-router-dom";
+import routes from "../../routes";
 
 const JobsPage = () => {
   const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
   const jobs = useSelector(jobsSelectors.selectAllWithCoordinator);
   const coordinatorOptions = useSelector(coordinatorSelectors.selectOptions);
 
@@ -20,6 +23,11 @@ const JobsPage = () => {
   const handleSubmit = (values) => {
     setShowForm(false);
     dispatch(createJob(values));
+  };
+
+  const handleJobClick = ({ id }) => {
+    const path = generatePath(routes.jobs.detail, { id });
+    history.push(path);
   };
 
   return (
@@ -51,7 +59,7 @@ const JobsPage = () => {
       )}
       <Grid.Row columns="equal">
         <Grid.Column>
-          <JobsTable jobs={jobs} />
+          <JobsTable jobs={jobs} handleClick={handleJobClick} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

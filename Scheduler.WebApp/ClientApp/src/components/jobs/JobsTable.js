@@ -1,22 +1,13 @@
 import React, { useMemo } from "react";
-import {
-  useTable,
-  useFilters,
-  useGlobalFilter,
-  useSortBy,
-  usePagination,
-} from "react-table";
-import { Table, TableCell, Icon, Pagination, Header } from "semantic-ui-react";
-import { GlobalSearchFilter, SelectFilter } from "../tables/filters";
+import { Icon, Header } from "semantic-ui-react";
+import { SelectFilter } from "../tables/filters";
 import { momentSort } from "../tables/sorters";
 import { jobStatus } from "../../constants";
-import routes from "../../routes";
-import { useHistory, generatePath } from "react-router-dom";
+import { BaseTable } from "../tables";
 
 const TIME_FORMAT = "DD/MM/YY";
 
-const JobsTable = ({ jobs }) => {
-  const history = useHistory();
+const JobsTable = ({ jobs, handleClick }) => {
   const data = useMemo(
     () =>
       jobs.map((j) => ({
@@ -25,13 +16,6 @@ const JobsTable = ({ jobs }) => {
         status: j.isComplete ? jobStatus.COMPLETE : jobStatus.IN_PROGRESS,
       })),
     [jobs]
-  );
-
-  const defaultColumn = useMemo(
-    () => ({
-      Filter: () => null,
-    }),
-    []
   );
 
   const columns = useMemo(
@@ -86,102 +70,23 @@ const JobsTable = ({ jobs }) => {
     []
   );
 
-  const handleRowClick = (row) => {
-    const path = generatePath(routes.jobs.detail, {
-      id: row.original.id,
-    });
-    history.push(path);
-  };
-
   const initialState = {
     pageSize: 20,
     sortBy: [{ id: "dateReceived", desc: true }],
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    pageCount,
-    gotoPage,
-    state: { globalFilter, pageIndex },
-    setGlobalFilter,
-    preGlobalFilteredRows,
-  } = useTable(
-    { columns, data, defaultColumn, initialState },
-    useFilters,
-    useGlobalFilter,
-    useSortBy,
-    usePagination
-  );
+  const globalSearchOptions = {
+    placeholder: "Search jobs",
+  };
 
   return (
-    <>
-      <GlobalSearchFilter
-        fluid
-        placeholder="Search jobs"
-        preGlobalFilteredRows={preGlobalFilteredRows}
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
-      />
-      <Table {...getTableProps()} selectable>
-        <Table.Header>
-          {headerGroups.map((headerGroup) => (
-            <Table.Row {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <Table.HeaderCell
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  title={null}
-                >
-                  <div className="tableHeaderCellWrapper">
-                    <span>{column.render("Header")}</span>
-                    <span>
-                      {column.isSorted ? (
-                        <Icon
-                          color="teal"
-                          name={column.isSortedDesc ? "caret down" : "caret up"}
-                        />
-                      ) : null}
-                    </span>
-                    <div>
-                      {column.canFilter ? column.render("Filter") : null}
-                    </div>
-                  </div>
-                </Table.HeaderCell>
-              ))}
-            </Table.Row>
-          ))}
-        </Table.Header>
-        <Table.Body {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <Table.Row
-                {...row.getRowProps()}
-                onClick={() => handleRowClick(row)}
-              >
-                {row.cells.map((cell) => (
-                  <TableCell {...cell.getCellProps()}>
-                    {cell.render("Cell")}
-                  </TableCell>
-                ))}
-              </Table.Row>
-            );
-          })}
-        </Table.Body>
-      </Table>
-      {pageCount > 1 && (
-        <Pagination
-          activePage={pageIndex + 1}
-          totalPages={pageCount}
-          firstItem={null}
-          lastItem={null}
-          onPageChange={(_, { activePage }) => gotoPage(activePage - 1)}
-        />
-      )}
-    </>
+    <BaseTable
+      data={data}
+      columns={columns}
+      initialState={initialState}
+      handleClick={handleClick}
+      globalSearchOptions={globalSearchOptions}
+    />
   );
 };
 

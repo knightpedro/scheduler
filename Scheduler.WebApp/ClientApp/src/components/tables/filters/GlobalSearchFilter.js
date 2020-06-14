@@ -10,6 +10,7 @@ const GlobalSearchFilter = ({
   return (
     <Input
       icon="search"
+      iconPosition="left"
       placeholder={`Search ${preGlobalFilteredRows.length} records`}
       value={globalFilter || ""}
       onChange={(_, { value }) => setGlobalFilter(value || "")}
