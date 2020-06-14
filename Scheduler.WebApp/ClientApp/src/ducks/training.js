@@ -68,7 +68,7 @@ export const assignWorkersToTraining = createAsyncThunk(
 );
 
 const trainingAdapter = createEntityAdapter({
-  sortComparer: (a, b) => moment(a.start).unix() - moment(b.start).unix(),
+  sortComparer: (a, b) => moment(b.start).unix() - moment(a.start).unix(),
 });
 
 const adapterSelectors = trainingAdapter.getSelectors(

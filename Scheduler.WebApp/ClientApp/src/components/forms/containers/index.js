@@ -1,5 +1,13 @@
 import JobTaskFormContainer from "./JobTaskFormContainer";
 import LeaveFormContainer from "./LeaveFormContainer";
+import OutOfServiceFormContainer from "./OutOfServiceFormContainer";
+import ResourceFormContainer from "./ResourceFormContainer";
 import TrainingFormContainer from "./TrainingFormContainer";
 
-export { JobTaskFormContainer, LeaveFormContainer, TrainingFormContainer };
+export {
+  JobTaskFormContainer,
+  LeaveFormContainer,
+  OutOfServiceFormContainer,
+  ResourceFormContainer,
+  TrainingFormContainer,
+};

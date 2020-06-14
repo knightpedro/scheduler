@@ -5,8 +5,9 @@ import {
   useHistory,
   Switch,
   Route,
+  Redirect,
 } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, Input, Button } from "semantic-ui-react";
 import routes from "../../routes";
 import TrainingDetail from "./TrainingDetail";
@@ -14,12 +15,14 @@ import TrainingList from "./TrainingList";
 import { Empty } from "../common";
 import { fetchAll } from "../../ducks/sharedActions";
 import { TrainingFormContainer } from "../forms/containers";
+import { trainingSelectors } from "../../ducks/training";
 
 const TrainingPage = () => {
   const [filter, setFilter] = useState();
   const history = useHistory();
   const location = useLocation();
   const trainingId = parseInt(location.pathname.split("/").reverse()[0]);
+  const firstId = useSelector(trainingSelectors.selectIds)[0];
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -68,7 +71,13 @@ const TrainingPage = () => {
               <TrainingDetail id={trainingId} />
             </Route>
             <Route>
-              <Empty message="Select training" />
+              {firstId ? (
+                <Redirect
+                  to={generatePath(routes.training.detail, { id: firstId })}
+                />
+              ) : (
+                <Empty message="Select training" />
+              )}
             </Route>
           </Switch>
         </Grid.Column>

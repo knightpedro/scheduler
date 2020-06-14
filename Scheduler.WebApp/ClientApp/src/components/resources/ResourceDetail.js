@@ -6,19 +6,20 @@ import { IndividualSchedule } from "../schedules/schedule";
 import { uiSelectors, setPeriod } from "../../ducks/ui";
 import { useWeekPicker } from "../schedules/hooks";
 import WeekPicker from "../schedules/WeekPicker";
-import { selectCalendarForWorker } from "../../ducks/globalSelectors";
-import WorkerEventsView from "./WorkerEventsView";
-import { deleteWorker } from "../../ducks/workers";
+import { selectCalendarForResource } from "../../ducks/globalSelectors";
 import routes from "../../routes";
 import { Empty } from "../common";
-import WorkerFormContainer from "../forms/containers/WorkerFormContainer";
+import { deleteResource } from "../../ducks/resources";
+import { ResourceFormContainer } from "../forms/containers";
+import ResourceEventsView from "./ResourceEventsView";
 
-const WorkerDetail = ({ id }) => {
+const ResourceDetail = ({ id }) => {
   const [editing, setEditing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
-  const worker = useSelector((state) => selectCalendarForWorker(state, id));
+
+  const resource = useSelector((state) => selectCalendarForResource(state, id));
 
   const period = useSelector(uiSelectors.selectPeriod);
   const { start, end, nextWeek, previousWeek, reset, setDate } = useWeekPicker(
@@ -30,23 +31,23 @@ const WorkerDetail = ({ id }) => {
   }, [dispatch, start, end]);
 
   const handleDelete = () => {
-    dispatch(deleteWorker(id)).then(() => {
-      history.push(routes.workers.list);
+    dispatch(deleteResource(id)).then(() => {
+      history.push(routes.resources.list);
     });
   };
 
-  if (!worker) return <Empty message="Staff member not found" />;
+  if (!resource) return <Empty message="Plant not found" />;
 
   return (
     <Grid stackable>
       <Grid.Row columns="equal">
         <Grid.Column>
           <Header as="h2">
-            <Icon
-              name="user outline"
-              color={worker.isActive ? "green" : "red"}
-            />
-            <Header.Content>{worker.name}</Header.Content>
+            <Icon name="truck" color={resource.isActive ? "green" : "red"} />
+            <Header.Content>
+              {resource.name}
+              <Header.Subheader>{resource.description}</Header.Subheader>
+            </Header.Content>
           </Header>
         </Grid.Column>
         <Grid.Column textAlign="right">
@@ -60,7 +61,7 @@ const WorkerDetail = ({ id }) => {
       {editing && (
         <Grid.Row columns="equal">
           <Grid.Column>
-            <WorkerFormContainer
+            <ResourceFormContainer
               id={id}
               closeForm={() => setEditing(false)}
               showHeader={false}
@@ -89,7 +90,7 @@ const WorkerDetail = ({ id }) => {
       <Grid.Row columns="equal">
         <Grid.Column>
           <IndividualSchedule
-            schedule={worker.schedule}
+            schedule={resource.schedule}
             start={start}
             end={end}
           />
@@ -98,15 +99,15 @@ const WorkerDetail = ({ id }) => {
       <Divider hidden />
       <Grid.Row columns="equal">
         <Grid.Column>
-          <WorkerEventsView id={id} />
+          <ResourceEventsView id={id} />
         </Grid.Column>
       </Grid.Row>
 
       {showModal && (
         <Modal open={showModal} onClose={() => setShowModal(false)}>
-          <Header content="Delete Staff Member" />
+          <Header content="Delete Plant" />
           <Modal.Content>
-            Are you sure you want to delete {worker.name}?
+            Are you sure you want to delete {resource.name}?
           </Modal.Content>
           <Modal.Actions>
             <Button onClick={() => setShowModal(false)} content="Cancel" />
@@ -118,4 +119,4 @@ const WorkerDetail = ({ id }) => {
   );
 };
 
-export default WorkerDetail;
+export default ResourceDetail;

@@ -1,28 +1,27 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  trainingSelectors,
-  deleteTraining,
-  updateTraining,
-} from "../../ducks/training";
+import { trainingSelectors, deleteTraining } from "../../ducks/training";
 import { Empty } from "../common";
-import { Grid, Button, Header, Modal, Segment } from "semantic-ui-react";
+import { Grid, Button, Header, Modal } from "semantic-ui-react";
 import TrainingDetailTable from "./TrainingDetailTable";
 import TrainingAttendees from "./TrainingAttendees";
-import { workersSelectors } from "../../ducks/workers";
 import { TrainingFormContainer } from "../forms/containers";
+import { useHistory } from "react-router-dom";
+import routes from "../../routes";
 
 const TrainingDetail = ({ id }) => {
   const [showTrainingForm, setShowTrainingForm] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
   const training = useSelector((state) =>
     trainingSelectors.selectTrainingWithWorkerIds(state, id)
   );
-  const workerOptions = useSelector(workersSelectors.selectOptions);
 
   const handleDelete = () => {
-    dispatch(deleteTraining(id));
+    dispatch(deleteTraining(id)).then(() => {
+      history.push(routes.training.list);
+    });
   };
 
   if (!training) return <Empty message="Training not found" />;

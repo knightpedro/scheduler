@@ -148,6 +148,7 @@ const selectEventsForResource = (state, resourceId, conflicts) =>
   );
 
 export const resourceJobTaskSelectors = {
+  selectJobTasksForResource,
   selectJobTaskIdsByResource,
   selectResourceIdsByJobTask,
   selectEventsForResource,

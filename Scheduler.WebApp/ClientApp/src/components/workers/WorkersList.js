@@ -1,7 +1,16 @@
 import React from "react";
 import { Icon, List } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { workersSelectors } from "../../ducks/workers";
+import { Empty } from "../common";
 
-const WorkersList = ({ workers, activeId, handleClick }) => {
+const WorkersList = ({ activeId, filter, handleClick }) => {
+  const workers = useSelector((state) =>
+    workersSelectors.selectFiltered(state, filter)
+  );
+
+  if (workers.length === 0) return <Empty message="No staff found" />;
+
   return (
     <List selection>
       {workers.map((w) => (

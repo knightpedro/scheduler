@@ -49,8 +49,10 @@ const adapterSelectors = resourcesAdapter.getSelectors(
 const selectFiltered = (state, filter) => {
   const resources = adapterSelectors.selectAll(state);
   if (!filter) return resources;
-  return resources.filter((r) =>
-    r.name.toLowerCase().includes(filter.toLowerCase())
+  return resources.filter(
+    (r) =>
+      r.name.toLowerCase().includes(filter.toLowerCase()) ||
+      r.description.toLowerCase().includes(filter.toLowerCase())
   );
 };
 

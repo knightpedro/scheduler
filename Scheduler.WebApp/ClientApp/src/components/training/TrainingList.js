@@ -4,6 +4,8 @@ import { trainingSelectors } from "../../ducks/training";
 import { Empty } from "../common";
 import { List } from "semantic-ui-react";
 
+const DATETIME_FORMAT = "h:mma Do MMM YYYY";
+
 const TrainingList = ({ activeId, filter, handleClick }) => {
   const training = useSelector((state) =>
     trainingSelectors.selectFiltered(state, filter)
@@ -12,7 +14,7 @@ const TrainingList = ({ activeId, filter, handleClick }) => {
   if (training.length === 0) return <Empty message="No training found" />;
 
   return (
-    <List selection divided>
+    <List divided selection relaxed>
       {training.map((t) => (
         <List.Item
           key={t.id}
@@ -21,7 +23,9 @@ const TrainingList = ({ activeId, filter, handleClick }) => {
         >
           <List.Content>
             <List.Header>{t.description}</List.Header>
-            <List.Description>{t.location}</List.Description>
+            <List.Description>
+              {t.start.format(DATETIME_FORMAT)}
+            </List.Description>
           </List.Content>
         </List.Item>
       ))}

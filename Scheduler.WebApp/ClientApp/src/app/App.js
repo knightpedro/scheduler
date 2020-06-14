@@ -11,6 +11,7 @@ import ApiAuthorizationRoutes from "../components/api-authorization/ApiAuthoriza
 import { ApplicationPaths } from "../components/api-authorization/ApiAuthorizationConstants";
 import { ErrorMessages, MainMenu, PortalManager } from "../components/common";
 import Jobs from "../components/jobs";
+import Resources from "../components/resources";
 import Schedules from "../components/schedules";
 import Training from "../components/training";
 import Workers from "../components/workers";
@@ -39,6 +40,7 @@ function App() {
           component={ApiAuthorizationRoutes}
         />
         <AuthorizeRoute path={routes.jobs.list} component={Jobs} />
+        <AuthorizeRoute path={routes.resources.list} component={Resources} />
         <AuthorizeRoute path={routes.schedules.base} component={Schedules} />
         <AuthorizeRoute path={routes.training.list} component={Training} />
         <AuthorizeRoute path={routes.workers.list} component={Workers} />
