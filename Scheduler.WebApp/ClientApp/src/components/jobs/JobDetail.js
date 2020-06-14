@@ -73,6 +73,12 @@ const JobDetail = ({ id }) => {
     setSelectedTaskId();
   };
 
+  const handleToggleComplete = () => {
+    const { coordinator, jobTasks, ...values } = job;
+    job.isComplete = !job.isComplete;
+    dispatch(updateJob(job));
+  };
+
   if (!job) return <Empty message="Job not found" />;
 
   return (
@@ -106,7 +112,10 @@ const JobDetail = ({ id }) => {
 
       <Grid.Row columns="equal">
         <Grid.Column>
-          <JobDetailTable job={job} />
+          <JobDetailTable
+            job={job}
+            handleToggleComplete={handleToggleComplete}
+          />
         </Grid.Column>
       </Grid.Row>
 
@@ -121,6 +130,7 @@ const JobDetail = ({ id }) => {
             floated="right"
             color="teal"
             content="Add"
+            disabled={job.isComplete}
             onClick={handleAddTaskClick}
           />
         </Grid.Column>

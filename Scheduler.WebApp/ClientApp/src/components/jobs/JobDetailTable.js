@@ -1,21 +1,26 @@
 import React from "react";
-import { Icon, Table } from "semantic-ui-react";
+import { Icon, Table, Label, Button } from "semantic-ui-react";
 import { Link, generatePath } from "react-router-dom";
 import { jobStatus } from "../../constants";
 import routes from "../../routes";
 
 const DATE_FORMAT = "DD/MM/YYYY";
 
-const JobDetailTable = ({ job }) => (
+const JobDetailTable = ({ job, handleToggleComplete }) => (
   <Table basic="very" collapsing>
     <Table.Body>
       <Table.Row>
-        <Table.Cell colSpan={2}>
+        <Table.Cell>
           <Icon
             name={job.isComplete ? "check" : "refresh"}
             color={job.isComplete ? "green" : "blue"}
           />
           {job.isComplete ? jobStatus.COMPLETE : jobStatus.IN_PROGRESS}
+        </Table.Cell>
+        <Table.Cell>
+          <Button size="tiny" compact onClick={handleToggleComplete}>
+            {job.isComplete ? "Mark uncomplete" : "Mark complete"}
+          </Button>
         </Table.Cell>
       </Table.Row>
       <Table.Row>
