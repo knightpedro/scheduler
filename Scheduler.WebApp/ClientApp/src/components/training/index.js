@@ -1,3 +1,6 @@
-import TrainingTable from "./TrainingTable";
+import React from "react";
+import TrainingPage from "./TrainingPage";
 
-export { TrainingTable };
+const Training = () => <TrainingPage />;
+
+export default Training;

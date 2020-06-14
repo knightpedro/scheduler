@@ -18,28 +18,26 @@ import JobDetailTable from "./JobDetailTable";
 import { Empty } from "../common";
 import { JobTaskFormContainer } from "../forms/containers";
 
-const JobDetail = () => {
+const JobDetail = ({ id }) => {
   const [showJobForm, setShowJobForm] = useState(false);
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState();
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
-  const { id } = useParams();
-  const jobId = parseInt(id);
 
   useEffect(() => {
     setSelectedTaskId();
     setShowTaskForm(false);
-  }, [jobId]);
+  }, [id]);
 
   const job = useSelector((state) =>
-    jobsSelectors.selectJobWithEntities(state, jobId)
+    jobsSelectors.selectJobWithEntities(state, id)
   );
   const coordinatorOptions = useSelector(coordinatorSelectors.selectOptions);
 
   const handleDelete = () => {
-    dispatch(deleteJob(jobId));
+    dispatch(deleteJob(id));
     history.push(routes.jobs.list);
   };
 
@@ -122,7 +120,7 @@ const JobDetail = () => {
           <Grid.Column>
             <JobTaskFormContainer
               id={selectedTaskId}
-              jobId={jobId}
+              jobId={id}
               closeForm={handleTaskFormClose}
             />
           </Grid.Column>

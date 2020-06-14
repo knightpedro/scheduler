@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { workerTrainingSelectors } from "../../ducks/training";
-import { TrainingTable } from "../training";
+import TrainingTable from "../training/TrainingTable";
 import { Empty } from "../common";
 import { generatePath, useHistory } from "react-router-dom";
 import routes from "../../routes";

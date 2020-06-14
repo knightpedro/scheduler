@@ -12,6 +12,7 @@ import {
 } from "../utils/appointments";
 import moment from "moment";
 import { appointmentTypes } from "../constants";
+import { workersSelectors } from "./workers";
 
 export const fetchTraining = createAsyncThunk("training/fetchAll", () =>
   trainingService.getAll()
@@ -77,6 +78,14 @@ const adapterSelectors = trainingAdapter.getSelectors(
 const selectAll = (state) =>
   adapterSelectors.selectAll(state).map((t) => transformDatesToMoments(t));
 
+const selectFiltered = (state, filter) => {
+  const training = selectAll(state);
+  if (!filter) return training;
+  return training.filter((t) =>
+    t.description.toLowerCase().includes(filter.toLowerCase())
+  );
+};
+
 const selectById = (state, id) => {
   const entity = adapterSelectors.selectById(state, id);
   if (entity) return transformDatesToMoments(entity);
@@ -90,7 +99,9 @@ const selectTrainingWithWorkerIds = (state, id) => {
 };
 
 export const trainingSelectors = {
+  ...adapterSelectors,
   selectAll,
+  selectFiltered,
   selectById,
   selectTrainingWithWorkerIds,
 };
@@ -110,6 +121,11 @@ const selectTrainingForWorker = (state, workerId) =>
     selectById(state, trainingId)
   );
 
+const selectWorkersForTraining = (state, trainingId) =>
+  selectWorkerIdsByTraining(state, trainingId)
+    .map((workerId) => workersSelectors.selectById(state, workerId))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
 const selectEventsForWorker = (state, workerId, conflicts) =>
   selectTrainingForWorker(state, workerId).map((t) => ({
     id: t.id,
@@ -125,6 +141,7 @@ export const workerTrainingSelectors = {
   selectTrainingForWorker,
   selectEventsForWorker,
   selectWorkerIdsByTraining,
+  selectWorkersForTraining,
 };
 
 const trainingSlice = createSlice({

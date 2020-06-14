@@ -12,6 +12,7 @@ import { ApplicationPaths } from "../components/api-authorization/ApiAuthorizati
 import { ErrorMessages, MainMenu, PortalManager } from "../components/common";
 import Jobs from "../components/jobs";
 import Schedules from "../components/schedules";
+import Training from "../components/training";
 import Workers from "../components/workers";
 import PageNotFound from "../components/pageNotFound";
 import { Grid, Divider } from "semantic-ui-react";
@@ -39,6 +40,7 @@ function App() {
         />
         <AuthorizeRoute path={routes.jobs.list} component={Jobs} />
         <AuthorizeRoute path={routes.schedules.base} component={Schedules} />
+        <AuthorizeRoute path={routes.training.list} component={Training} />
         <AuthorizeRoute path={routes.workers.list} component={Workers} />
         <Route component={PageNotFound} />
       </Switch>

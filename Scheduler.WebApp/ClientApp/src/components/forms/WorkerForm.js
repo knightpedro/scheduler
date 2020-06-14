@@ -31,7 +31,7 @@ const WorkerForm = ({ handleSubmit, handleCancel, values, ...props }) => {
             <Form.Button
               type="button"
               content="Cancel"
-              onClick={handleCancel}
+              onClick={() => handleCancel()}
             />
           </Form.Group>
         </Form>
