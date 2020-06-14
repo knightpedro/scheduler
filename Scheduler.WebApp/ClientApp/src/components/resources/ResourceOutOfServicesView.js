@@ -32,7 +32,7 @@ const ResourceOutOfServicesView = ({ id }) => {
   return (
     <Grid>
       <Grid.Row columns="equal">
-        <Grid.Column textAlign="right">
+        <Grid.Column>
           <Button color="teal" content="Add" onClick={handleAddClick} />
         </Grid.Column>
       </Grid.Row>

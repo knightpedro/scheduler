@@ -1,5 +1,5 @@
 import React from "react";
-import { Tab } from "semantic-ui-react";
+import { Tab, Grid } from "semantic-ui-react";
 import ResourceTasksView from "./ResourceTasksView";
 import ResourceOutOfServicesView from "./ResourceOutOfServicesView";
 
@@ -8,25 +8,35 @@ const ResourceEventsView = ({ id }) => {
     {
       menuItem: "Tasks",
       pane: (
-        <Tab.Pane key="tasks" basic attached={false}>
-          <ResourceTasksView id={id} />
+        <Tab.Pane key="tasks" as={Grid} padded="vertically">
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <ResourceTasksView id={id} />
+            </Grid.Column>
+          </Grid.Row>
         </Tab.Pane>
       ),
     },
     {
       menuItem: "Out of Services",
       pane: (
-        <Tab.Pane key="outOfServices" basic attached={false}>
-          <ResourceOutOfServicesView id={id} />
+        <Tab.Pane key="outOfServices" as={Grid} padded="vertically">
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <ResourceOutOfServicesView id={id} />
+            </Grid.Column>
+          </Grid.Row>
         </Tab.Pane>
       ),
     },
   ];
 
   return (
-    <>
-      <Tab panes={panes} renderActiveOnly={false}></Tab>
-    </>
+    <Tab
+      menu={{ secondary: true, pointing: true }}
+      panes={panes}
+      renderActiveOnly={false}
+    />
   );
 };
 

@@ -32,7 +32,7 @@ const WorkerLeaveView = ({ id }) => {
   return (
     <Grid>
       <Grid.Row columns="equal">
-        <Grid.Column textAlign="right">
+        <Grid.Column>
           <Button color="teal" content="Add" onClick={handleAddLeaveClick} />
         </Grid.Column>
       </Grid.Row>
