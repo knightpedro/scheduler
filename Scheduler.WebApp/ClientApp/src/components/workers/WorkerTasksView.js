@@ -5,15 +5,18 @@ import { Empty } from "../common";
 import { JobTasksTable } from "../jobTasks";
 import { useHistory, generatePath } from "react-router-dom";
 import routes from "../../routes";
+import queryString from "query-string";
 
 const WorkerTasksView = ({ id }) => {
   const history = useHistory();
   const jobTasks = useSelector((state) =>
     workerJobTaskSelectors.selectJobTasksForWorker(state, id)
   );
-  const handleJobTaskClick = ({ jobId }) => {
+
+  const handleJobTaskClick = ({ id, jobId }) => {
     const path = generatePath(routes.jobs.detail, { id: jobId });
-    history.push(path);
+    const url = queryString.stringifyUrl({ url: path, query: { task: id } });
+    history.push(url);
   };
 
   return (

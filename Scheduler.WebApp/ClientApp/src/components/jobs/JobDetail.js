@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import {
   Grid,
   Header,
@@ -17,6 +17,7 @@ import { coordinatorSelectors } from "../../ducks/coordinators";
 import JobDetailTable from "./JobDetailTable";
 import { Empty } from "../common";
 import { JobTaskFormContainer } from "../forms/containers";
+import queryString from "query-string";
 
 const JobDetail = ({ id }) => {
   const [showJobForm, setShowJobForm] = useState(false);
@@ -30,6 +31,16 @@ const JobDetail = ({ id }) => {
     setSelectedTaskId();
     setShowTaskForm(false);
   }, [id]);
+
+  const search = useLocation().search;
+  const taskId = queryString.parse(search, { parseNumbers: true })["task"];
+
+  useEffect(() => {
+    if (taskId) {
+      setSelectedTaskId(taskId);
+      setShowTaskForm(true);
+    }
+  }, [taskId]);
 
   const job = useSelector((state) =>
     jobsSelectors.selectJobWithEntities(state, id)
