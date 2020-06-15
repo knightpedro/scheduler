@@ -1,82 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import {
-  Grid,
-  Header,
-  Button,
-  Modal,
-  Segment,
-  Divider,
-} from "semantic-ui-react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Grid, Header, Button, Modal, Divider } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
 import { jobsSelectors, deleteJob, updateJob } from "../../ducks/jobs";
 import routes from "../../routes";
-import { JobTasksTable } from "../jobTasks";
-import { JobForm } from "../forms";
-import { coordinatorsSelectors } from "../../ducks/coordinators";
 import JobDetailTable from "./JobDetailTable";
 import { Empty } from "../common";
-import { JobTaskFormContainer } from "../forms/containers";
-import queryString from "query-string";
+import JobFormContainer from "../forms/containers/JobFormContainer";
+import JobTasksView from "./JobTasksView";
 
 const JobDetail = ({ id }) => {
   const [showJobForm, setShowJobForm] = useState(false);
-  const [showTaskForm, setShowTaskForm] = useState(false);
-  const [selectedTaskId, setSelectedTaskId] = useState();
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  useEffect(() => {
-    setSelectedTaskId();
-    setShowTaskForm(false);
-  }, [id]);
-
-  const search = useLocation().search;
-  const taskId = queryString.parse(search, { parseNumbers: true })["task"];
-
-  useEffect(() => {
-    if (taskId) {
-      setSelectedTaskId(taskId);
-      setShowTaskForm(true);
-    }
-  }, [taskId]);
-
   const job = useSelector((state) =>
     jobsSelectors.selectJobWithEntities(state, id)
   );
-  const coordinatorOptions = useSelector(coordinatorsSelectors.selectOptions);
 
   const handleDelete = () => {
-    dispatch(deleteJob(id));
-    history.push(routes.jobs.base);
-  };
-
-  const handleJobSubmit = (values) => {
-    const { coordinator, jobTasks, ...job } = values;
-    setShowJobForm(false);
-    dispatch(updateJob(job));
-  };
-
-  const handleAddTaskClick = () => {
-    setSelectedTaskId();
-    setShowTaskForm(true);
-  };
-
-  const handleTaskClick = ({ id }) => {
-    setSelectedTaskId(id);
-    setShowTaskForm(true);
-  };
-
-  const handleTaskFormClose = () => {
-    setShowTaskForm(false);
-    setSelectedTaskId();
+    dispatch(deleteJob(id)).then(() => {
+      history.push(routes.jobs.base);
+    });
   };
 
   const handleToggleComplete = () => {
     const { coordinator, jobTasks, ...values } = job;
-    job.isComplete = !job.isComplete;
-    dispatch(updateJob(job));
+    values.isComplete = !values.isComplete;
+    dispatch(updateJob(values));
   };
 
   if (!job) return <Empty message="Job not found" />;
@@ -98,14 +50,11 @@ const JobDetail = ({ id }) => {
       {showJobForm && (
         <Grid.Row columns="equal">
           <Grid.Column>
-            <Segment padded>
-              <JobForm
-                values={job}
-                coordinatorOptions={coordinatorOptions}
-                handleCancel={() => setShowJobForm(false)}
-                handleSubmit={handleJobSubmit}
-              />
-            </Segment>
+            <JobFormContainer
+              id={id}
+              closeForm={() => setShowJobForm(false)}
+              showHeader={false}
+            />
           </Grid.Column>
         </Grid.Row>
       )}
@@ -121,43 +70,9 @@ const JobDetail = ({ id }) => {
 
       <Divider hidden />
 
-      <Grid.Row columns="equal" verticalAlign="middle">
-        <Grid.Column>
-          <Header>Tasks</Header>
-        </Grid.Column>
-        <Grid.Column textAlign="right">
-          <Button
-            floated="right"
-            color="teal"
-            content="Add"
-            disabled={job.isComplete}
-            onClick={handleAddTaskClick}
-          />
-        </Grid.Column>
-      </Grid.Row>
-
-      {showTaskForm && (
-        <Grid.Row>
-          <Grid.Column>
-            <JobTaskFormContainer
-              id={selectedTaskId}
-              jobId={id}
-              closeForm={handleTaskFormClose}
-            />
-          </Grid.Column>
-        </Grid.Row>
-      )}
-
       <Grid.Row columns="equal">
         <Grid.Column>
-          {job.jobTasks && job.jobTasks.length > 0 ? (
-            <JobTasksTable
-              jobTasks={job.jobTasks}
-              handleClick={handleTaskClick}
-            />
-          ) : (
-            <Empty message="No tasks found" />
-          )}
+          <JobTasksView jobId={id} />
         </Grid.Column>
       </Grid.Row>
 
