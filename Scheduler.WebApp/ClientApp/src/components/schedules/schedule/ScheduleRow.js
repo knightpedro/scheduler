@@ -49,8 +49,9 @@ const ScheduleRow = ({ start, end, schedule, header, path }) => {
   const events =
     schedule &&
     schedule.reduce((events, appointment) => {
+      const starts = appointment.start.diff(start) > 0;
+      const ends = appointment.end.diff(end) < 0;
       const startDiff = appointment.start.diff(start, "days");
-      const endDiff = appointment.end.diff(start, "days");
       const startSpan = moment
         .max(start, appointment.start)
         .clone()
@@ -62,10 +63,10 @@ const ScheduleRow = ({ start, end, schedule, header, path }) => {
       events.push(
         <Event
           header={header ? true : false}
-          key={`${appointment.id}${appointment.type}`}
+          key={`${appointment.id}-${appointment.type}-${start.format()}`}
           appointment={appointment}
-          starts={startDiff >= 0}
-          ends={endDiff < days}
+          starts={starts}
+          ends={ends}
           startDay={startDiff < 0 ? 1 : startDiff + 1}
           daySpan={daySpan}
         />

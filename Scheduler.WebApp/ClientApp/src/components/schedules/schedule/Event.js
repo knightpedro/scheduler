@@ -1,9 +1,14 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { openPortal, portalComponents } from "../../../ducks/portal";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  JobTaskFormContainer,
+  LeaveFormContainer,
+  OutOfServiceFormContainer,
+  TrainingFormContainer,
+} from "../../forms/containers";
 import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { appointmentTypes } from "../../../constants";
+import { usePopper } from "react-popper";
 
 const TIME_FORMAT = "h:mm a D/M";
 
@@ -19,6 +24,13 @@ const getEventColour = (type) => {
     default:
       return "#000";
   }
+};
+
+const formContainers = {
+  [appointmentTypes.JOB_TASK]: JobTaskFormContainer,
+  [appointmentTypes.LEAVE]: LeaveFormContainer,
+  [appointmentTypes.OUT_OF_SERVICE]: OutOfServiceFormContainer,
+  [appointmentTypes.TRAINING]: TrainingFormContainer,
 };
 
 const Container = styled.div`
@@ -80,44 +92,103 @@ const Duration = styled.div`
   text-overflow: ellipsis;
 `;
 
+const Popper = styled.div`
+  z-index: 1000;
+  visibility: ${({ show }) => (show ? "visible" : "hidden")};
+`;
+
 const Event = ({ appointment, ...props }) => {
   const { id, type, description, start, end, isConflicting } = appointment;
-  const dispatch = useDispatch();
+  const [showPopper, setShowPopper] = useState(false);
+  const containerRef = useRef(null);
+  const popperRef = useRef(null);
+  const { styles, attributes, update } = usePopper(
+    containerRef.current,
+    popperRef.current,
+    {
+      placement: "bottom-start",
+      modifiers: [
+        {
+          name: "offset",
+          enabled: true,
+          options: {
+            offset: [0, 10],
+          },
+        },
+      ],
+    }
+  );
+
+  useEffect(() => {
+    if (update != null) update();
+  }, [start, end, update]);
 
   const handleEventClick = () => {
-    let portalComponent;
-    switch (type) {
-      case appointmentTypes.LEAVE:
-        portalComponent = portalComponents.leaveForm;
-        break;
-      case appointmentTypes.OUT_OF_SERVICE:
-        portalComponent = portalComponents.outOfServiceForm;
-        break;
-      case appointmentTypes.TRAINING:
-        portalComponent = portalComponents.trainingForm;
-        break;
-      default:
-        portalComponent = portalComponents.jobTaskForm;
+    setShowPopper(true);
+  };
+
+  const handleOutsideClick = (e) => {
+    if (
+      popperRef.current.contains(e.target) ||
+      containerRef.current.contains(e.target)
+    )
+      return;
+    setShowPopper(false);
+  };
+
+  useEffect(() => {
+    if (showPopper) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideClick);
     }
-    dispatch(openPortal(portalComponent, { id }));
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [showPopper]);
+
+  const renderFormContainer = () => {
+    const FormContainer = formContainers[type];
+    if (FormContainer)
+      return (
+        <FormContainer
+          id={id}
+          closeForm={() => setShowPopper(false)}
+          showDelete
+          raised
+        />
+      );
+    return null;
   };
 
   return (
-    <Container
-      appointmentType={type}
-      isConflicting={isConflicting}
-      onClick={handleEventClick}
-      title={description}
-      {...props}
-    >
-      <div>
-        <Header>{description}</Header>
-        <Duration>
-          {start.format(TIME_FORMAT)} - {end.format(TIME_FORMAT)}
-        </Duration>
-      </div>
-      {isConflicting && <Icon name="exclamation triangle" />}
-    </Container>
+    <>
+      <Container
+        key={id}
+        ref={containerRef}
+        appointmentType={type}
+        isConflicting={isConflicting}
+        onClick={handleEventClick}
+        title={description}
+        {...props}
+      >
+        <div>
+          <Header>{description}</Header>
+          <Duration>
+            {start.format(TIME_FORMAT)} - {end.format(TIME_FORMAT)}
+          </Duration>
+        </div>
+        {isConflicting && <Icon name="exclamation triangle" />}
+      </Container>
+      <Popper
+        ref={popperRef}
+        style={styles.popper}
+        {...attributes.popper}
+        show={showPopper}
+      >
+        {renderFormContainer()}
+      </Popper>
+    </>
   );
 };
 

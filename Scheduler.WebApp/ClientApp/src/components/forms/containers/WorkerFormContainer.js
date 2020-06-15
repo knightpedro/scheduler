@@ -16,6 +16,7 @@ const WorkerFormContainer = ({
   closeForm,
   showHeader = true,
   showDelete = false,
+  ...props
 }) => {
   const dispatch = useDispatch();
   const worker = useSelector((state) => workersSelectors.selectById(state, id));
@@ -39,7 +40,7 @@ const WorkerFormContainer = ({
   };
 
   return (
-    <Segment padded>
+    <Segment padded {...props}>
       <Grid>
         {showHeader && (
           <Grid.Row columns="equal">

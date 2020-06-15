@@ -11,14 +11,21 @@ import { workersSelectors } from "../../../ducks/workers";
 import { resourcesSelectors } from "../../../ducks/resources";
 import { Segment, Header, Icon, Grid } from "semantic-ui-react";
 
-const JobTaskFormContainer = ({ id, jobId, closeForm }) => {
+const JobTaskFormContainer = ({
+  id,
+  jobId,
+  closeForm,
+  showHeader = true,
+  showDelete = false,
+  ...props
+}) => {
   const dispatch = useDispatch();
 
   const jobTask = useSelector((state) =>
     jobTaskSelectors.selectJobTaskWithEntities(state, id)
   );
 
-  const values = { ...jobTask, jobId };
+  const values = { jobId, ...jobTask };
 
   const resourceOptions = useSelector(resourcesSelectors.selectOptions);
   const workerOptions = useSelector(workersSelectors.selectOptions);
@@ -42,18 +49,20 @@ const JobTaskFormContainer = ({ id, jobId, closeForm }) => {
   };
 
   return (
-    <Segment padded>
+    <Segment padded {...props}>
       <Grid>
-        <Grid.Row columns="equal">
-          <Grid.Column>
-            <Header>{id ? "Edit " : "Add "}Task</Header>
-          </Grid.Column>
-          {id && (
-            <Grid.Column textAlign="right">
-              <Icon name="trash" link onClick={handleDelete} />
+        {showHeader && (
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <Header>{id ? "Edit " : "Add "}Task</Header>
             </Grid.Column>
-          )}
-        </Grid.Row>
+            {showDelete && id && (
+              <Grid.Column textAlign="right">
+                <Icon name="trash" link onClick={handleDelete} />
+              </Grid.Column>
+            )}
+          </Grid.Row>
+        )}
         <Grid.Row columns="equal">
           <Grid.Column>
             <JobTaskForm

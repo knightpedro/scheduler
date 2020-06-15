@@ -15,6 +15,7 @@ const CoordinatorFormContainer = ({
   closeForm,
   showHeader = true,
   showDelete = false,
+  ...props
 }) => {
   const dispatch = useDispatch();
   const coordinator = useSelector((state) =>
@@ -40,7 +41,7 @@ const CoordinatorFormContainer = ({
   };
 
   return (
-    <Segment padded>
+    <Segment padded {...props}>
       <Grid>
         {showHeader && (
           <Grid.Row columns="equal">

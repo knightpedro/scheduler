@@ -69,6 +69,7 @@ const JobTasksView = ({ jobId }) => {
               id={selectedTask}
               jobId={jobId}
               closeForm={handleCloseForm}
+              showDelete
             />
           </Grid.Column>
         </Grid.Row>

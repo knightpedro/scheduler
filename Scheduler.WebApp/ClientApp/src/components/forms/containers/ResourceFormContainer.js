@@ -15,6 +15,7 @@ const ResourceFormContainer = ({
   closeForm,
   showHeader = true,
   showDelete = false,
+  ...props
 }) => {
   const dispatch = useDispatch();
   const resource = useSelector((state) =>
@@ -40,7 +41,7 @@ const ResourceFormContainer = ({
   };
 
   return (
-    <Segment padded>
+    <Segment padded {...props}>
       <Grid>
         {showHeader && (
           <Grid.Row columns="equal">

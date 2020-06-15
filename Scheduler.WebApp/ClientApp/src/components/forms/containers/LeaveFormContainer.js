@@ -10,7 +10,14 @@ import {
 import { Segment, Grid, Header, Icon } from "semantic-ui-react";
 import { workersSelectors } from "../../../ducks/workers";
 
-const LeaveFormContainer = ({ id, workerId, closeForm }) => {
+const LeaveFormContainer = ({
+  id,
+  workerId,
+  closeForm,
+  showHeader = true,
+  showDelete = false,
+  ...props
+}) => {
   const dispatch = useDispatch();
   const leave = useSelector((state) => leaveSelectors.selectById(state, id));
   const values = { workerId, ...leave };
@@ -33,18 +40,20 @@ const LeaveFormContainer = ({ id, workerId, closeForm }) => {
   };
 
   return (
-    <Segment padded>
+    <Segment padded {...props}>
       <Grid>
-        <Grid.Row columns="equal">
-          <Grid.Column>
-            <Header>{id ? "Edit" : "Add"} Leave</Header>
-          </Grid.Column>
-          {id && (
-            <Grid.Column textAlign="right">
-              <Icon name="trash" link onClick={handleDelete} />
+        {showHeader && (
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <Header>{id ? "Edit" : "Add"} Leave</Header>
             </Grid.Column>
-          )}
-        </Grid.Row>
+            {showDelete && id && (
+              <Grid.Column textAlign="right">
+                <Icon name="trash" link onClick={handleDelete} />
+              </Grid.Column>
+            )}
+          </Grid.Row>
+        )}
         <Grid.Row columns="equal">
           <Grid.Column>
             <LeaveForm

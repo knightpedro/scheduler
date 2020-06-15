@@ -16,6 +16,7 @@ const JobFormContainer = ({
   closeForm,
   showHeader = true,
   showDelete = false,
+  ...props
 }) => {
   const dispatch = useDispatch();
   const job = useSelector((state) => jobsSelectors.selectById(state, id));
@@ -40,7 +41,7 @@ const JobFormContainer = ({
   };
 
   return (
-    <Segment padded>
+    <Segment padded {...props}>
       <Grid>
         {showHeader && (
           <Grid.Row columns="equal">

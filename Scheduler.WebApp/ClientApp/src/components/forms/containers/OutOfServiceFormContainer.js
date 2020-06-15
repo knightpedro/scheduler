@@ -16,6 +16,7 @@ const OutOfServiceFormContainer = ({
   closeForm,
   showHeader = true,
   showDelete = false,
+  ...props
 }) => {
   const dispatch = useDispatch();
   const oos = useSelector((state) =>
@@ -40,7 +41,7 @@ const OutOfServiceFormContainer = ({
   };
 
   return (
-    <Segment padded>
+    <Segment padded {...props}>
       <Grid>
         {showHeader && (
           <Grid.Row columns="equal">
