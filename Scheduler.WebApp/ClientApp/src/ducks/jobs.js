@@ -101,6 +101,7 @@ const selectOptions = (state) =>
   }));
 
 export const jobsSelectors = {
+  ...adapterSelectors,
   selectAll,
   selectAllWithCoordinator,
   selectByCoordinator,

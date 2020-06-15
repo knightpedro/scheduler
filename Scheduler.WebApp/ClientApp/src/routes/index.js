@@ -11,7 +11,7 @@ const routes = {
   home: "/",
   about: "/about",
   coordinators: createCrudRoutes("coordinators"),
-  jobs: createCrudRoutes("jobs"),
+  jobs: { ...createCrudRoutes("jobs"), table: "/jobs/table" },
   plant: createCrudRoutes("plant"),
   reports: "/reports",
   resources: createCrudRoutes("resources"),

@@ -25,6 +25,10 @@ const JobDetail = ({ id }) => {
     });
   };
 
+  const handleTableClick = () => {
+    history.push(routes.jobs.table);
+  };
+
   const handleToggleComplete = () => {
     const { coordinator, jobTasks, ...values } = job;
     values.isComplete = !values.isComplete;
@@ -40,6 +44,7 @@ const JobDetail = ({ id }) => {
           <Header as="h2" content={job.jobNumber} subheader={job.description} />
         </Grid.Column>
         <Grid.Column textAlign="right">
+          <Button icon="table" onClick={handleTableClick} />
           <Button.Group>
             <Button icon="edit" onClick={() => setShowJobForm(true)} />
             <Button icon="trash" onClick={() => setShowModal(true)} />

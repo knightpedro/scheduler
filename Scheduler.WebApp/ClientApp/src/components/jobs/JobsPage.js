@@ -1,65 +1,83 @@
 import React, { useEffect, useState } from "react";
-import JobsTable from "./JobsTable";
-import { useDispatch, useSelector } from "react-redux";
-import { jobsSelectors, createJob } from "../../ducks/jobs";
-import { fetchAll } from "../../ducks/sharedActions";
-import { Grid, Header, Button, Segment } from "semantic-ui-react";
-import { JobForm } from "../forms";
-import { coordinatorsSelectors } from "../../ducks/coordinators";
-import { useHistory, generatePath } from "react-router-dom";
+import { Grid, Input, Button, Menu } from "semantic-ui-react";
+import JobsList from "./JobsList";
+import JobDetail from "./JobDetail";
+import {
+  generatePath,
+  useHistory,
+  useParams,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import routes from "../../routes";
+import JobFormContainer from "../forms/containers/JobFormContainer";
+import { useSelector } from "react-redux";
+import { jobsSelectors } from "../../ducks/jobs";
+import { Empty } from "../common";
 
 const JobsPage = () => {
-  const [showForm, setShowForm] = useState(false);
-  const dispatch = useDispatch();
+  const [filter, setFilter] = useState();
   const history = useHistory();
-  const jobs = useSelector(jobsSelectors.selectAllWithCoordinator);
-  const coordinatorOptions = useSelector(coordinatorsSelectors.selectOptions);
+  const jobId = parseInt(useParams().id);
+  const allIds = useSelector(jobsSelectors.selectIds);
+  const firstId = allIds ? allIds[0] : undefined;
 
-  useEffect(() => {
-    dispatch(fetchAll());
-  }, [dispatch]);
-
-  const handleSubmit = (values) => {
-    setShowForm(false);
-    dispatch(createJob(values));
+  const handleAddClick = () => {
+    history.push(routes.jobs.create);
   };
 
-  const handleJobClick = ({ id }) => {
+  const handleJobClick = (id) => {
+    goToJobDetail(id);
+  };
+
+  const handleFormClose = (id) => {
+    if (id) goToJobDetail(id);
+    else history.push(routes.jobs.base);
+  };
+
+  const goToJobDetail = (id) => {
     const path = generatePath(routes.jobs.detail, { id });
     history.push(path);
   };
 
   return (
-    <Grid padded relaxed="very" stackable>
-      <Grid.Row columns="equal" verticalAlign="middle">
-        <Grid.Column>
-          <Header as="h2" content="Jobs" />
-        </Grid.Column>
-        <Grid.Column textAlign="right">
-          <Button
-            content="Add"
-            color="teal"
-            onClick={() => setShowForm(true)}
+    <Grid stackable padded relaxed="very">
+      <Grid.Row>
+        <Grid.Column width={4}>
+          <Input
+            action={<Button icon="add" size="small" onClick={handleAddClick} />}
+            fluid
+            icon="search"
+            iconPosition="left"
+            placeholder="Search jobs"
+            value={filter || ""}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <JobsList
+            activeId={jobId}
+            handleClick={handleJobClick}
+            filter={filter}
           />
         </Grid.Column>
-      </Grid.Row>
-      {showForm && (
-        <Grid.Row columns="equal">
-          <Grid.Column>
-            <Segment>
-              <JobForm
-                coordinatorOptions={coordinatorOptions}
-                handleCancel={() => setShowForm(false)}
-                handleSubmit={handleSubmit}
-              />
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
-      )}
-      <Grid.Row columns="equal">
-        <Grid.Column>
-          <JobsTable jobs={jobs} handleClick={handleJobClick} />
+        <Grid.Column width={12}>
+          <Switch>
+            <Route path={routes.jobs.create}>
+              <JobFormContainer closeForm={handleFormClose} />
+            </Route>
+            <Route path={routes.jobs.detail}>
+              <JobDetail id={jobId} />
+            </Route>
+            <Route>
+              {firstId ? (
+                <Redirect
+                  to={generatePath(routes.jobs.detail, { id: firstId })}
+                />
+              ) : (
+                <Empty message="Select jobs" />
+              )}
+            </Route>
+          </Switch>
         </Grid.Column>
       </Grid.Row>
     </Grid>
