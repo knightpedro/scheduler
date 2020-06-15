@@ -38,7 +38,7 @@ const shapeConflictsByType = (resource) => {
       eventMap[type].push(id);
     });
     return eventMap;
-  }, conflictMapTemplate);
+  }, JSON.parse(JSON.stringify(conflictMapTemplate)));
 };
 
 const selectConflictMapForResource = (state, id) => {

@@ -18,7 +18,7 @@ export const fetchConflictsByWorkerId = createAsyncThunk(
   (id) => workersService.getConflictsByWorkerId(id)
 );
 
-const workerConflictsAdapter = createEntityAdapter();
+export const workerConflictsAdapter = createEntityAdapter();
 
 const adapterSelectors = workerConflictsAdapter.getSelectors(
   (state) => state.workerConflicts
@@ -30,7 +30,7 @@ const conflictMapTemplate = {
   [appointmentTypes.TRAINING]: [],
 };
 
-const shapeConflictsByType = (worker) => {
+export const shapeConflictsByType = (worker) => {
   if (!worker) return conflictMapTemplate;
   return worker.conflicts.reduce((eventMap, conflict) => {
     const events = [conflict.eventA, conflict.eventB];
@@ -39,7 +39,7 @@ const shapeConflictsByType = (worker) => {
       eventMap[type].push(id);
     });
     return eventMap;
-  }, conflictMapTemplate);
+  }, JSON.parse(JSON.stringify(conflictMapTemplate)));
 };
 
 const selectConflictMapForWorker = (state, id) => {
