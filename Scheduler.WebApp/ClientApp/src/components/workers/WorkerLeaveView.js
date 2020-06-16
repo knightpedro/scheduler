@@ -38,6 +38,7 @@ const WorkerLeaveView = ({ id }) => {
               id={selectedLeaveId}
               workerId={id}
               closeForm={handleCloseForm}
+              showDelete
             />
           </Grid.Column>
         </Grid.Row>

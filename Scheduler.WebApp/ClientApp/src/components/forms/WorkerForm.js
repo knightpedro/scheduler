@@ -24,7 +24,7 @@ const WorkerForm = ({ handleSubmit, handleCancel, values, ...props }) => {
           <Form.Group>
             <Form.Button
               type="submit"
-              content="Save worker"
+              content="Save"
               primary
               disabled={formik.isSubmitting}
             />

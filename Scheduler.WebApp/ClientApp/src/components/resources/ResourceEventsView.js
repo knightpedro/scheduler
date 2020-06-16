@@ -6,24 +6,24 @@ import ResourceOutOfServicesView from "./ResourceOutOfServicesView";
 const ResourceEventsView = ({ id }) => {
   const panes = [
     {
-      menuItem: "Tasks",
-      pane: (
-        <Tab.Pane key="tasks" as={Grid} padded="vertically">
-          <Grid.Row columns="equal">
-            <Grid.Column>
-              <ResourceTasksView id={id} />
-            </Grid.Column>
-          </Grid.Row>
-        </Tab.Pane>
-      ),
-    },
-    {
       menuItem: "Out of Services",
       pane: (
         <Tab.Pane key="outOfServices" as={Grid} padded="vertically">
           <Grid.Row columns="equal">
             <Grid.Column>
               <ResourceOutOfServicesView id={id} />
+            </Grid.Column>
+          </Grid.Row>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: "Tasks",
+      pane: (
+        <Tab.Pane key="tasks" as={Grid} padded="vertically">
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <ResourceTasksView id={id} />
             </Grid.Column>
           </Grid.Row>
         </Tab.Pane>

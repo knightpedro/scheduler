@@ -7,24 +7,24 @@ import WorkerTrainingView from "./WorkerTrainingView";
 const WorkerEventsView = ({ id }) => {
   const panes = [
     {
-      menuItem: "Tasks",
-      pane: (
-        <Tab.Pane key="tasks" as={Grid} padded="vertically">
-          <Grid.Row columns="equal">
-            <Grid.Column>
-              <WorkerTasksView id={id} />
-            </Grid.Column>
-          </Grid.Row>
-        </Tab.Pane>
-      ),
-    },
-    {
       menuItem: "Leave",
       pane: (
         <Tab.Pane key="leave" as={Grid} padded="vertically">
           <Grid.Row columns="equal">
             <Grid.Column>
               <WorkerLeaveView id={id} />
+            </Grid.Column>
+          </Grid.Row>
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: "Tasks",
+      pane: (
+        <Tab.Pane key="tasks" as={Grid} padded="vertically">
+          <Grid.Row columns="equal">
+            <Grid.Column>
+              <WorkerTasksView id={id} />
             </Grid.Column>
           </Grid.Row>
         </Tab.Pane>

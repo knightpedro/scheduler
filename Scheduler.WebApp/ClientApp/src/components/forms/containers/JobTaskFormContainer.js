@@ -10,6 +10,9 @@ import {
 import { workersSelectors } from "../../../ducks/workers";
 import { resourcesSelectors } from "../../../ducks/resources";
 import { Segment, Header, Icon, Grid } from "semantic-ui-react";
+import { jobsSelectors } from "../../../ducks/jobs";
+import { generatePath, Link } from "react-router-dom";
+import routes from "../../../routes";
 
 const JobTaskFormContainer = ({
   id,
@@ -17,6 +20,7 @@ const JobTaskFormContainer = ({
   closeForm,
   showHeader = true,
   showDelete = false,
+  showJobLink = true,
   ...props
 }) => {
   const dispatch = useDispatch();
@@ -26,6 +30,10 @@ const JobTaskFormContainer = ({
   );
 
   const values = { jobId, ...jobTask };
+
+  const job = useSelector((state) =>
+    jobsSelectors.selectById(state, values.jobId)
+  );
 
   const resourceOptions = useSelector(resourcesSelectors.selectOptions);
   const workerOptions = useSelector(workersSelectors.selectOptions);
@@ -62,6 +70,11 @@ const JobTaskFormContainer = ({
               </Grid.Column>
             )}
           </Grid.Row>
+        )}
+        {showJobLink && job && (
+          <Link to={generatePath(routes.jobs.detail, { id: job.id })}>
+            Job {job.jobNumber} - {job.description}
+          </Link>
         )}
         <Grid.Row columns="equal">
           <Grid.Column>

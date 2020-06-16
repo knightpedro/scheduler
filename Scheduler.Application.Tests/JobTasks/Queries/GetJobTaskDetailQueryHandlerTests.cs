@@ -45,7 +45,8 @@ namespace Scheduler.Application.Tests.JobTasks.Queries
             var jobTask = new JobTask
             {
                 Description = "Doing a thing",
-                TaskPeriod = new DateTimeRange(DateTime.Now, DateTime.Now.AddHours(8))
+                TaskPeriod = new DateTimeRange(DateTime.Now, DateTime.Now.AddHours(8)),
+                Job = new Job()
             };
 
             var workerShifts = Enumerable.Range(1, 3).Select(i => new WorkerShift());
