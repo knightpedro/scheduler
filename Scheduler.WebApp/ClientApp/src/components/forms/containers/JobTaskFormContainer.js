@@ -35,6 +35,7 @@ const JobTaskFormContainer = ({
     jobsSelectors.selectById(state, values.jobId)
   );
 
+  const jobOptions = useSelector(jobsSelectors.selectOptions);
   const resourceOptions = useSelector(resourcesSelectors.selectOptions);
   const workerOptions = useSelector(workersSelectors.selectOptions);
 
@@ -82,6 +83,7 @@ const JobTaskFormContainer = ({
               values={values}
               handleCancel={handleCancel}
               handleSubmit={handleSubmit}
+              jobOptions={jobOptions}
               resourceOptions={resourceOptions}
               workerOptions={workerOptions}
             />

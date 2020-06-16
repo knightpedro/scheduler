@@ -76,7 +76,7 @@ const ResourceSchedule = () => {
             button
             basic
             options={createOptions}
-            value=""
+            value={undefined}
             onChange={handleCreate}
           />
           <Button basic onClick={reset}>

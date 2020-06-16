@@ -22,9 +22,9 @@ const WorkerSchedule = () => {
   );
 
   const createOptions = [
-    { text: "Job task", value: appointmentTypes.JOB_TASK },
-    { text: "Leave", value: appointmentTypes.LEAVE },
-    { text: "Training", value: appointmentTypes.TRAINING },
+    { key: 1, text: "Job task", value: appointmentTypes.JOB_TASK },
+    { key: 2, text: "Leave", value: appointmentTypes.LEAVE },
+    { key: 3, text: "Training", value: appointmentTypes.TRAINING },
   ];
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const WorkerSchedule = () => {
             button
             basic
             options={createOptions}
-            value=""
+            value={""}
             onChange={handleCreate}
           />
           <Button basic onClick={reset}>

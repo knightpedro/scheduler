@@ -30,7 +30,7 @@ const JobTaskForm = ({
     >
       {(formik) => (
         <Form noValidate onSubmit={formik.handleSubmit} autoComplete="off">
-          {!values && (
+          {(!values || !values.jobId) && (
             <DropdownField label="Job" name="jobId" options={jobOptions} />
           )}
           <TextField label="Description" name="description" />

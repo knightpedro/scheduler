@@ -27,7 +27,7 @@ const LeaveForm = ({
     >
       {(formik) => (
         <Form noValidate onSubmit={formik.handleSubmit} autoComplete="off">
-          {!values && (
+          {(!values || !values.workerId) && (
             <DropdownField
               label="Staff member"
               name="workerId"

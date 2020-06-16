@@ -28,7 +28,7 @@ const OutOfServiceForm = ({
     >
       {(formik) => (
         <Form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
-          {!values && (
+          {(!values || !values.resourceId) && (
             <DropdownField
               label="Plant"
               name="resourceId"

@@ -1,15 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closePortal, portalSelectors } from "../../ducks/portal";
-import { Portal, Segment } from "semantic-ui-react";
+import { Portal } from "semantic-ui-react";
 import Draggable from "react-draggable";
 import styled from "styled-components";
 
 const Styles = styled.div`
-  left: 50%;
-  top: 50%;
+  bottom: 10%;
+  right: 10%;
   position: fixed;
-  transform: translate(-50%, -50%);
   z-index: 100;
 `;
 
@@ -25,11 +24,9 @@ const PortalManager = () => {
 
   return (
     <Portal open={true} onClose={handleClose}>
-      <Draggable cancel=".field">
+      <Draggable cancel=".field" bounds="parent">
         <Styles>
-          <Segment raised padded>
-            <Component {...props} />
-          </Segment>
+          <Component {...props} />
         </Styles>
       </Draggable>
     </Portal>
