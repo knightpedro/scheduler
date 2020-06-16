@@ -19,7 +19,11 @@ const ResourcesList = ({ activeId, filter, handleClick }) => {
           onClick={() => handleClick(r.id)}
           active={r.id === activeId}
         >
-          <List.Icon name="truck" color={r.isActive ? "green" : "red"} />
+          <List.Icon
+            name="truck"
+            color={r.isActive ? "green" : "red"}
+            verticalAlign="middle"
+          />
           <List.Content>
             <List.Header>{r.name}</List.Header>
             <List.Description>{r.description}</List.Description>

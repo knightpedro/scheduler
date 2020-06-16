@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, List } from "semantic-ui-react";
+import { List } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { workersSelectors } from "../../ducks/workers";
 import { Empty } from "../common";
@@ -19,7 +19,11 @@ const WorkersList = ({ activeId, filter, handleClick }) => {
           onClick={() => handleClick(w.id)}
           active={w.id === activeId}
         >
-          <Icon name="user outline" color={w.isActive ? "green" : "red"} />
+          <List.Icon
+            name="user outline"
+            color={w.isActive ? "green" : "red"}
+            verticalAlign="middle"
+          />
           <List.Content>
             <List.Header>{w.name}</List.Header>
           </List.Content>

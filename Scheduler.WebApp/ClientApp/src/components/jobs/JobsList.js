@@ -18,6 +18,11 @@ const JobsList = ({ activeId, handleClick, filter }) => {
           onClick={() => handleClick(j.id)}
           active={j.id === activeId}
         >
+          <List.Icon
+            verticalAlign="middle"
+            name={j.isComplete ? "check" : "refresh"}
+            color={j.isComplete ? "green" : "blue"}
+          />
           <List.Content>
             <List.Header>{j.jobNumber}</List.Header>
             <List.Description>{j.description}</List.Description>

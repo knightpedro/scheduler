@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { coordinatorsSelectors } from "../../ducks/coordinators";
 import { Empty } from "../common";
-import { Icon, List } from "semantic-ui-react";
+import { List } from "semantic-ui-react";
 
 const CoordinatorsList = ({ activeId, filter, handleClick }) => {
   const coordinators = useSelector((state) =>
@@ -20,7 +20,11 @@ const CoordinatorsList = ({ activeId, filter, handleClick }) => {
           onClick={() => handleClick(c.id)}
           active={c.id === activeId}
         >
-          <Icon name="user" color={c.isActive ? "green" : "red"} />
+          <List.Icon
+            name="user"
+            color={c.isActive ? "green" : "red"}
+            verticalAlign="middle"
+          />
           <List.Content>
             <List.Header>{c.name}</List.Header>
           </List.Content>
