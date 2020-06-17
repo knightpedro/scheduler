@@ -5,6 +5,7 @@ import { ErrorMessages, MainMenu, PortalManager } from "../components/common";
 import Coordinators from "../components/coordinators";
 import Jobs from "../components/jobs";
 import Resources from "../components/resources";
+import Reports from "../components/reports";
 import Schedules from "../components/schedules";
 import Training from "../components/training";
 import Workers from "../components/workers";
@@ -30,6 +31,7 @@ const AppRoutes = () => {
         </Route>
         <Route path={routes.coordinators.list} component={Coordinators} />
         <Route path={routes.jobs.list} component={Jobs} />
+        <Route path={routes.reports} component={Reports} />
         <Route path={routes.resources.list} component={Resources} />
         <Route path={routes.schedules.base} component={Schedules} />
         <Route path={routes.training.list} component={Training} />
