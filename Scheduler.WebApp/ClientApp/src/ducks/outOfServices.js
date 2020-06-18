@@ -9,9 +9,11 @@ import { fetchConflictsByResourceId } from "./resourceConflicts";
 import {
   transformDatesToMoments,
   transformMomentsToDates,
+  overlaps,
 } from "../utils/appointments";
 import moment from "moment";
 import { appointmentTypes } from "../constants";
+import { resourcesSelectors } from "./resources";
 
 export const fetchOutOfServices = createAsyncThunk(
   "outOfServices/fetchAll",
@@ -92,6 +94,26 @@ const selectOutOfServiceTypes = (state) => state.outOfServices.types;
 const selectOutOfServiceTypeOptions = (state) =>
   selectOutOfServiceTypes(state).map((o) => ({ text: o, value: o }));
 
+const selectOutOfServiceHoursForPeriod = (state, start, end) => {
+  const oos = selectAll(state).filter((o) => {
+    if (moment.isMoment(start) && moment.isMoment(end)) {
+      return overlaps(o, start, end);
+    }
+    if (moment.isMoment(start)) return o.end.isAfter(start);
+    if (moment.isMoment(end)) return o.start.isBefore(end);
+    return true;
+  });
+
+  return resourcesSelectors.selectAll(state).map((resource) => ({
+    ...resource,
+    downtime: oos.reduce((hours, o) => {
+      if (o.resourceId === resource.id)
+        return hours + o.end.diff(o.start, "hours");
+      return hours;
+    }, 0),
+  }));
+};
+
 export const outOfServiceSelectors = {
   selectAll,
   selectById,
@@ -99,6 +121,7 @@ export const outOfServiceSelectors = {
   selectEventsForResource,
   selectOutOfServiceTypes,
   selectOutOfServiceTypeOptions,
+  selectOutOfServiceHoursForPeriod,
 };
 
 const outOfServicesSlice = createSlice({

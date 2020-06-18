@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { coordinatorsService } from "../services";
 import { fetchAll } from "./sharedActions";
+import { jobsSelectors } from "./jobs";
 
 export const fetchCoordinators = createAsyncThunk("coordinators/fetchAll", () =>
   coordinatorsService.getAll()
@@ -55,6 +56,18 @@ const selectFiltered = (state, filter) => {
   );
 };
 
+const selectWorkLoadsForPeriod = (state, start, end) => {
+  const jobs = jobsSelectors.selectByDate(state, start, end);
+
+  return adapterSelectors.selectAll(state).map((c) => ({
+    ...c,
+    jobs: jobs.reduce((val, job) => {
+      if (job.coordinatorId === c.id) return val + 1;
+      return val;
+    }, 0),
+  }));
+};
+
 const selectOptions = (state) =>
   adapterSelectors
     .selectAll(state)
@@ -64,6 +77,7 @@ export const coordinatorsSelectors = {
   ...adapterSelectors,
   selectFiltered,
   selectOptions,
+  selectWorkLoadsForPeriod,
 };
 
 const coordinatorsSlice = createSlice({

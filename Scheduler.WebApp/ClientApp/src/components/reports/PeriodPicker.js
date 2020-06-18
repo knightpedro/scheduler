@@ -21,7 +21,7 @@ const periodOptions = Object.values(periods).map((period) => ({
   value: period,
 }));
 
-const PeriodPicker = ({ onPeriodChange }) => {
+const PeriodPicker = ({ onChange }) => {
   const [dateRange, setDateRange] = useState({
     start: moment().subtract(30, "days"),
     end: moment(),
@@ -30,8 +30,8 @@ const PeriodPicker = ({ onPeriodChange }) => {
   const [selectedPeriod, setSelectedPeriod] = useState(periods.last30Days);
 
   useEffect(() => {
-    onPeriodChange(dateRange);
-  }, [dateRange, onPeriodChange]);
+    onChange(dateRange);
+  }, [dateRange, onChange]);
 
   useEffect(() => {
     switch (selectedPeriod) {

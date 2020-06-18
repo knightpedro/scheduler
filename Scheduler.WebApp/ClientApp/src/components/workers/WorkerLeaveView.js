@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { leaveSelectors } from "../../ducks/leave";
 import { LeaveTable } from "../leave";
@@ -13,6 +13,10 @@ const WorkerLeaveView = ({ id }) => {
   const leave = useSelector((state) =>
     leaveSelectors.selectByWorker(state, id)
   );
+
+  useEffect(() => {
+    handleCloseForm();
+  }, [id]);
 
   const handleAddLeaveClick = () => {
     setSelectedLeaveId();

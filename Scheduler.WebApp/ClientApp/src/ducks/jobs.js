@@ -68,6 +68,21 @@ const selectFiltered = (state, filter) => {
 const selectByCoordinator = (state, coordinatorId) =>
   selectAll(state).filter((job) => job.coordinatorId === coordinatorId);
 
+const selectByDate = (state, start, end) =>
+  selectAll(state).filter(({ dateReceived }) => {
+    if (moment.isMoment(start) && moment.isMoment(end))
+      return (
+        dateReceived.isSameOrAfter(start) && dateReceived.isSameOrBefore(end)
+      );
+    if (moment.isMoment(start)) {
+      return start.isSameOrBefore(dateReceived);
+    }
+    if (moment.isMoment(end)) {
+      return end.isSameOrAfter(dateReceived);
+    }
+    return true;
+  });
+
 const selectById = (state, id) => {
   const entity = adapterSelectors.selectById(state, id);
   if (entity) return transformDatesToMoments(entity);
@@ -104,6 +119,7 @@ export const jobsSelectors = {
   ...adapterSelectors,
   selectAll,
   selectAllWithCoordinator,
+  selectByDate,
   selectByCoordinator,
   selectById,
   selectFiltered,

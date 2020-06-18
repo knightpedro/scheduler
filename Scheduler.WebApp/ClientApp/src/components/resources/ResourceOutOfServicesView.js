@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { outOfServiceSelectors } from "../../ducks/outOfServices";
 import { OutOfServiceFormContainer } from "../forms/containers";
@@ -13,6 +13,10 @@ const ResourceOutOfServicesView = ({ id }) => {
   const outOfServices = useSelector((state) =>
     outOfServiceSelectors.selectByResource(state, id)
   );
+
+  useEffect(() => {
+    handleCloseForm();
+  }, [id]);
 
   const handleAddClick = () => {
     setSelectedId();

@@ -9,6 +9,7 @@ import { fetchWorkerConflicts } from "./workerConflicts";
 import {
   transformDatesToMoments,
   transformMomentsToDates,
+  overlaps,
 } from "../utils/appointments";
 import moment from "moment";
 import { appointmentTypes } from "../constants";
@@ -136,12 +137,36 @@ const selectEventsForWorker = (state, workerId, conflicts) =>
     isConflicting: conflicts[appointmentTypes.TRAINING].includes(t.id),
   }));
 
+const selectTrainingHoursForPeriod = (state, start, end) => {
+  const training = selectAll(state).filter((training) => {
+    if (moment.isMoment(start) && moment.isMoment(end)) {
+      return overlaps(training, start, end);
+    }
+    if (moment.isMoment(start)) return training.end.isAfter(start);
+    if (moment.isMoment(end)) return training.start.isBefore(end);
+    return true;
+  });
+
+  return workersSelectors.selectAll(state).map((worker) => {
+    const trainingIds = selectTrainingIdsByWorker(state, worker.id);
+    return {
+      ...worker,
+      training: training.reduce((hours, t) => {
+        if (trainingIds.includes(t.id))
+          return hours + t.end.diff(t.start, "hours");
+        return hours;
+      }, 0),
+    };
+  });
+};
+
 export const workerTrainingSelectors = {
   selectTrainingIdsByWorker,
   selectTrainingForWorker,
   selectEventsForWorker,
   selectWorkerIdsByTraining,
   selectWorkersForTraining,
+  selectTrainingHoursForPeriod,
 };
 
 const trainingSlice = createSlice({

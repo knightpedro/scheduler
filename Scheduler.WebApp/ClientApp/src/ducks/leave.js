@@ -9,9 +9,11 @@ import { fetchConflictsByWorkerId } from "./workerConflicts";
 import {
   transformDatesToMoments,
   transformMomentsToDates,
+  overlaps,
 } from "../utils/appointments";
 import moment from "moment";
 import { appointmentTypes } from "../constants";
+import { workersSelectors } from "./workers";
 
 export const fetchLeave = createAsyncThunk("leave/fetchAll", () =>
   leaveService.getAll()
@@ -87,6 +89,31 @@ const selectLeaveTypes = (state) => state.leave.types;
 const selectLeaveTypeOptions = (state) =>
   selectLeaveTypes(state).map((l) => ({ text: l, value: l }));
 
+const selectLeaveTakenForPeriod = (state, start, end) => {
+  const leave = selectAll(state).filter((leave) => {
+    if (moment.isMoment(start) && moment.isMoment(end)) {
+      return overlaps(leave, start, end);
+    }
+    if (moment.isMoment(start)) return leave.end.isAfter(start);
+    if (moment.isMoment(end)) return leave.start.isBefore(end);
+    return true;
+  });
+
+  return workersSelectors.selectAll(state).map((worker) => {
+    return {
+      ...worker,
+      leave: leave.reduce((days, l) => {
+        if (l.workerId === worker.id) {
+          const start = moment(l.start).startOf("day");
+          const end = moment(l.end).add(1, "day").endOf("day");
+          return days + Math.max(end.diff(start, "days"), 1);
+        }
+        return days;
+      }, 0),
+    };
+  });
+};
+
 export const leaveSelectors = {
   selectAll,
   selectById,
@@ -94,6 +121,7 @@ export const leaveSelectors = {
   selectEventsForWorker,
   selectLeaveTypes,
   selectLeaveTypeOptions,
+  selectLeaveTakenForPeriod,
 };
 
 const leaveSlice = createSlice({
