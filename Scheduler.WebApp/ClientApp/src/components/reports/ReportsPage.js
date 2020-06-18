@@ -22,6 +22,10 @@ const ReportsPage = () => {
       <Grid.Row columns="equal">
         <Grid.Column>
           <PeriodPicker onChange={(period) => setPeriod(period)} />
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row columns="equal">
+        <Grid.Column>
           <JobsCard {...period} />
         </Grid.Column>
       </Grid.Row>

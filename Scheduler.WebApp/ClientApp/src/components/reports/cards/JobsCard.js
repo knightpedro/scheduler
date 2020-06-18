@@ -12,27 +12,24 @@ const JobsCard = ({ start, end }) => {
   const completed = jobs ? jobs.filter((job) => job.isComplete).length : 0;
 
   return (
-    <>
-      <Header attached="top">Jobs</Header>
-      <Segment raised padded attached textAlign="center">
-        <Statistic.Group widths={2}>
-          <Statistic color="blue">
-            <Statistic.Value>
-              <Icon name="mail outline" />
-              {received}
-            </Statistic.Value>
-            <Statistic.Label>Received</Statistic.Label>
-          </Statistic>
-          <Statistic color="green">
-            <Statistic.Value>
-              <Icon name="check circle outline" />
-              {completed}
-            </Statistic.Value>
-            <Statistic.Label>Completed</Statistic.Label>
-          </Statistic>
-        </Statistic.Group>
-      </Segment>
-    </>
+    <Segment padded textAlign="center">
+      <Statistic.Group widths={2}>
+        <Statistic color="blue">
+          <Statistic.Value>
+            <Icon name="mail outline" />
+            {received}
+          </Statistic.Value>
+          <Statistic.Label>Jobs Received</Statistic.Label>
+        </Statistic>
+        <Statistic color="green">
+          <Statistic.Value>
+            <Icon name="check circle outline" />
+            {completed}
+          </Statistic.Value>
+          <Statistic.Label>Jobs Completed</Statistic.Label>
+        </Statistic>
+      </Statistic.Group>
+    </Segment>
   );
 };
 

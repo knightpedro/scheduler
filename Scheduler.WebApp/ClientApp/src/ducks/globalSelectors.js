@@ -1,11 +1,7 @@
 import { leaveSelectors } from "./leave";
-import {
-  jobTaskSelectors,
-  resourceJobTaskSelectors,
-  workerJobTaskSelectors,
-} from "./jobTasks";
+import { resourceJobTaskSelectors, workerJobTaskSelectors } from "./jobTasks";
 import { uiSelectors } from "./ui";
-import { trainingSelectors, workerTrainingSelectors } from "./training";
+import { workerTrainingSelectors } from "./training";
 import { workersSelectors } from "./workers";
 import { workerConflictsSelectors } from "./workerConflicts";
 import { outOfServiceSelectors } from "./outOfServices";
