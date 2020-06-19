@@ -5,10 +5,17 @@ import DatePicker from "react-datepicker";
 import styled from "styled-components";
 import moment from "moment";
 
-const Styles = styled.div``;
+const Styles = styled.div`
+  .react-datepicker__month-container {
+    z-index: 1;
+  }
+  .react-datepicker__time-container {
+    right: -80px;
+  }
+`;
 
 const DateInput = forwardRef((props, ref) => {
-  return <Form.Input {...props} />;
+  return <Form.Input {...props} icon="calendar" />;
 });
 
 const DateField = ({ label, ...props }) => {
@@ -18,7 +25,6 @@ const DateField = ({ label, ...props }) => {
     <Styles className="field">
       <DatePicker
         {...field}
-        todayButton="Today"
         customInput={<DateInput label={label} error={error} />}
         dateFormat="d/M/yy"
         selected={field.value ? field.value.toDate() : ""}
