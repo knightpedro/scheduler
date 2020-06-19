@@ -19,7 +19,7 @@ const CoordinatorWorkLoadChart = ({ start, end }) => {
         colors={palette[0]}
         keys={["jobs"]}
         indexBy="name"
-        margin={{ top: 30, right: 70, bottom: 120, left: 70 }}
+        margin={{ top: 30, right: 20, bottom: 120, left: 60 }}
         padding={0.3}
         axisBottom={{
           tickSize: 5,

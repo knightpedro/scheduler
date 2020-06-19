@@ -19,7 +19,7 @@ const TrainingAttendanceChart = ({ start, end }) => {
         colors={palette[1]}
         keys={["training"]}
         indexBy="name"
-        margin={{ top: 30, right: 90, bottom: 100, left: 90 }}
+        margin={{ top: 30, right: 20, bottom: 120, left: 60 }}
         padding={0.3}
         tooltipFormat={(value) => `${value} hours`}
         axisBottom={{

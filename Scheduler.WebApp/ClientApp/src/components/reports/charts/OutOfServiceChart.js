@@ -20,7 +20,7 @@ const OutOfServiceChart = ({ start, end }) => {
         keys={["downtime"]}
         indexBy="name"
         tooltipFormat={(value) => `${value} hours`}
-        margin={{ top: 30, right: 90, bottom: 100, left: 90 }}
+        margin={{ top: 30, right: 20, bottom: 120, left: 60 }}
         padding={0.3}
         axisBottom={{
           tickSize: 5,

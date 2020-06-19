@@ -1,5 +1,11 @@
 import React from "react";
-import { Segment, Statistic, Icon, Header } from "semantic-ui-react";
+import {
+  SegmentGroup,
+  Segment,
+  Statistic,
+  Icon,
+  Header,
+} from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { jobsSelectors } from "../../../ducks/jobs";
 
@@ -12,24 +18,29 @@ const JobsCard = ({ start, end }) => {
   const completed = jobs ? jobs.filter((job) => job.isComplete).length : 0;
 
   return (
-    <Segment padded textAlign="center">
-      <Statistic.Group widths={2}>
-        <Statistic color="blue">
-          <Statistic.Value>
-            <Icon name="mail outline" />
-            {received}
-          </Statistic.Value>
-          <Statistic.Label>Jobs Received</Statistic.Label>
-        </Statistic>
-        <Statistic color="green">
-          <Statistic.Value>
-            <Icon name="check circle outline" />
-            {completed}
-          </Statistic.Value>
-          <Statistic.Label>Jobs Completed</Statistic.Label>
-        </Statistic>
-      </Statistic.Group>
-    </Segment>
+    <div>
+      <Segment attached="top" secondary>
+        <Header as="h5">Jobs</Header>
+      </Segment>
+      <Segment attached="bottom" padded textAlign="center">
+        <Statistic.Group widths={2}>
+          <Statistic color="blue">
+            <Statistic.Value>
+              <Icon name="mail outline" />
+              {received}
+            </Statistic.Value>
+            <Statistic.Label>Received</Statistic.Label>
+          </Statistic>
+          <Statistic color="green">
+            <Statistic.Value>
+              <Icon name="check circle outline" />
+              {completed}
+            </Statistic.Value>
+            <Statistic.Label>Completed</Statistic.Label>
+          </Statistic>
+        </Statistic.Group>
+      </Segment>
+    </div>
   );
 };
 

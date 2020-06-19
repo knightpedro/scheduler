@@ -19,7 +19,7 @@ const LeaveChart = ({ start, end }) => {
         keys={["leave"]}
         indexBy="name"
         tooltipFormat={(value) => `${value} days`}
-        margin={{ top: 30, right: 90, bottom: 100, left: 90 }}
+        margin={{ top: 30, right: 20, bottom: 120, left: 60 }}
         padding={0.3}
         axisBottom={{
           tickSize: 5,

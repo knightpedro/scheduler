@@ -18,7 +18,7 @@ const ReportsPage = () => {
   }, [dispatch]);
 
   return (
-    <Grid stackable padded relaxed="very">
+    <Grid stackable padded relaxed>
       <Grid.Row columns="equal">
         <Grid.Column>
           <PeriodPicker onChange={(period) => setPeriod(period)} />

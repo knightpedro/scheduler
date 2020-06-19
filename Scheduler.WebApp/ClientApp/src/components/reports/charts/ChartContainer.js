@@ -6,6 +6,21 @@ import { useSpring, animated } from "react-spring";
 
 const AnimatedButton = animated(Button);
 
+const Heading = styled(Segment)`
+  &&& {
+    padding: 0.5em 1em;
+  }
+
+  display: flex;
+  justify-content: space-between;
+
+  .ui.header {
+    margin: 0px;
+    display: flex;
+    align-self: center;
+  }
+`;
+
 const Container = styled.div`
   height: 600px;
 `;
@@ -23,23 +38,24 @@ const ChartContainer = ({ title, children }) => {
   };
 
   return (
-    <Segment
-      padded
-      raised
-      textAlign="center"
+    <div
       onMouseEnter={() => setShowDownloadButton(true)}
       onMouseLeave={() => setShowDownloadButton(false)}
     >
-      <AnimatedButton
-        style={animation}
-        icon="download"
-        floated="right"
-        title="Download chart"
-        onClick={handleDownload}
-      />
-      {title && <Header as="h3">{title}</Header>}
-      <Container ref={chartRef}>{children}</Container>
-    </Segment>
+      <Heading attached="top" secondary>
+        <Header as="h5">{title}</Header>
+        <AnimatedButton
+          size="small"
+          style={animation}
+          icon="download"
+          title="Download chart"
+          onClick={handleDownload}
+        />
+      </Heading>
+      <Segment attached="bottom" padded textAlign="center">
+        <Container ref={chartRef}>{children}</Container>
+      </Segment>
+    </div>
   );
 };
 
