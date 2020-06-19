@@ -85,7 +85,7 @@ const MainMenu = () => {
         </Menu.Menu>
       </Menu>
       <LoadingStyles>
-        {loading && <LoadingIndicator attached="bottom" />}
+        <LoadingIndicator active={loading} attached="bottom" />
       </LoadingStyles>
     </>
   );
