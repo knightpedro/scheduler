@@ -1,3 +1,4 @@
+[![Build Status](https://dev.azure.com/petekanighit/Scheduler/_apis/build/status/knightpedro.scheduler?branchName=master)](https://dev.azure.com/petekanighit/Scheduler/_build/latest?definitionId=2&branchName=master)
 # Scheduler
 
 Scheduler is a work planning application built using ASP.NET Core with a React front end.
