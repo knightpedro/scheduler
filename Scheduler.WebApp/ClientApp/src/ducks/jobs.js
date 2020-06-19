@@ -47,7 +47,11 @@ export const deleteJob = createAsyncThunk("jobs/delete", async (id) => {
 });
 
 const jobsAdapter = createEntityAdapter({
-  sortComparer: (a, b) => a.jobNumber.localeCompare(b.jobNumber),
+  sortComparer: (a, b) => {
+    if (a.dateReceived && b.dateReceived)
+      return moment(b.dateReceived).unix() - moment(a.dateReceived).unix();
+    return (a != null) - (b != null);
+  },
 });
 
 const adapterSelectors = jobsAdapter.getSelectors((state) => state.jobs);
