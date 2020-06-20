@@ -10,7 +10,7 @@ import {
   Dropdown,
   Modal,
 } from "semantic-ui-react";
-import { useWeekPicker } from "./hooks";
+import { useWeekPicker } from "./useWeekPicker";
 import WeekPicker from "./WeekPicker";
 import { GroupSchedule } from "./schedule";
 import { fetchAll } from "../../ducks/sharedActions";

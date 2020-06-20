@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Header, Grid, Button, Divider, Modal, Icon } from "semantic-ui-react";
 import { IndividualSchedule } from "../schedules/schedule";
 import { uiSelectors, setPeriod } from "../../ducks/ui";
-import { useWeekPicker } from "../schedules/hooks";
+import { useWeekPicker } from "../schedules/useWeekPicker";
 import WeekPicker from "../schedules/WeekPicker";
 import { selectCalendarForResource } from "../../ducks/globalSelectors";
 import routes from "../../routes";
