@@ -2,18 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectResourcesCalendar } from "../../ducks/globalSelectors";
 import { uiSelectors, setPeriod } from "../../ducks/ui";
-import { Grid, Header, Button, Input, Dropdown } from "semantic-ui-react";
+import {
+  Grid,
+  Header,
+  Button,
+  Input,
+  Dropdown,
+  Modal,
+} from "semantic-ui-react";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
 import { GroupSchedule } from "./schedule";
 import { fetchAll } from "../../ducks/sharedActions";
 import { appointmentTypes } from "../../constants";
-import { openPortal, portalComponents } from "../../ducks/portal";
 import routes from "../../routes";
+import formContainerLookup from "./formContainerLookup";
 
 const ResourceSchedule = () => {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState();
+  const [createType, setCreateType] = useState();
   const calendar = useSelector((state) =>
     selectResourcesCalendar(state, filter)
   );
@@ -24,8 +32,12 @@ const ResourceSchedule = () => {
   );
 
   const createOptions = [
-    { text: "Job task", value: appointmentTypes.JOB_TASK },
-    { text: "Out of service", value: appointmentTypes.OUT_OF_SERVICE },
+    { key: 1, text: "Task", value: appointmentTypes.JOB_TASK },
+    {
+      key: 2,
+      text: "Out of service",
+      value: appointmentTypes.OUT_OF_SERVICE,
+    },
   ];
 
   useEffect(() => {
@@ -36,12 +48,15 @@ const ResourceSchedule = () => {
     dispatch(setPeriod({ start, end }));
   }, [dispatch, start, end]);
 
-  const handleCreate = (_, { value }) => {
-    if (value === appointmentTypes.JOB_TASK) {
-      dispatch(openPortal(portalComponents.jobTaskForm));
-    } else if (value === appointmentTypes.OUT_OF_SERVICE) {
-      dispatch(openPortal(portalComponents.outOfServiceForm));
-    }
+  const renderFormContainer = () => {
+    const FormContainer = formContainerLookup[createType];
+    if (FormContainer)
+      return (
+        <Modal dimmer="inverted" open={createType != null}>
+          <FormContainer closeForm={() => setCreateType()} showDelete />
+        </Modal>
+      );
+    return null;
   };
 
   return (
@@ -71,20 +86,21 @@ const ResourceSchedule = () => {
           />
         </Grid.Column>
         <Grid.Column textAlign="right">
-          <Dropdown
-            text="Create"
-            button
-            basic
-            options={createOptions}
-            value={undefined}
-            onChange={handleCreate}
-          />
+          <Dropdown text="Create" button basic>
+            <Dropdown.Menu>
+              {createOptions.map((opt) => (
+                <Dropdown.Item
+                  {...opt}
+                  onClick={() => setCreateType(opt.value)}
+                />
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
           <Button basic onClick={reset}>
             Today
           </Button>
         </Grid.Column>
       </Grid.Row>
-
       <Grid.Row>
         <Grid.Column width={16}>
           <GroupSchedule
@@ -95,6 +111,7 @@ const ResourceSchedule = () => {
           />
         </Grid.Column>
       </Grid.Row>
+      {renderFormContainer()}
     </Grid>
   );
 };

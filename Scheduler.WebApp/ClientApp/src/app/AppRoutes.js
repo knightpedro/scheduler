@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "../routes";
-import { ErrorMessages, MainMenu, PortalManager } from "../components/common";
+import { ErrorMessages, MainMenu } from "../components/common";
 import Coordinators from "../components/coordinators";
 import Jobs from "../components/jobs";
 import Resources from "../components/resources";
@@ -15,7 +15,6 @@ import { Grid, Divider } from "semantic-ui-react";
 const AppRoutes = () => {
   return (
     <>
-      <PortalManager />
       <MainMenu />
       <Divider hidden />
       <Grid container>

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  SegmentGroup,
-  Segment,
-  Statistic,
-  Icon,
-  Header,
-} from "semantic-ui-react";
+import { Segment, Statistic, Icon, Header } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { jobsSelectors } from "../../../ducks/jobs";
 

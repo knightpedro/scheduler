@@ -5,7 +5,6 @@ import jobTasks from "./jobTasks";
 import leave from "./leave";
 import loading from "./loading";
 import outOfServices from "./outOfServices";
-import portal from "./portal";
 import resources from "./resources";
 import resourceConflicts from "./resourceConflicts";
 import resourceJobTasks from "./resourceJobTasks";
@@ -24,7 +23,6 @@ export default {
   leave,
   loading,
   outOfServices,
-  portal,
   resources,
   resourceConflicts,
   resourceJobTasks,

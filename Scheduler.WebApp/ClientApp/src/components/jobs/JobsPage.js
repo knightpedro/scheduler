@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Grid, Input, Button, Menu } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Grid, Input, Button } from "semantic-ui-react";
 import JobsList from "./JobsList";
 import JobDetail from "./JobDetail";
 import {

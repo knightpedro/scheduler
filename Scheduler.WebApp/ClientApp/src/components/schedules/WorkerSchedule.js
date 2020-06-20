@@ -2,18 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectWorkersCalendar } from "../../ducks/globalSelectors";
 import { setPeriod, uiSelectors } from "../../ducks/ui";
-import { Grid, Header, Button, Input, Dropdown } from "semantic-ui-react";
+import {
+  Grid,
+  Header,
+  Button,
+  Input,
+  Dropdown,
+  Modal,
+} from "semantic-ui-react";
 import { useWeekPicker } from "./hooks";
 import WeekPicker from "./WeekPicker";
 import { GroupSchedule } from "./schedule";
 import { fetchAll } from "../../ducks/sharedActions";
 import { appointmentTypes } from "../../constants";
-import { openPortal, portalComponents } from "../../ducks/portal";
 import routes from "../../routes";
+import formContainerLookup from "./formContainerLookup";
 
 const WorkerSchedule = () => {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState();
+  const [createType, setCreateType] = useState();
   const calendar = useSelector((state) => selectWorkersCalendar(state, filter));
   const period = useSelector(uiSelectors.selectPeriod);
 
@@ -22,7 +30,7 @@ const WorkerSchedule = () => {
   );
 
   const createOptions = [
-    { key: 1, text: "Job task", value: appointmentTypes.JOB_TASK },
+    { key: 1, text: "Task", value: appointmentTypes.JOB_TASK },
     { key: 2, text: "Leave", value: appointmentTypes.LEAVE },
     { key: 3, text: "Training", value: appointmentTypes.TRAINING },
   ];
@@ -35,14 +43,15 @@ const WorkerSchedule = () => {
     dispatch(setPeriod({ start, end }));
   }, [dispatch, start, end]);
 
-  const handleCreate = (_, { value }) => {
-    if (value === appointmentTypes.JOB_TASK) {
-      dispatch(openPortal(portalComponents.jobTaskForm));
-    } else if (value === appointmentTypes.LEAVE) {
-      dispatch(openPortal(portalComponents.leaveForm));
-    } else if (value === appointmentTypes.TRAINING) {
-      dispatch(openPortal(portalComponents.trainingForm));
-    }
+  const renderFormContainer = () => {
+    const FormContainer = formContainerLookup[createType];
+    if (FormContainer)
+      return (
+        <Modal dimmer="inverted" open={createType != null}>
+          <FormContainer closeForm={() => setCreateType()} showDelete />
+        </Modal>
+      );
+    return null;
   };
 
   return (
@@ -72,14 +81,16 @@ const WorkerSchedule = () => {
           />
         </Grid.Column>
         <Grid.Column textAlign="right">
-          <Dropdown
-            text="Create"
-            button
-            basic
-            options={createOptions}
-            value={""}
-            onChange={handleCreate}
-          />
+          <Dropdown text="Create" button basic>
+            <Dropdown.Menu>
+              {createOptions.map((opt) => (
+                <Dropdown.Item
+                  {...opt}
+                  onClick={() => setCreateType(opt.value)}
+                />
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
           <Button basic onClick={reset}>
             Today
           </Button>
@@ -96,6 +107,7 @@ const WorkerSchedule = () => {
           />
         </Grid.Column>
       </Grid.Row>
+      {renderFormContainer()}
     </Grid>
   );
 };

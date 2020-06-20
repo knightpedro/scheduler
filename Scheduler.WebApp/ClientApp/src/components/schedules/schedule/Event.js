@@ -1,10 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  JobTaskFormContainer,
-  LeaveFormContainer,
-  OutOfServiceFormContainer,
-  TrainingFormContainer,
-} from "../../forms/containers";
+import formContainerLookup from "../formContainerLookup";
 import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
 import { appointmentTypes } from "../../../constants";
@@ -24,13 +19,6 @@ const getEventColour = (type) => {
     default:
       return "#000";
   }
-};
-
-const formContainers = {
-  [appointmentTypes.JOB_TASK]: JobTaskFormContainer,
-  [appointmentTypes.LEAVE]: LeaveFormContainer,
-  [appointmentTypes.OUT_OF_SERVICE]: OutOfServiceFormContainer,
-  [appointmentTypes.TRAINING]: TrainingFormContainer,
 };
 
 const Container = styled.div`
@@ -148,7 +136,7 @@ const Event = ({ appointment, ...props }) => {
   }, [showPopper]);
 
   const renderFormContainer = () => {
-    const FormContainer = formContainers[type];
+    const FormContainer = formContainerLookup[type];
     if (FormContainer)
       return (
         <FormContainer
