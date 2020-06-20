@@ -75,7 +75,7 @@ const CoordinatorsPage = () => {
                   to={generatePath(routes.coordinators.detail, { id: firstId })}
                 />
               ) : (
-                <Empty message="Select coordinator" />
+                <Empty basic message="Select coordinator" />
               )}
             </Route>
           </Switch>

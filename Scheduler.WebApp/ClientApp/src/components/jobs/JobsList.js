@@ -12,7 +12,8 @@ const JobsList = ({ activeId, handleClick, filter }) => {
   );
   const jobsCount = useSelector(jobsSelectors.selectTotal);
 
-  if (!jobs || jobs.length === 0) return <Empty message="No jobs found" />;
+  if (!jobs || jobs.length === 0)
+    return <Empty basic message="No jobs found" />;
 
   return (
     <Segment>

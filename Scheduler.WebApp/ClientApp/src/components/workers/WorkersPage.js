@@ -77,7 +77,7 @@ const WorkersPage = () => {
                   to={generatePath(routes.workers.detail, { id: firstId })}
                 />
               ) : (
-                <Empty message="Select staff member" />
+                <Empty basic message="Select staff member" />
               )}
             </Route>
           </Switch>

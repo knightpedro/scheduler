@@ -74,7 +74,7 @@ const JobsPage = () => {
                   to={generatePath(routes.jobs.detail, { id: firstId })}
                 />
               ) : (
-                <Empty message="Select jobs" />
+                <Empty basic message="Select job" />
               )}
             </Route>
           </Switch>

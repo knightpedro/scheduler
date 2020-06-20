@@ -47,21 +47,37 @@ const WorkerLeaveView = ({ id }) => {
           </Grid.Column>
         </Grid.Row>
       )}
-      <Grid.Row columns="equal">
-        <Grid.Column>
-          <Button
-            color="teal"
-            content="Add"
-            onClick={handleAddLeaveClick}
-            floated="right"
-          />
-          {leave && leave.length > 0 ? (
+
+      {leave && leave.length > 0 ? (
+        <Grid.Row columns="equal">
+          <Grid.Column>
+            <Button
+              color="teal"
+              content="Add"
+              onClick={handleAddLeaveClick}
+              floated="right"
+            />
             <LeaveTable leave={leave} handleClick={handleLeaveClick} />
-          ) : (
-            <Empty message="No leave found" />
-          )}
-        </Grid.Column>
-      </Grid.Row>
+          </Grid.Column>
+        </Grid.Row>
+      ) : (
+        <>
+          <Grid.Row>
+            <Grid.Column width={16} textAlign="right">
+              <Button
+                color="teal"
+                content="Add"
+                onClick={handleAddLeaveClick}
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={16}>
+              <Empty message="No leave found" />
+            </Grid.Column>
+          </Grid.Row>
+        </>
+      )}
     </Grid>
   );
 };

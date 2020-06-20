@@ -36,7 +36,7 @@ const ResourceDetail = ({ id }) => {
     });
   };
 
-  if (!resource) return <Empty message="Plant not found" />;
+  if (!resource) return <Empty basic message="Plant not found" />;
 
   return (
     <Grid stackable>

@@ -77,7 +77,7 @@ const ResourcesPage = () => {
                   to={generatePath(routes.resources.detail, { id: firstId })}
                 />
               ) : (
-                <Empty message="Select plant" />
+                <Empty basic message="Select plant" />
               )}
             </Route>
           </Switch>

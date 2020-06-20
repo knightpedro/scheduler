@@ -24,7 +24,7 @@ const TrainingDetail = ({ id }) => {
     });
   };
 
-  if (!training) return <Empty message="Training not found" />;
+  if (!training) return <Empty basic message="Training not found" />;
 
   return (
     <>

@@ -9,7 +9,7 @@ const WorkersList = ({ activeId, filter, handleClick }) => {
     workersSelectors.selectFiltered(state, filter)
   );
 
-  if (workers.length === 0) return <Empty message="No staff found" />;
+  if (workers.length === 0) return <Empty basic message="No staff found" />;
 
   return (
     <List selection>

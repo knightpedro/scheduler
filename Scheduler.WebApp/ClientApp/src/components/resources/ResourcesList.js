@@ -9,7 +9,7 @@ const ResourcesList = ({ activeId, filter, handleClick }) => {
     resourcesSelectors.selectFiltered(state, filter)
   );
 
-  if (resources.length === 0) return <Empty message="No plant found" />;
+  if (resources.length === 0) return <Empty basic message="No plant found" />;
 
   return (
     <List selection verticalAlign="middle">

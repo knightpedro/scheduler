@@ -47,24 +47,36 @@ const ResourceOutOfServicesView = ({ id }) => {
           </Grid.Column>
         </Grid.Row>
       )}
-      <Grid.Row columns="equal">
-        <Grid.Column>
-          <Button
-            color="teal"
-            content="Add"
-            onClick={handleAddClick}
-            floated="right"
-          />
-          {outOfServices && outOfServices.length > 0 ? (
+
+      {outOfServices && outOfServices.length > 0 ? (
+        <Grid.Row columns="equal">
+          <Grid.Column>
+            <Button
+              color="teal"
+              content="Add"
+              onClick={handleAddClick}
+              floated="right"
+            />
             <OutOfServicesTable
               outOfServices={outOfServices}
               handleClick={handleOutOfServiceClick}
             />
-          ) : (
-            <Empty message="No out of services found" />
-          )}
-        </Grid.Column>
-      </Grid.Row>
+          </Grid.Column>
+        </Grid.Row>
+      ) : (
+        <>
+          <Grid.Row>
+            <Grid.Column width={16} textAlign="right">
+              <Button color="teal" content="Add" onClick={handleAddClick} />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={16}>
+              <Empty message="No out of services found" />
+            </Grid.Column>
+          </Grid.Row>
+        </>
+      )}
     </Grid>
   );
 };

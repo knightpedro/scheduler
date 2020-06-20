@@ -15,7 +15,7 @@ const TrainingList = ({ activeId, filter, handleClick }) => {
   const trainingCount = useSelector(trainingSelectors.selectTotal);
 
   if (!training || training.length === 0)
-    return <Empty message="No training found" />;
+    return <Empty basic message="No training found" />;
 
   return (
     <Segment>

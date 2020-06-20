@@ -35,7 +35,7 @@ const WorkerDetail = ({ id }) => {
     });
   };
 
-  if (!worker) return <Empty message="Staff member not found" />;
+  if (!worker) return <Empty basic message="Staff member not found" />;
 
   return (
     <Grid stackable>

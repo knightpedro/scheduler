@@ -10,7 +10,7 @@ const CoordinatorsList = ({ activeId, filter, handleClick }) => {
   );
 
   if (coordinators.length === 0)
-    return <Empty message="No coordinators found" />;
+    return <Empty basic message="No coordinators found" />;
 
   return (
     <List selection>

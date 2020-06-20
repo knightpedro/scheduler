@@ -35,7 +35,7 @@ const JobDetail = ({ id }) => {
     dispatch(updateJob(values));
   };
 
-  if (!job) return <Empty message="Job not found" />;
+  if (!job) return <Empty basic message="Job not found" />;
 
   return (
     <Grid>

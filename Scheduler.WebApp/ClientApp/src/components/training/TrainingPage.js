@@ -76,7 +76,7 @@ const TrainingPage = () => {
                   to={generatePath(routes.training.detail, { id: firstId })}
                 />
               ) : (
-                <Empty message="Select training" />
+                <Empty basic message="Select training" />
               )}
             </Route>
           </Switch>

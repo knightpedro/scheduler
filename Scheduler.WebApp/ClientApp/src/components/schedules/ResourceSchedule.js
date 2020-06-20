@@ -70,13 +70,14 @@ const ResourceSchedule = () => {
       <Grid.Row columns="equal" verticalAlign="middle">
         <Grid.Column>
           <Input
+            fluid
             icon="search"
             placeholder="Search plant"
             value={filter || ""}
             onChange={(e) => setFilter(e.target.value)}
           />
         </Grid.Column>
-        <Grid.Column textAlign="center">
+        <Grid.Column textAlign="center" width={7}>
           <WeekPicker
             start={start}
             end={end}

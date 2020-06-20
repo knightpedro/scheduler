@@ -26,7 +26,7 @@ const CoordinatorDetail = ({ id }) => {
     });
   };
 
-  if (!coordinator) return <Empty message="Coordinator not found" />;
+  if (!coordinator) return <Empty basic message="Coordinator not found" />;
 
   return (
     <>
