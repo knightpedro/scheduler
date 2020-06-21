@@ -24,23 +24,6 @@ const instance = axios.create({
   baseURL: apiRoutes.BASE,
 });
 
-instance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response.status !== 401) {
-      return Promise.reject(error);
-    }
-
-    const redirectUrl = `${ApplicationPaths.Login}?${
-      QueryParameterNames.ReturnUrl
-    }=${encodeURI(window.location.href)}`;
-
-    window.location = redirectUrl;
-  }
-);
-
 instance.interceptors.request.use(
   async (config) => {
     const token = await authService.getAccessToken();
