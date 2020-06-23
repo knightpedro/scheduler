@@ -46,8 +46,16 @@ const CoordinatorDetail = ({ id }) => {
           </Grid.Column>
           <Grid.Column textAlign="right">
             <Button.Group>
-              <Button icon="edit" onClick={() => setShowForm(true)} />
-              <Button icon="trash" onClick={() => setShowModal(true)} />
+              <Button
+                aria-label="Edit"
+                icon="edit"
+                onClick={() => setShowForm(true)}
+              />
+              <Button
+                aria-label="Delete"
+                icon="trash"
+                onClick={() => setShowModal(true)}
+              />
             </Button.Group>
           </Grid.Column>
         </Grid.Row>
