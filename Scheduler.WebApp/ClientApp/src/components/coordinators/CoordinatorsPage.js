@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid, Input } from "semantic-ui-react";
+import { Button, Grid, Input, Header } from "semantic-ui-react";
 import {
   generatePath,
   useHistory,
@@ -46,6 +46,7 @@ const CoordinatorsPage = () => {
     <Grid padded relaxed="very" stackable>
       <Grid.Row>
         <Grid.Column width={4}>
+          <Header as="h1">Coordinators</Header>
           <Input
             action={<Button icon="add" size="small" onClick={handleAddClick} />}
             fluid

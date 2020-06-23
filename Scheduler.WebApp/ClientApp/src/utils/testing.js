@@ -4,6 +4,7 @@ import { render } from "@testing-library/react";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import reducer from "../ducks";
+import { MemoryRouter } from "react-router-dom";
 
 function renderWithProviders(
   ui,
@@ -14,7 +15,11 @@ function renderWithProviders(
   } = {}
 ) {
   function Wrapper({ children }) {
-    return <Provider store={store}>{children}</Provider>;
+    return (
+      <Provider store={store}>
+        <MemoryRouter>{children}</MemoryRouter>
+      </Provider>
+    );
   }
   return render(ui, { wrapper: Wrapper, ...renderOptions });
 }

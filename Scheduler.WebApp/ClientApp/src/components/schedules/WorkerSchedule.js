@@ -58,7 +58,7 @@ const WorkerSchedule = () => {
     <Grid stackable padded relaxed="very">
       <Grid.Row columns="equal">
         <Grid.Column>
-          <Header as="h2">Staff Schedule</Header>
+          <Header as="h1">Staff Schedule</Header>
         </Grid.Column>
       </Grid.Row>
 

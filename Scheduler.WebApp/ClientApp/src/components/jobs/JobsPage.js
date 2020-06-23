@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Input, Button } from "semantic-ui-react";
+import { Grid, Input, Button, Header } from "semantic-ui-react";
 import JobsList from "./JobsList";
 import JobDetail from "./JobDetail";
 import {
@@ -45,6 +45,7 @@ const JobsPage = () => {
     <Grid stackable padded relaxed="very">
       <Grid.Row>
         <Grid.Column width={4}>
+          <Header as="h1">Jobs</Header>
           <Input
             action={<Button icon="add" size="small" onClick={handleAddClick} />}
             fluid

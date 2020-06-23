@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAll } from "../../ducks/sharedActions";
-import { Grid, Input, Button } from "semantic-ui-react";
+import { Grid, Input, Button, Header } from "semantic-ui-react";
 import { workersSelectors } from "../../ducks/workers";
 import WorkersList from "./WorkersList";
 import {
@@ -48,6 +48,7 @@ const WorkersPage = () => {
     <Grid padded relaxed="very" stackable>
       <Grid.Row>
         <Grid.Column width={4}>
+          <Header as="h1">Staff</Header>
           <Input
             fluid
             action={<Button icon="add" size="small" onClick={handleAddClick} />}

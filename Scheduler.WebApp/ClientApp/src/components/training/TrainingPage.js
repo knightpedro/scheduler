@@ -8,7 +8,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Input, Button } from "semantic-ui-react";
+import { Grid, Input, Button, Header } from "semantic-ui-react";
 import routes from "../../routes";
 import TrainingDetail from "./TrainingDetail";
 import TrainingList from "./TrainingList";
@@ -47,6 +47,7 @@ const TrainingPage = () => {
     <Grid padded relaxed="very" stackable>
       <Grid.Row>
         <Grid.Column width={4}>
+          <Header as="h1">Training</Header>
           <Input
             action={<Button icon="add" size="small" onClick={handleAddClick} />}
             fluid

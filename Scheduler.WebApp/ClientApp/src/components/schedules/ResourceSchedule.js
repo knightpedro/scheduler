@@ -63,7 +63,7 @@ const ResourceSchedule = () => {
     <Grid stackable padded relaxed="very">
       <Grid.Row columns="equal">
         <Grid.Column>
-          <Header as="h2">Plant Schedule</Header>
+          <Header as="h1">Plant Schedule</Header>
         </Grid.Column>
       </Grid.Row>
 

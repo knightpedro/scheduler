@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAll } from "../../ducks/sharedActions";
-import { Grid, Input, Button } from "semantic-ui-react";
+import { Grid, Input, Button, Header } from "semantic-ui-react";
 import { resourcesSelectors } from "../../ducks/resources";
 import routes from "../../routes";
 import {
@@ -48,6 +48,7 @@ const ResourcesPage = () => {
     <Grid padded relaxed="very" stackable>
       <Grid.Row>
         <Grid.Column width={4}>
+          <Header as="h1">Plant</Header>
           <Input
             fluid
             action={<Button icon="add" size="small" onClick={handleAddClick} />}
