@@ -32,8 +32,9 @@ API controllers deliver data to the React client.
 ## Technologies
 * ASP.NET Core 3.1
 * Entity Framework Core with SQL Server
-* React using a combination of class-based components and hooks
+* React (hook based components)
+* Redux
 
 ## Testing
 * XUnit for .NET Core
-* Jest and Enzyme for React 
+* Jest and React Testing Library for React 
