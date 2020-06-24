@@ -5,7 +5,7 @@ Scheduler is a work planning application built using ASP.NET Core with a React f
 
 Schedule jobs, assign resources and quickly identify conflicts.
 
-View the app running at https://schedulerwebapp.azurewebsites.net/.
+View the app running at https://www.scheduler.co.nz.
 
 ## Architecture
 The backend project is heavily based on the *Clean Architecture* from Jason Taylor's NorthwindTraders sample application https://github.com/jasontaylordev/NorthwindTraders.
