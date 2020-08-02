@@ -27,7 +27,7 @@ Commands and queries are created using MediatR and validated with Fluent Validat
 Interfaces for the repository pattern and EF Core DBContext are defined here to be implemented in other layers. 
 
 ### Web App
-API controllers deliver data to the React client.
+API controllers deliver data to the [React client](Scheduler.WebApp/ClientApp).
 
 ## Technologies
 * ASP.NET Core 3.1
